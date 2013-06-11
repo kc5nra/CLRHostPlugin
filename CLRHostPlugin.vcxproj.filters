@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="CLRHostPlugin.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Localization.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CLRHost.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CLRHostApi.h">
+      <Filter>Api</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{b1930a56-b818-4a5a-b5ac-0a9f7fb2b0d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{80cf7268-eaee-4f5e-a59e-c4b6d44025fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Api">
+      <UniqueIdentifier>{c26d3407-b1b8-4e8b-935c-5f10674e3f9d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CLRHostPlugin.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CLRHost.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CLRHostApi.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

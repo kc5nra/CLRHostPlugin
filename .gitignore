@@ -1,0 +1,39 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+#VS Files
+*.vcxproj.user
+*.sdf
+*.suo
+*.opensdf
+
+#User files
+CLRHostInterop/x64/Debug
+CLRHostInterop/x64/Release
+CLRHostInterop/win32/Debug
+CLRHostInterop/win32/Release
+
+x64/Debug
+x64/Release
+win32/Debug
+win32/Release
+
+Releasex86
+Releasex64
+
+ipch
+
+CHP-*.7z
+
+
