@@ -21,10 +21,12 @@ private:
     CLRHostApi *clrApi;
     CLRHost *clrHost;
     
-
 public:
     CLRHostPlugin();
     ~CLRHostPlugin();
+
+public:
+    CLRHost *GetCLRHost() { return clrHost; }
 
 };
 

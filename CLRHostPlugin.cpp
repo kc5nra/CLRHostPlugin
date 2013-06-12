@@ -10,6 +10,9 @@ HINSTANCE CLRHostPlugin::hinstDLL = NULL;
 CLRHostPlugin *CLRHostPlugin::instance = NULL;
 
 CLRHostPlugin::CLRHostPlugin() {
+    
+    CLRHostPlugin::instance = this;
+
 	isDynamicLocale = false;
 
 	if (!locale->HasLookup(KEY("PluginName"))) {

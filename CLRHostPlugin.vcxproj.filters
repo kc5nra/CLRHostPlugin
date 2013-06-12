@@ -13,6 +13,21 @@
     <ClInclude Include="CLRHostApi.h">
       <Filter>Api</Filter>
     </ClInclude>
+    <ClInclude Include="CLRSettingsPane.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CLRObjectRef.h">
+      <Filter>Api</Filter>
+    </ClInclude>
+    <ClInclude Include="CLRApiCommon.h">
+      <Filter>Api</Filter>
+    </ClInclude>
+    <ClInclude Include="CLRImageSourceFactory.h">
+      <Filter>Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="CLRObject.h">
+      <Filter>Wrappers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -24,6 +39,9 @@
     <Filter Include="Api">
       <UniqueIdentifier>{c26d3407-b1b8-4e8b-935c-5f10674e3f9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Wrappers">
+      <UniqueIdentifier>{8db083cc-da46-4632-aa9b-72c689794312}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CLRHostPlugin.cpp">
@@ -34,6 +52,15 @@
     </ClCompile>
     <ClCompile Include="CLRHostApi.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CLRObjectRef.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CLRImageSourceFactory.cpp">
+      <Filter>Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="CLRObject.cpp">
+      <Filter>Wrappers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

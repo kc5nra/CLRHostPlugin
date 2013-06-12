@@ -1,15 +1,12 @@
 #pragma once
 
 #include <string>
+#include "CLRApiCommon.h"
+#include "CLRObjectRef.h"
 
-#ifdef CLR_HOST_API
-#define CLRHOST_API __declspec(dllexport)
-#else
-#define CLR_HOST_API __declspec(dllimport)
-#endif
-
-class CLR_HOST_API CLRHostApi {
+class CLR_API CLRHostApi {
 public:
-    void OBSLog(std::wstring &logMessage);
-    void Hello();
+    void CLRLog(std::wstring &logMessage);
+    void AddSettingsPane(CLRObjectRef &clrObjectReference);
+    void AddImageSourceFactory(CLRObjectRef &clrObjectReference);
 };

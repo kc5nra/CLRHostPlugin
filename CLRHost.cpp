@@ -55,9 +55,23 @@ CLRHost::~CLRHost()
     if (isLibraryLoaded) {
         if (libraryAssembly) {
             libraryAssembly->Release();
+            libraryAssembly = nullptr;
         }
         if (libraryType) {
             libraryType->Release();
+            libraryType = nullptr;
+        }
+        if (imageSourceType) {
+            imageSourceType->Release();
+            imageSourceType = nullptr;
+        }
+        if (imageSourceFactoryType) {
+            imageSourceFactoryType->Release();
+            imageSourceFactoryType = nullptr;
+        }
+        if (settingsPaneType) {
+            settingsPaneType->Release();
+            settingsPaneType = nullptr;
         }
         if (libraryInstance.punkVal) {
             libraryInstance.punkVal->Release();
@@ -205,9 +219,12 @@ bool CLRHost::LoadInteropLibrary()
     bstr_t interopAssemblyName(INTEROP_ASSEMBLY);
 
     bstr_t assemblyClassName("CLRHost.Interop");
+    bstr_t imageSourceTypeName("OBSAPI.ImageSource");
+    bstr_t imageSourceFactoryTypeName("OBSAPI.ImageSourceFactory");
+    bstr_t settingsPaneTypeName("OBSAPI.SettingsPane");
+
     
     // The static method in the .NET class to invoke. 
-    bstr_t bstrSetApiMethod(L"SetApi"); 
     SAFEARRAY *apiArgs = NULL; 
     LONG argIndex;
     variant_t clrApiPtr((long)clrApi);
@@ -272,6 +289,24 @@ bool CLRHost::LoadInteropLibrary()
         Log(TEXT("Failed to get type definition of interop library class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
+    
+    hr = libraryAssembly->GetType_2(imageSourceTypeName, &imageSourceType);
+    if (FAILED(hr)) {
+        Log(TEXT("Failed to get type definition of %s class: 0x%08lx"), imageSourceTypeName.GetAddress(), hr); 
+        goto errorCleanup;
+    }
+
+    hr = libraryAssembly->GetType_2(imageSourceFactoryTypeName, &imageSourceFactoryType);
+    if (FAILED(hr)) {
+        Log(TEXT("Failed to get type definition of interop library class: 0x%08lx"), hr); 
+        goto errorCleanup;
+    }
+
+    hr = libraryAssembly->GetType_2(settingsPaneTypeName, &settingsPaneType);
+    if (FAILED(hr)) {
+        Log(TEXT("Failed to get type definition of interop library class: 0x%08lx"), hr); 
+        goto errorCleanup;
+    }
 
     apiArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
     argIndex = 0;
@@ -299,18 +334,35 @@ bool CLRHost::LoadInteropLibrary()
 errorCleanup:
     if (appDomainSetup) {
         appDomainSetup->Release();
+        appDomainSetup = nullptr;
     }
     if (appDomainUnknown) {
         appDomainUnknown->Release();
+        appDomainUnknown = nullptr;
     }
     if (appDomain) {
         appDomain->Release();
+        appDomain = nullptr;
     }
     if (libraryAssembly) {
         libraryAssembly->Release();
+        libraryAssembly = nullptr;
     }
     if (libraryType) {
         libraryType->Release();
+        libraryType = nullptr;
+    }
+    if (imageSourceType) {
+        imageSourceType->Release();
+        imageSourceType = nullptr;
+    }
+    if (imageSourceFactoryType) {
+        imageSourceFactoryType->Release();
+        imageSourceFactoryType = nullptr;
+    }
+    if (settingsPaneType) {
+        settingsPaneType->Release();
+        settingsPaneType = nullptr;
     }
     if (apiArgs) {
         SafeArrayDestroy(apiArgs);

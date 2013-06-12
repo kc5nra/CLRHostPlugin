@@ -37,6 +37,10 @@ private:
     mscorlib::_Type *libraryType;
     variant_t libraryInstance;
 
+    mscorlib::_Type *imageSourceType;
+    mscorlib::_Type *imageSourceFactoryType;
+    mscorlib::_Type *settingsPaneType;
+      
     TCHAR *clrRuntimeVersion;
 
     bool isInitialized;
@@ -49,4 +53,10 @@ public:
 public:
     bool Initialize();
     bool LoadInteropLibrary();
+
+public:
+    mscorlib::_Type *GetImageSourceType() { return imageSourceType; }
+    mscorlib::_Type *GetImageSourceFactoryType() { return imageSourceFactoryType; }
+    mscorlib::_Type *GetSettingsPaneType() { return settingsPaneType; }
+
 };

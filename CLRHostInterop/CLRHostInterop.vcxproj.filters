@@ -12,10 +12,31 @@
     <Filter Include="Api">
       <UniqueIdentifier>{d7dc68ad-8399-4b7e-a0a6-7a636fd8fb5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Samples">
+      <UniqueIdentifier>{2513f5b2-d392-4cfc-b57c-280ac26c7e48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CLRHostInterop.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Api</Filter>
+    </ClInclude>
+    <ClInclude Include="API.h">
+      <Filter>Api</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsPane.h">
+      <Filter>Api</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleImageSource.h">
+      <Filter>Samples</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageSourceFactory.h">
+      <Filter>Api</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleImageSourceFactory.h">
+      <Filter>Samples</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -27,6 +48,9 @@
     </ClCompile>
     <ClCompile Include="ImageSource.h">
       <Filter>Api</Filter>
+    </ClCompile>
+    <ClCompile Include="API.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

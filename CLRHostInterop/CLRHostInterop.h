@@ -2,20 +2,24 @@
 #pragma once
 
 #include "CLRHostApi.h"
+#include "API.h"
+#include "SampleImageSource.h"
+#include "SampleImageSourceFactory.h"
 
 using namespace System;
-using namespace System::Windows::Forms;
 
 namespace CLRHost {
 
 	public ref class Interop
 	{
     public:
-        CLRHostApi *clrApi;
+        API ^api;
 
     public:
         Interop(long clrApiPointer) {
-            this->clrApi = reinterpret_cast<CLRHostApi *>(clrApiPointer);
+            api = gcnew API(reinterpret_cast<CLRHostApi *>(clrApiPointer));
+ 
+            api->AddImageSourceFactory(gcnew SampleImageSourceFactory());
         }
 	};
 }
