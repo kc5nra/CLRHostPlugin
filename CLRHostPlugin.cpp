@@ -70,7 +70,7 @@ void CLRHostPlugin::UnloadPlugins()
 }
 
 void CLRHostPlugin::OnStartStream()
-{
+{ 
     clrHost->OnStartStream();
 }
 

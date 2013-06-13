@@ -505,7 +505,7 @@ void CLRHost::LoadPlugins()
     if (!isInitialized) {
         Log(TEXT("CLRHost::LoadPlugins() Runtime not initialized, examine log for cause"));
     }
-
+        
     std::vector<std::wstring> files;
     GetFilesInDirectory(files, INTEROP_PATH);
     HRESULT hr;

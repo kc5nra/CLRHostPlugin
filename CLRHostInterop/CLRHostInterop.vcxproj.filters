@@ -11,6 +11,9 @@
     <Filter Include="Samples">
       <UniqueIdentifier>{2513f5b2-d392-4cfc-b57c-280ac26c7e48}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{624ce925-b265-4c5e-8e2e-94fdd5cea8bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector2.h">
@@ -34,6 +37,9 @@
     <ClInclude Include="Plugin.h">
       <Filter>Api</Filter>
     </ClInclude>
+    <ClInclude Include="HostedSettingsPane.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -43,6 +49,9 @@
       <Filter>Api</Filter>
     </ClCompile>
     <ClCompile Include="API.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HostedSettingsPane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

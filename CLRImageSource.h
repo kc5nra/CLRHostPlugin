@@ -24,11 +24,11 @@ public:
     virtual void Detach();
 
 public:
-        void Preprocess();
-        void Tick(float fSeconds);
-        void Render(float x, float y, float width, float height);
-        CLRVector2& GetSize();
-        void UpdateSettings();
-        void BeginScene();
-        void EndScene();
+    void Preprocess();
+    void Tick(float fSeconds);
+    void Render(float x, float y, float width, float height);
+    CLRVector2& GetSize();
+    void UpdateSettings();
+    void BeginScene();
+    void EndScene();
 };

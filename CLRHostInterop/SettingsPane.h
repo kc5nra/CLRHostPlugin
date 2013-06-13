@@ -5,12 +5,12 @@ using namespace System;
 namespace OBS {
     public interface class SettingsPane
     {
-        virtual String^ GetCategory();
-        virtual IntPtr CreatePane(IntPtr parentHwnd);
-        virtual void DestroyPane();
-        virtual void ApplySettings();
-        virtual void CancelSettings();
-        virtual bool HasDefaults();
-        virtual void SetDefaults();
+        virtual void CreatePane(IntPtr parentHwnd) = 0;
+        virtual void DestroyPane() = 0;
+        virtual String^ GetCategory() = 0;
+        virtual void ApplySettings() = 0;
+        virtual void CancelSettings() = 0;
+        virtual bool HasDefaults() = 0;
+        virtual void SetDefaults() = 0;
     };
 };

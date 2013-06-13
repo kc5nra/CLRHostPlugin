@@ -167,13 +167,19 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="API.h" />
+    <ClInclude Include="HostedSettingsPane.h" />
     <ClInclude Include="ImageSourceFactory.h" />
     <ClInclude Include="Plugin.h" />
     <ClInclude Include="SampleImageSource.h" />
@@ -184,6 +190,7 @@
   <ItemGroup>
     <ClCompile Include="API.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="HostedSettingsPane.cpp" />
     <ClCompile Include="ImageSource.h" />
   </ItemGroup>
   <ItemGroup>
