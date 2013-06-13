@@ -6,6 +6,9 @@
 #include "OBSApi.h"
 #include "CLRHostApi.h"
 #include "CLRHost.h"
+#include "CLRPlugin.h"
+
+#include <vector>
 
 #define EXTERN_DLL_EXPORT extern "C" __declspec(dllexport)
 
@@ -20,6 +23,8 @@ private:
 	bool isDynamicLocale;
     CLRHostApi *clrApi;
     CLRHost *clrHost;
+
+    std::vector<CLRPlugin *> clrPlugins;
     
 public:
     CLRHostPlugin();
@@ -27,6 +32,10 @@ public:
 
 public:
     CLRHost *GetCLRHost() { return clrHost; }
+
+public:
+    void LoadPlugins();
+    void UnloadPlugins();
 
 };
 

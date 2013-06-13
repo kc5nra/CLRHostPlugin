@@ -29,6 +29,7 @@ bool CLRObject::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectType)
     this->objectType = objectType;
 
     objectRef->AddRef();
+    objectType->AddRef();
     return true;
 }
 
@@ -37,5 +38,9 @@ void CLRObject::Detach()
     if (objectRef) {
         objectRef->Release();
         objectRef = nullptr;
+    }
+    if (objectType) {
+        objectType->Release();
+        objectType = nullptr;
     }
 }

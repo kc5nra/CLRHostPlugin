@@ -2,10 +2,12 @@
 
 #include <windows.h>
 #include <string>
+#include <vector>
 
 #include <comutil.h>
 
 #include "CLRHostApi.h"
+#include "CLRPlugin.h"
 
 struct ICLRMetaHost;
 struct ICLRRuntimeInfo;
@@ -14,14 +16,16 @@ struct ICorRuntimeHost;
 
 
 namespace mscorlib {
+    struct _AppDomain;
     struct _Assembly;
     struct _Type;
 }
 
 #define INTEROP_PATH            TEXT("plugins\\CLRHostPlugin\\")
-#define INTEROP_ASSEMBLY        TEXT("CLRHostInterop.dll")
+#define INTEROP_PATH_SEARCH     TEXT("plugins\\CLRHostPlugin\\*.dll")
+#define INTEROP_ASSEMBLY        TEXT("CLRHost.Interop.dll")
 #define INTEROP_ASSEMBLY_PATH   INTEROP_PATH INTEROP_ASSEMBLY
-#define INTEROP_LOAD_CLASS      TEXT("CLRHost.Interop")
+#define INTEROP_LOAD_CLASS      TEXT("OBS.API")
 
 class CLRHost {
 
@@ -33,18 +37,24 @@ private:
     ICLRRuntimeInfo *clrRuntimeInfo;
     ICorRuntimeHost* corRuntimeHost;
 
+    mscorlib::_AppDomain *appDomain;
     mscorlib::_Assembly *libraryAssembly;
+    
+    
     mscorlib::_Type *libraryType;
-    variant_t libraryInstance;
-
+    mscorlib::_Type *pluginType;
     mscorlib::_Type *imageSourceType;
     mscorlib::_Type *imageSourceFactoryType;
     mscorlib::_Type *settingsPaneType;
-      
+    
+    IUnknown *libraryInstance;
+
     TCHAR *clrRuntimeVersion;
 
     bool isInitialized;
     bool isLibraryLoaded;
+
+    std::vector<CLRPlugin *> clrPlugins;
     
 public:
     CLRHost::CLRHost(TCHAR *clrRuntimeVersion, CLRHostApi *clrApi);
@@ -53,6 +63,8 @@ public:
 public:
     bool Initialize();
     bool LoadInteropLibrary();
+    void LoadPlugins();
+    void UnloadPlugins();
 
 public:
     mscorlib::_Type *GetImageSourceType() { return imageSourceType; }

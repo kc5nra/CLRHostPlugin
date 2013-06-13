@@ -1,4 +1,5 @@
 #include "API.h"
+#include "CLRHostApi.h"
 
 using namespace System::Runtime::InteropServices;
 

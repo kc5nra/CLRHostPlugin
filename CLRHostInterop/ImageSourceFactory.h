@@ -1,6 +1,6 @@
 #pragma once
 
-namespace OBSAPI {
+namespace OBS {
     public interface class ImageSourceFactory
     {
         virtual ImageSource^ Create();

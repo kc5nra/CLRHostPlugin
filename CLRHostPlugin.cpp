@@ -26,12 +26,10 @@ CLRHostPlugin::CLRHostPlugin() {
 			AppWarning(TEXT("Uh oh..., unable to dynamically add our localization keys"));
 		}
 	}
+    
     clrApi = new CLRHostApi();
     clrHost = new CLRHost(nullptr, clrApi);
-    if (clrHost->Initialize()) {
-        clrHost->LoadInteropLibrary();
-    }
-     
+    clrHost->Initialize();     
 }
 
 CLRHostPlugin::~CLRHostPlugin() {
@@ -58,11 +56,25 @@ CLRHostPlugin::~CLRHostPlugin() {
 
 }
 
+void CLRHostPlugin::LoadPlugins()
+{
+    
+    if (clrHost->LoadInteropLibrary()) {
+        clrHost->LoadPlugins();
+    }
+}
+
+void CLRHostPlugin::UnloadPlugins()
+{
+    clrHost->UnloadPlugins();
+}
+
 bool LoadPlugin()
 {
     if(CLRHostPlugin::instance != NULL)
         return false;
     CLRHostPlugin::instance = new CLRHostPlugin();
+    CLRHostPlugin::instance->LoadPlugins();
     return true;
 }
 
@@ -70,6 +82,7 @@ void UnloadPlugin()
 {
     if(CLRHostPlugin::instance == NULL)
         return;
+    CLRHostPlugin::instance->UnloadPlugins();
     delete CLRHostPlugin::instance;
     CLRHostPlugin::instance = NULL;
 }

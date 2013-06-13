@@ -28,6 +28,15 @@
     <ClInclude Include="CLRObject.h">
       <Filter>Wrappers</Filter>
     </ClInclude>
+    <ClInclude Include="CLRImageSource.h">
+      <Filter>Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="CLRVector2.h">
+      <Filter>Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="CLRPlugin.h">
+      <Filter>Wrappers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -60,6 +69,12 @@
       <Filter>Wrappers</Filter>
     </ClCompile>
     <ClCompile Include="CLRObject.cpp">
+      <Filter>Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="CLRVector2.cpp">
+      <Filter>Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="CLRPlugin.cpp">
       <Filter>Wrappers</Filter>
     </ClCompile>
   </ItemGroup>

@@ -227,14 +227,19 @@
     <ClCompile Include="CLRImageSourceFactory.cpp" />
     <ClCompile Include="CLRObject.cpp" />
     <ClCompile Include="CLRObjectRef.cpp" />
+    <ClCompile Include="CLRPlugin.cpp" />
+    <ClCompile Include="CLRVector2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CLRApiCommon.h" />
     <ClInclude Include="CLRHost.h" />
     <ClInclude Include="CLRHostApi.h" />
+    <ClInclude Include="CLRImageSource.h" />
     <ClInclude Include="CLRImageSourceFactory.h" />
     <ClInclude Include="CLRObject.h" />
     <ClInclude Include="CLRObjectRef.h" />
+    <ClInclude Include="CLRPlugin.h" />
+    <ClInclude Include="CLRVector2.h" />
     <ClInclude Include="Localization.h" />
     <ClInclude Include="CLRHostPlugin.h" />
     <ClInclude Include="CLRSettingsPane.h" />

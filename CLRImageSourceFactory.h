@@ -2,6 +2,7 @@
 
 #include "CLRObject.h"
 #include "CLRObjectRef.h"
+#include "CLRImageSource.h"
 #include <string>
 
 namespace mscorlib {
@@ -21,7 +22,7 @@ public:
     virtual void Detach();
 
 public:
-    CLRObjectRef Create();
+    CLRImageSource *Create();
     std::wstring GetDisplayName();
     std::wstring GetSourceClassName();
     void ShowConfiguration();

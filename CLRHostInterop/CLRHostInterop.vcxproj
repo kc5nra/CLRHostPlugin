@@ -174,8 +174,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="API.h" />
-    <ClInclude Include="CLRHostInterop.h" />
     <ClInclude Include="ImageSourceFactory.h" />
+    <ClInclude Include="Plugin.h" />
     <ClInclude Include="SampleImageSource.h" />
     <ClInclude Include="SampleImageSourceFactory.h" />
     <ClInclude Include="SettingsPane.h" />
@@ -184,7 +184,6 @@
   <ItemGroup>
     <ClCompile Include="API.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="CLRHostInterop.cpp" />
     <ClCompile Include="ImageSource.h" />
   </ItemGroup>
   <ItemGroup>

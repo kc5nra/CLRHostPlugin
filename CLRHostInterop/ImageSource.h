@@ -2,15 +2,15 @@
 
 #include "Vector2.h"
 
-namespace OBSAPI {
+namespace OBS {
     public interface class ImageSource
     {
-        virtual void Preprocess() = 0;
-        virtual void Tick(float fSeconds) = 0;
-        virtual void Render(Vector2^ position, Vector2^ size) = 0;
-        virtual Vector2^ GetSize() = 0;
+        virtual void Preprocess();
+        virtual void Tick(float fSeconds);
+        virtual void Render(float x, float y, float width, float height);
+        virtual Vector2^ GetSize();
         virtual void UpdateSettings();
-        virtual void BeginScene();
+        virtual void BeginScene() ;
         virtual void EndScene();
     };
 };

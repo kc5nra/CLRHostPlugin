@@ -29,10 +29,6 @@ bool CLRImageSourceFactory::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *
 
 
     HRESULT hr;
-
-    SAFEARRAY *a = SafeArrayCreateVector(VT_VARIANT, 0, 1);
-    objectType->GetMethods(BindingFlags_Default, &a);
-    ULONG b = a->cbElements;
     
     hr = objectType->GetMethod_6(createMethodName, &createMethod);
     if (FAILED(hr)) {
@@ -91,9 +87,9 @@ void CLRImageSourceFactory::Detach()
     CLRObject::Detach();
 }
 
-CLRObjectRef CLRImageSourceFactory::Create()
+CLRImageSource *CLRImageSourceFactory::Create()
 {
-    return CLRObjectRef(nullptr, nullptr);
+    return nullptr;
 }
 
 std::wstring CLRImageSourceFactory::GetDisplayName()
@@ -136,5 +132,16 @@ std::wstring CLRImageSourceFactory::GetSourceClassName()
 
 void CLRImageSourceFactory::ShowConfiguration()
 {
+    if (!IsValid()) {
+        Log(TEXT("CLRImageSourceFactory::ShowConfiguration() no managed object attached"));
+        return;
+    }
 
+    variant_t objectRef(GetObjectRef());
+
+    HRESULT hr = getSourceClassNameMethod->Invoke_3(objectRef, nullptr, nullptr);
+    if (FAILED(hr)) {
+        Log(TEXT("Failed to invoked ShowConfiguration on managed instance: 0x%08lx"), hr); 
+        return;
+    }
 }
