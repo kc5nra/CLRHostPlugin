@@ -535,9 +535,13 @@ void CLRHost::LoadPlugins()
                 clrPlugins.push_back(plugin);
                 Log(TEXT("Successfully added CLR Plugin %s"), plugin->GetPluginName().c_str());
             }
-            
         }
-        errorCleanup:;
+
+        SafeArrayDestroy(typeArray);
+errorCleanup:
+        if (pluginAssembly) {
+            pluginAssembly->Release();
+        }
     }
 
 }
