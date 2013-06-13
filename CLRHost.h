@@ -65,6 +65,8 @@ public:
     bool LoadInteropLibrary();
     void LoadPlugins();
     void UnloadPlugins();
+    void OnStartStream();
+    void OnStopStream();
 
 public:
     mscorlib::_Type *GetImageSourceType() { return imageSourceType; }

@@ -109,6 +109,71 @@ void CLRPlugin::Detach()
     CLRObject::Detach();
 }
 
+bool CLRPlugin::LoadPlugin()
+{
+    if (!IsValid()) {
+        Log(TEXT("CLRPlugin::OnStopStream() no managed object attached"));
+    }
+
+    variant_t objectRef(GetObjectRef());
+    variant_t returnVal;
+
+    HRESULT hr = loadPluginMethod->Invoke_3(objectRef, nullptr, &returnVal);
+    if (FAILED(hr)) {
+        Log(TEXT("Failed to invoked OnStopStream on managed instance: 0x%08lx"), hr); 
+    }
+
+    return returnVal.boolVal != 0;
+}
+ 
+void CLRPlugin::UnloadPlugin()
+{
+    if (!IsValid()) {
+        Log(TEXT("CLRPlugin::UnloadPlugin() no managed object attached"));
+    }
+
+    variant_t objectRef(GetObjectRef());
+
+    HRESULT hr = unloadPluginMethod->Invoke_3(objectRef, nullptr, nullptr);
+    if (FAILED(hr)) {
+        Log(TEXT("Failed to invoked UnloadPlugin on managed instance: 0x%08lx"), hr); 
+    }
+
+    return;
+}
+
+void CLRPlugin::OnStartStream()
+{
+    if (!IsValid()) {
+        Log(TEXT("CLRPlugin::OnStartStream() no managed object attached"));
+    }
+
+    variant_t objectRef(GetObjectRef());
+
+    HRESULT hr = onStartStreamMethod->Invoke_3(objectRef, nullptr, nullptr);
+    if (FAILED(hr)) {
+        Log(TEXT("Failed to invoked OnStartStream on managed instance: 0x%08lx"), hr); 
+    }
+
+    return;
+}
+
+void CLRPlugin::OnStopStream()
+{
+    if (!IsValid()) {
+        Log(TEXT("CLRPlugin::OnStopStream() no managed object attached"));
+    }
+
+    variant_t objectRef(GetObjectRef());
+
+    HRESULT hr = onStopStreamMethod->Invoke_3(objectRef, nullptr, nullptr);
+    if (FAILED(hr)) {
+        Log(TEXT("Failed to invoked OnStopStream on managed instance: 0x%08lx"), hr); 
+    }
+
+    return;
+}
+
 std::wstring CLRPlugin::GetPluginName()
 {
     if (!IsValid()) {

@@ -446,7 +446,7 @@ CLRPlugin *CreatePluginInstance(std::wstring &typeName, _Type *type, _Type *plug
     }
 
     hr = type->GetConstructor_3(constructorArgs, &constructor);
-    if (FAILED(hr)) 
+    if (FAILED(hr) || constructor == nullptr) 
     { 
         Log(TEXT("Failed to create get valid constructor for type %s: 0x%08lx"), typeName.c_str(), hr); 
         goto errorCleanup; 
@@ -527,11 +527,11 @@ void CLRHost::LoadPlugins()
        
         pluginAssembly->GetTypes(&typeArray);
         types = (_Type **)typeArray->pvData;
-        
-        for(ULONG i = 0; i < typeArray->cbElements; i++) {
+
+        for(ULONG i = 0; i < typeArray->rgsabound->cElements; i++) {
             _Type *type = types[i];
             CLRPlugin *plugin = CreatePluginInstance(file, type, pluginType, libraryType, libraryInstance);
-            if (plugin) {
+            if (plugin && plugin->LoadPlugin()) {
                 clrPlugins.push_back(plugin);
                 Log(TEXT("Successfully added CLR Plugin %s"), plugin->GetPluginName().c_str());
             }
@@ -546,7 +546,22 @@ void CLRHost::UnloadPlugins()
 {
     while(clrPlugins.size()) {
         CLRPlugin *plugin = clrPlugins[0];
+        plugin->UnloadPlugin();
         delete plugin;
         clrPlugins.erase(clrPlugins.begin());
+    }
+}
+
+void CLRHost::OnStartStream()
+{
+    for(auto i = clrPlugins.begin(); i < clrPlugins.end(); i++) {
+        (*i)->OnStartStream();
+    }
+}
+
+void CLRHost::OnStopStream()
+{
+    for(auto i = clrPlugins.begin(); i < clrPlugins.end(); i++) {
+        (*i)->OnStopStream();
     }
 }

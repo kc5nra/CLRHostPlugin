@@ -13,6 +13,7 @@ public:
 
     virtual bool LoadPlugin()
     {
+        
         return true;
     }
 

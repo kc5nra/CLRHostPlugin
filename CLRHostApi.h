@@ -9,4 +9,5 @@ public:
     void CLRLog(std::wstring &logMessage);
     void AddSettingsPane(CLRObjectRef &clrObjectReference);
     void AddImageSourceFactory(CLRObjectRef &clrObjectReference);
+
 };

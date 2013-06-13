@@ -36,6 +36,8 @@ public:
 public:
     void LoadPlugins();
     void UnloadPlugins();
+    void OnStartStream();
+    void OnStopStream();
 
 };
 

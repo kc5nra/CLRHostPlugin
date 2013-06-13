@@ -89,7 +89,7 @@ void CLRImageSourceFactory::Detach()
 
 CLRImageSource *CLRImageSourceFactory::Create()
 {
-    return nullptr;
+    return nullptr;   
 }
 
 std::wstring CLRImageSourceFactory::GetDisplayName()

@@ -69,10 +69,21 @@ void CLRHostPlugin::UnloadPlugins()
     clrHost->UnloadPlugins();
 }
 
+void CLRHostPlugin::OnStartStream()
+{
+    clrHost->OnStartStream();
+}
+
+void CLRHostPlugin::OnStopStream()
+{
+    clrHost->OnStopStream();
+}
+
 bool LoadPlugin()
 {
-    if(CLRHostPlugin::instance != NULL)
+    if(CLRHostPlugin::instance != NULL) {
         return false;
+    }
     CLRHostPlugin::instance = new CLRHostPlugin();
     CLRHostPlugin::instance->LoadPlugins();
     return true;
@@ -80,8 +91,10 @@ bool LoadPlugin()
 
 void UnloadPlugin()
 {
-    if(CLRHostPlugin::instance == NULL)
+    if(CLRHostPlugin::instance == NULL) {
         return;
+    }
+    
     CLRHostPlugin::instance->UnloadPlugins();
     delete CLRHostPlugin::instance;
     CLRHostPlugin::instance = NULL;
@@ -89,10 +102,18 @@ void UnloadPlugin()
 
 void OnStartStream()
 {
+    if(CLRHostPlugin::instance == NULL) {
+        return;
+    }
+    CLRHostPlugin::instance->OnStartStream();
 }
 
 void OnStopStream()
 {
+    if(CLRHostPlugin::instance == NULL) {
+        return;
+    }
+    CLRHostPlugin::instance->OnStopStream();
 }
 
 CTSTR GetPluginName()
@@ -107,7 +128,8 @@ CTSTR GetPluginDescription()
 
 BOOL CALLBACK DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
-    if(fdwReason == DLL_PROCESS_ATTACH)
+    if(fdwReason == DLL_PROCESS_ATTACH) {
         CLRHostPlugin::hinstDLL = hinstDLL;
+    }
     return TRUE;
 }
