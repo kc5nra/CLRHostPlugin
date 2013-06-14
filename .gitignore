@@ -29,6 +29,8 @@ CLRSamplePlugin/x64/Release
 CLRSamplePlugin/win32/Debug
 CLRSamplePlugin/win32/Release
 
+CLRCSharpSamplePlugin/bin
+CLRCSharpSamplePlugin/obj
 
 x64/Debug
 x64/Release

@@ -413,9 +413,11 @@ void GetFilesInDirectory(std::vector<std::wstring> &list, std::wstring directory
 CLRPlugin *CreatePluginInstance(std::wstring &typeName, _Type *type, _Type *pluginType, _Type *libraryType, IUnknown *libraryInstance) {
     HRESULT hr;
 
+    _ConstructorInfo *constructor = nullptr;
     SAFEARRAY *constructorArgs = nullptr;
-    _ConstructorInfo *constructor;
 
+	bstr_t setApiMethodName("set_Api");
+    _MethodInfo *setApiMethod = nullptr;
     SAFEARRAY *apiArgs = nullptr;
     variant_t apiArg(libraryInstance);
 
@@ -435,15 +437,8 @@ CLRPlugin *CreatePluginInstance(std::wstring &typeName, _Type *type, _Type *plug
     if (FAILED(hr) || !isAssignable) {
           return nullptr;
     }
-    
-    constructorArgs = SafeArrayCreateVector(VT_UNKNOWN, 0, 1);
-    index = 0;
-    hr = SafeArrayPutElement(constructorArgs, &index, libraryType); 
-    if (FAILED(hr)) 
-    { 
-        Log(TEXT("SafeArrayPutElement failed 0x%08lx"), hr); 
-        goto errorCleanup; 
-    }
+
+    constructorArgs = SafeArrayCreateVector(VT_UNKNOWN, 0, 0);
 
     hr = type->GetConstructor_3(constructorArgs, &constructor);
     if (FAILED(hr) || constructor == nullptr) 
@@ -451,10 +446,20 @@ CLRPlugin *CreatePluginInstance(std::wstring &typeName, _Type *type, _Type *plug
         Log(TEXT("Failed to create get valid constructor for type %s: 0x%08lx"), typeName.c_str(), hr); 
         goto errorCleanup; 
     }
+
     SafeArrayDestroy(constructorArgs);
     constructorArgs = nullptr;
 
-    apiArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
+    hr = constructor->Invoke_5(nullptr, &pluginInstance);
+    if (FAILED(hr)) {
+        Log(TEXT("Failed to create new instance of plugin type %s: 0x%08lx"), typeName.c_str(), hr); 
+        goto errorCleanup;
+    }
+	
+    constructor->Release();
+    constructor = nullptr;
+
+	apiArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
     index = 0;
     hr = SafeArrayPutElement(apiArgs, &index, &apiArg); 
     if (FAILED(hr)) 
@@ -462,18 +467,22 @@ CLRPlugin *CreatePluginInstance(std::wstring &typeName, _Type *type, _Type *plug
         Log(TEXT("SafeArrayPutElement failed: 0x%08lx"), hr); 
         goto errorCleanup; 
     }
-   
-    hr = constructor->Invoke_5(apiArgs, &pluginInstance);
-    if (FAILED(hr)) {
-        Log(TEXT("Failed to create new instance of plugin type %s: 0x%08lx"), typeName.c_str(), hr); 
+    hr = pluginType->GetMethod_6(setApiMethodName, &setApiMethod);
+    if (FAILED(hr))
+    {
+        Log(TEXT("Failed to get setter method for property Api on plugin instance of type %s: 0x%08lx"), typeName.c_str(), hr);
         goto errorCleanup;
     }
 
-    SafeArrayDestroy(apiArgs);
+    hr = setApiMethod->Invoke_3(pluginInstance, apiArgs, nullptr);
+	if (FAILED(hr))
+	{
+		Log(TEXT("Failed to set API object to plugin instance of type %s: 0x%08lx"), typeName.c_str(), hr);
+		goto errorCleanup;
+	}
+	
+	SafeArrayDestroy(apiArgs);
     apiArgs = nullptr;
-
-    constructor->Release();
-    constructor = nullptr;
 
     CLRPlugin *plugin = new CLRPlugin();
     if (plugin->Attach(CLRObjectRef(pluginInstance.punkVal, nullptr),  pluginType)) {
@@ -491,6 +500,10 @@ errorCleanup:
     if (constructor) {
         constructor->Release();
         constructor = nullptr;
+    }
+    if (setApiMethod) {
+        setApiMethod->Release();
+        setApiMethod = nullptr;
     }
     if (apiArgs) {
         SafeArrayDestroy(apiArgs);

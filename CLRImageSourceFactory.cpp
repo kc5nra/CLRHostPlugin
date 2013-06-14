@@ -23,8 +23,8 @@ bool CLRImageSourceFactory::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *
     CLRObject::Attach(clrObjectRef, objectType);
 
     bstr_t createMethodName("Create");
-    bstr_t getDisplayNameMethodName("GetDisplayName");
-    bstr_t getSourceClassNameMethodName("GetSourceClassName");
+    bstr_t getDisplayNameMethodName("get_DisplayName");
+    bstr_t getSourceClassNameMethodName("get_ClassName");
     bstr_t showConfigurationMethodName("ShowConfiguration");
 
 
@@ -89,7 +89,39 @@ void CLRImageSourceFactory::Detach()
 
 CLRImageSource *CLRImageSourceFactory::Create()
 {
-    return nullptr;   
+    if (!IsValid()) {
+        Log(TEXT("CLRImageSourceFactory::Create() no managed object attached"));
+        return nullptr;
+    }
+
+    variant_t objectRef(GetObjectRef());
+    variant_t returnVal;
+
+	HRESULT hr = createMethod->Invoke_3(objectRef, nullptr, &returnVal);
+	if (FAILED(hr) || !returnVal.punkVal) {
+        Log(TEXT("Failed to invoke Create on managed instance: 0x%08lx"), hr); 
+        return nullptr;
+    }
+	_Type *returnType = nullptr;
+	hr = createMethod->get_returnType(&returnType);
+
+	if (FAILED(hr) || !returnType) {
+		Log(TEXT("Failed to get return type for Create method"));
+		return nullptr;
+	}
+
+	CLRImageSource *imageSource = new CLRImageSource();
+	if (!imageSource->Attach(CLRObjectRef(returnVal.punkVal, nullptr), returnType)) {
+		Log(TEXT("Failed to attach unmanaged wrapper to managed ImageSource object"));
+		returnType->Release();
+		delete imageSource;
+		return nullptr;
+	} else {
+		returnType->Release();
+	}
+
+
+	return imageSource;   
 }
 
 std::wstring CLRImageSourceFactory::GetDisplayName()
@@ -104,7 +136,7 @@ std::wstring CLRImageSourceFactory::GetDisplayName()
 
     HRESULT hr = getDisplayNameMethod->Invoke_3(objectRef, nullptr, &returnVal);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoked GetDisplayName on managed instance: 0x%08lx"), hr); 
+        Log(TEXT("Failed to invoke GetDisplayName on managed instance: 0x%08lx"), hr); 
         return std::wstring(TEXT("!error! see log"));
     }
 
@@ -123,7 +155,7 @@ std::wstring CLRImageSourceFactory::GetSourceClassName()
 
     HRESULT hr = getSourceClassNameMethod->Invoke_3(objectRef, nullptr, &returnVal);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoked GetSourceClassName on managed instance: 0x%08lx"), hr); 
+        Log(TEXT("Failed to invoke GetSourceClassName on managed instance: 0x%08lx"), hr); 
         return std::wstring(TEXT("!error! see log"));
     }
 
@@ -141,7 +173,7 @@ void CLRImageSourceFactory::ShowConfiguration()
 
     HRESULT hr = getSourceClassNameMethod->Invoke_3(objectRef, nullptr, nullptr);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoked ShowConfiguration on managed instance: 0x%08lx"), hr); 
+        Log(TEXT("Failed to invoke ShowConfiguration on managed instance: 0x%08lx"), hr); 
         return;
     }
 }

@@ -1,13 +1,19 @@
 #pragma once
 
 #include <string>
+#include <map>
+
 #include "CLRApiCommon.h"
 #include "CLRObjectRef.h"
+#include "CLRImageSourceFactory.h"
 
-class CLR_API CLRHostApi {
+class CLRHostApi {
+private:
+    std::map<std::wstring, CLRImageSourceFactory *> imageSourceFactories;
 public:
-    void CLRLog(std::wstring &logMessage);
-    void AddSettingsPane(CLRObjectRef &clrObjectReference);
-    void AddImageSourceFactory(CLRObjectRef &clrObjectReference);
-
+    ~CLRHostApi();
+public:
+    CLR_API void CLRLog(std::wstring &logMessage);
+    CLR_API void AddSettingsPane(CLRObjectRef &clrObjectReference);
+    CLR_API void AddImageSourceFactory(CLRObjectRef &clrObjectReference);
 };

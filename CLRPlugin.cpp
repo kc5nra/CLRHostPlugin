@@ -26,52 +26,53 @@ bool CLRPlugin::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectType)
     bstr_t unloadPluginMethodName("UnloadPlugin");
     bstr_t onStartStreamMethodName("OnStartStream");
     bstr_t onStopStreamMethodName("OnStopStream");
-    bstr_t getPluginNameMethodName("GetPluginName");
-    bstr_t getPluginDescriptionMethodName("GetPluginDescription");
-
+    
+    // properties
+    bstr_t getPluginNameMethodName("get_Name");
+    bstr_t getPluginDescriptionMethodName("get_Description");
 
     HRESULT hr;
     
     hr = objectType->GetMethod_6(loadPlugindName, &loadPluginMethod);
-    if (FAILED(hr)) {
+    if (FAILED(hr) || !loadPluginMethod) {
         Log(TEXT("Failed to get LoadPlugin method definition of Plugin class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
     hr = objectType->GetMethod_6(unloadPluginMethodName, &unloadPluginMethod);
-    if (FAILED(hr)) {
+    if (FAILED(hr) || !unloadPluginMethod) {
         Log(TEXT("Failed to get UnloadPlugin method definition of Plugin class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
+
     hr = objectType->GetMethod_6(onStartStreamMethodName, &onStartStreamMethod);
-    if (FAILED(hr)) {
+    if (FAILED(hr) || !onStartStreamMethod) {
         Log(TEXT("Failed to get OnStartStream method definition of Plugin class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
     hr = objectType->GetMethod_6(onStopStreamMethodName, &onStopStreamMethod);
-    if (FAILED(hr)) {
+    if (FAILED(hr) || !onStopStreamMethod) {
         Log(TEXT("Failed to get OnStopStream method definition of Plugin class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
     hr = objectType->GetMethod_6(getPluginNameMethodName, &getPluginNameMethod);
-    if (FAILED(hr)) {
-        Log(TEXT("Failed to get GetPluginName method definition of Plugin class: 0x%08lx"), hr); 
+    if (FAILED(hr) || !getPluginNameMethod) {
+        Log(TEXT("Failed to get Name property get() method definition of Plugin class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
     hr = objectType->GetMethod_6(getPluginDescriptionMethodName, &getPluginDescriptionMethod);
-    if (FAILED(hr)) {
-        Log(TEXT("Failed to get GetPluginDescription method definition of Plugin class: 0x%08lx"), hr); 
+    if (FAILED(hr) || !getPluginDescriptionMethod) {
+        Log(TEXT("Failed to get Description property get() method definition of Plugin class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
     goto success;
 
 errorCleanup:
-    
     Detach();
     return false;
 
@@ -120,10 +121,10 @@ bool CLRPlugin::LoadPlugin()
 
     HRESULT hr = loadPluginMethod->Invoke_3(objectRef, nullptr, &returnVal);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoked OnStopStream on managed instance: 0x%08lx"), hr); 
+        Log(TEXT("Failed to invoke OnStopStream on managed instance: 0x%08lx"), hr); 
     }
 
-    return returnVal.boolVal != 0;
+    return returnVal.boolVal == VARIANT_TRUE;
 }
  
 void CLRPlugin::UnloadPlugin()
@@ -136,7 +137,7 @@ void CLRPlugin::UnloadPlugin()
 
     HRESULT hr = unloadPluginMethod->Invoke_3(objectRef, nullptr, nullptr);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoked UnloadPlugin on managed instance: 0x%08lx"), hr); 
+        Log(TEXT("Failed to invoke UnloadPlugin on managed instance: 0x%08lx"), hr); 
     }
 
     return;
@@ -152,8 +153,9 @@ void CLRPlugin::OnStartStream()
 
     HRESULT hr = onStartStreamMethod->Invoke_3(objectRef, nullptr, nullptr);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoked OnStartStream on managed instance: 0x%08lx"), hr); 
+        Log(TEXT("Failed to invoke OnStartStream on managed instance: 0x%08lx"), hr); 
     }
+
 
     return;
 }
@@ -168,7 +170,7 @@ void CLRPlugin::OnStopStream()
 
     HRESULT hr = onStopStreamMethod->Invoke_3(objectRef, nullptr, nullptr);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoked OnStopStream on managed instance: 0x%08lx"), hr); 
+        Log(TEXT("Failed to invoke OnStopStream on managed instance: 0x%08lx"), hr); 
     }
 
     return;
@@ -186,7 +188,7 @@ std::wstring CLRPlugin::GetPluginName()
 
     HRESULT hr = getPluginNameMethod->Invoke_3(objectRef, nullptr, &returnVal);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoked GetPluginName on managed instance: 0x%08lx"), hr); 
+        Log(TEXT("Failed to invoke GetPluginName on managed instance: 0x%08lx"), hr); 
         return std::wstring(TEXT("!error! see log"));
     }
 
@@ -205,7 +207,7 @@ std::wstring CLRPlugin::GetPluginDescription()
 
     HRESULT hr = getPluginDescriptionMethod->Invoke_3(objectRef, nullptr, &returnVal);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoked GetPluginDescription on managed instance: 0x%08lx"), hr); 
+        Log(TEXT("Failed to invoke GetPluginDescription on managed instance: 0x%08lx"), hr); 
         return std::wstring(TEXT("!error! see log"));
     }
 

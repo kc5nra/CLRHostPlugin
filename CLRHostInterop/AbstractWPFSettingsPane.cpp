@@ -1,6 +1,6 @@
-#include "HostedSettingsPane.h"
+#include "AbstractWPFSettingsPane.h"
 
-void HostedSettingsPane::CreatePane(IntPtr parentHwnd)
+void AbstractWPFSettingsPane::CreatePane(IntPtr parentHwnd)
 {
     UIElement ^uiElement = CreateUIElement();
    

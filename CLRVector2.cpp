@@ -119,6 +119,8 @@ void CLRVector2::setX(float x)
     SafeArrayPutElement(args, &index, &val);
 
     HRESULT hr = setXMethod->Invoke_3(objectRef, args, &returnVal);
+    SafeArrayDestroy(args);
+
     if (FAILED(hr)) {
         Log(TEXT("CLRVector2::setX() Failed to invoked set on managed property X: 0x%08lx"), hr); 
         return;
@@ -160,6 +162,8 @@ void CLRVector2::setY(float y)
     SafeArrayPutElement(args, &index, &val);
 
     HRESULT hr = setYMethod->Invoke_3(objectRef, args, &returnVal);
+    SafeArrayDestroy(args);
+
     if (FAILED(hr)) {
         Log(TEXT("CLRVector2::setY() Failed to invoked set on managed property Y: 0x%08lx"), hr); 
         return;

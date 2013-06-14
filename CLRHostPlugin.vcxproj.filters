@@ -37,6 +37,9 @@
     <ClInclude Include="CLRPlugin.h">
       <Filter>Wrappers</Filter>
     </ClInclude>
+    <ClInclude Include="ImageSourceBridge.h">
+      <Filter>Bridges</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -50,6 +53,9 @@
     </Filter>
     <Filter Include="Wrappers">
       <UniqueIdentifier>{8db083cc-da46-4632-aa9b-72c689794312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bridges">
+      <UniqueIdentifier>{be4550b2-c823-4fb7-8120-270a46857dfd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +81,9 @@
       <Filter>Wrappers</Filter>
     </ClCompile>
     <ClCompile Include="CLRPlugin.cpp">
+      <Filter>Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="CLRImageSource.cpp">
       <Filter>Wrappers</Filter>
     </ClCompile>
   </ItemGroup>
