@@ -10,7 +10,7 @@ namespace OBS {
     {
         virtual ImageSource^ Create() = 0;
         virtual void ShowConfiguration() = 0;
-        
+
         property String^ DisplayName {
             virtual String^ get();
         }

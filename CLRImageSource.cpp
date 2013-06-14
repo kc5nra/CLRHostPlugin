@@ -31,44 +31,44 @@ bool CLRImageSource::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectT
     bstr_t endSceneMethodName("EndScene");
 
     HRESULT hr;
-    
+
     hr = objectType->GetMethod_6(preprocessMethodName, &preprocessMethod);
     if (FAILED(hr) || !preprocessMethod) {
         Log(TEXT("Failed to get Preprocess method definition of ImageSource class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
-	hr = objectType->GetMethod_6(tickMethodName, &tickMethod);
+    hr = objectType->GetMethod_6(tickMethodName, &tickMethod);
     if (FAILED(hr) || !tickMethod) {
         Log(TEXT("Failed to get Tick method definition of ImageSource class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
-	hr = objectType->GetMethod_6(renderMethodName, &renderMethod);
+    hr = objectType->GetMethod_6(renderMethodName, &renderMethod);
     if (FAILED(hr) || !renderMethod) {
         Log(TEXT("Failed to get Render method definition of ImageSource class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
-	hr = objectType->GetMethod_6(getSizeMethodName, &getSizeMethod);
+    hr = objectType->GetMethod_6(getSizeMethodName, &getSizeMethod);
     if (FAILED(hr) || !getSizeMethod) {
         Log(TEXT("Failed to get GetSize method definition of ImageSource class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
-	hr = objectType->GetMethod_6(updateSettingsMethodName, &updateSettingsMethod);
+    hr = objectType->GetMethod_6(updateSettingsMethodName, &updateSettingsMethod);
     if (FAILED(hr) || !updateSettingsMethod) {
         Log(TEXT("Failed to get UpdateSettings method definition of ImageSource class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
-	hr = objectType->GetMethod_6(beginSceneMethodName, &beginSceneMethod);
+    hr = objectType->GetMethod_6(beginSceneMethodName, &beginSceneMethod);
     if (FAILED(hr) || !beginSceneMethod) {
         Log(TEXT("Failed to get BeginScene method definition of ImageSource class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
-	hr = objectType->GetMethod_6(endSceneMethodName, &endSceneMethod);
+    hr = objectType->GetMethod_6(endSceneMethodName, &endSceneMethod);
     if (FAILED(hr) || !endSceneMethod) {
         Log(TEXT("Failed to get EndScene method definition of ImageSource class: 0x%08lx"), hr); 
         goto errorCleanup;
@@ -77,7 +77,7 @@ bool CLRImageSource::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectT
     goto success;
 
 errorCleanup:
-    
+
     Detach();
     return false;
 
@@ -103,7 +103,7 @@ void CLRImageSource::Detach()
         getSizeMethod->Release();
         getSizeMethod = nullptr;
     }
-	if (updateSettingsMethod) {
+    if (updateSettingsMethod) {
         updateSettingsMethod->Release();
         updateSettingsMethod = nullptr;
     }
@@ -165,7 +165,7 @@ void CLRImageSource::Render(float x, float y, float width, float height)
     }
 
     variant_t objectRef(GetObjectRef());
-    
+
     variant_t valX(x);
     variant_t valY(y);
     variant_t valWidth(width);
@@ -199,30 +199,30 @@ CLRVector2 *CLRImageSource::GetSize()
     variant_t objectRef(GetObjectRef());
     variant_t returnVal;
 
-	HRESULT hr = getSizeMethod->Invoke_3(objectRef, nullptr, &returnVal);
-	if (FAILED(hr) || !returnVal.punkVal) {
+    HRESULT hr = getSizeMethod->Invoke_3(objectRef, nullptr, &returnVal);
+    if (FAILED(hr) || !returnVal.punkVal) {
         Log(TEXT("Failed to invoke GetSize on managed instance: 0x%08lx"), hr); 
         return nullptr;
     }
-	_Type *returnType = nullptr;
-	hr = getSizeMethod->get_returnType(&returnType);
+    _Type *returnType = nullptr;
+    hr = getSizeMethod->get_returnType(&returnType);
 
-	if (FAILED(hr) || !returnType) {
-		Log(TEXT("Failed to get return type for GetSize method"));
-		return nullptr;
-	}
+    if (FAILED(hr) || !returnType) {
+        Log(TEXT("Failed to get return type for GetSize method"));
+        return nullptr;
+    }
 
-	CLRVector2 *vector2 = new CLRVector2();
-	if (!vector2->Attach(CLRObjectRef(returnVal.punkVal, nullptr), returnType)) {
-		Log(TEXT("Failed to attach unmanaged wrapper to managed Vector2 object"));
-		returnType->Release();
-		delete vector2;
-		return nullptr;
-	} else {
-		returnType->Release();
-	}
+    CLRVector2 *vector2 = new CLRVector2();
+    if (!vector2->Attach(CLRObjectRef(returnVal.punkVal, nullptr), returnType)) {
+        Log(TEXT("Failed to attach unmanaged wrapper to managed Vector2 object"));
+        returnType->Release();
+        delete vector2;
+        return nullptr;
+    } else {
+        returnType->Release();
+    }
 
-	return vector2;   
+    return vector2;   
 }
 
 void CLRImageSource::UpdateSettings()

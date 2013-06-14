@@ -7,25 +7,25 @@ using namespace OBS;
 
 namespace OBS 
 {
-	public ref class AbstractPlugin abstract : public Plugin
-	{
-	
+    public ref class AbstractPlugin abstract : public Plugin
+    {
+
     private:
         API^ api;
         String^ pluginName;
         String^ pluginDescription;
-	
+
     public:
         AbstractPlugin();
         ~AbstractPlugin();
     public:
-		property API^ Api {
-			virtual API^ get() sealed;
-			virtual void set(API^ api) sealed;
-		}
-		
+        property API^ Api {
+            virtual API^ get() sealed;
+            virtual void set(API^ api) sealed;
+        }
+
         virtual bool LoadPlugin() abstract;
-		virtual void UnloadPlugin() abstract;
+        virtual void UnloadPlugin() abstract;
 
         virtual void OnStartStream() abstract;
         virtual void OnStopStream() abstract;
@@ -44,5 +44,5 @@ namespace OBS
         protected:
             void set(String^ description);
         }
-	};
+    };
 };

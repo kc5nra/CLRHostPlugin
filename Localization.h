@@ -1,6 +1,6 @@
 /**
- * John Bradley (jrb@turrettech.com)
- */
+* John Bradley (jrb@turrettech.com)
+*/
 #pragma once
 
 #define STR_PREFIX L"Plugins.CLRHost."
@@ -12,7 +12,7 @@
 #endif
 
 static CTSTR localizationStrings[] = {
-	KEY("PluginName"),			L"CLR Host Plugin",
-	KEY("PluginDescription"),	L"Allows plugins to be written in any CLR language\n\n"
-								L"Plugin Version: " CHP_VERSION,
+    KEY("PluginName"),			L"CLR Host Plugin",
+    KEY("PluginDescription"),	L"Allows plugins to be written in any CLR language\n\n"
+                                L"Plugin Version: " CHP_VERSION,
 };

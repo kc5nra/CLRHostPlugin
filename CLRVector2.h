@@ -18,7 +18,7 @@ protected:
 public:
     virtual bool Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectType);
     virtual void Detach();
-    
+
 public:
     float getX();
     void setX(float x);

@@ -1,6 +1,6 @@
 /**
- * John Bradley (jrb@turrettech.com)
- */
+* John Bradley (jrb@turrettech.com)
+*/
 #pragma once
 
 #include "OBSApi.h"
@@ -17,15 +17,15 @@ class CLRHostPlugin
 
 public:
     static HINSTANCE hinstDLL;
-	static CLRHostPlugin *instance;
-    
+    static CLRHostPlugin *instance;
+
 private:
-	bool isDynamicLocale;
+    bool isDynamicLocale;
     CLRHostApi *clrApi;
     CLRHost *clrHost;
 
     std::vector<CLRPlugin *> clrPlugins;
-    
+
 public:
     CLRHostPlugin();
     ~CLRHostPlugin();

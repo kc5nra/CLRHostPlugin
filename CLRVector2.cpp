@@ -56,7 +56,7 @@ bool CLRVector2::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectType)
     goto success;
 
 errorCleanup:
-    
+
     Detach();
     return false;
 

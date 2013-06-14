@@ -27,7 +27,7 @@ void CLRHostApi::AddSettingsPane(CLRObjectRef &clrObjectReference)
 void CLRHostApi::AddImageSourceFactory(CLRObjectRef &clrObjectRef)
 {
     CLRHost *clrHost = CLRHostPlugin::instance->GetCLRHost();
-    
+
     CLRImageSourceFactory *imageSourceFactory = new CLRImageSourceFactory();
     if (imageSourceFactory->Attach(clrObjectRef, clrHost->GetImageSourceFactoryType())) {
         std::wstring sourceName = imageSourceFactory->GetSourceClassName(); 

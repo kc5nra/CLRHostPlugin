@@ -20,7 +20,7 @@ namespace OBS {
         {
             this->clrHostApi = reinterpret_cast<CLRHostApi *>(clrHostApiPointer);
         }
-    
+
     public:
         void AddSettingsPane(SettingsPane^ settingsPane);
         void AddImageSourceFactory(ImageSourceFactory^ imageSourceFactory);

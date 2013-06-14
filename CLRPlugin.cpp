@@ -26,13 +26,13 @@ bool CLRPlugin::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectType)
     bstr_t unloadPluginMethodName("UnloadPlugin");
     bstr_t onStartStreamMethodName("OnStartStream");
     bstr_t onStopStreamMethodName("OnStopStream");
-    
+
     // properties
     bstr_t getPluginNameMethodName("get_Name");
     bstr_t getPluginDescriptionMethodName("get_Description");
 
     HRESULT hr;
-    
+
     hr = objectType->GetMethod_6(loadPlugindName, &loadPluginMethod);
     if (FAILED(hr) || !loadPluginMethod) {
         Log(TEXT("Failed to get LoadPlugin method definition of Plugin class: 0x%08lx"), hr); 
@@ -126,7 +126,7 @@ bool CLRPlugin::LoadPlugin()
 
     return returnVal.boolVal == VARIANT_TRUE;
 }
- 
+
 void CLRPlugin::UnloadPlugin()
 {
     if (!IsValid()) {

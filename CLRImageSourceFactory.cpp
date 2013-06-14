@@ -29,7 +29,7 @@ bool CLRImageSourceFactory::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *
 
 
     HRESULT hr;
-    
+
     hr = objectType->GetMethod_6(createMethodName, &createMethod);
     if (FAILED(hr)) {
         Log(TEXT("Failed to get Create method definition of ImageSourceFactory class: 0x%08lx"), hr); 
@@ -57,7 +57,7 @@ bool CLRImageSourceFactory::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *
     goto success;
 
 errorCleanup:
-    
+
     Detach();
     return false;
 
@@ -97,31 +97,31 @@ CLRImageSource *CLRImageSourceFactory::Create()
     variant_t objectRef(GetObjectRef());
     variant_t returnVal;
 
-	HRESULT hr = createMethod->Invoke_3(objectRef, nullptr, &returnVal);
-	if (FAILED(hr) || !returnVal.punkVal) {
+    HRESULT hr = createMethod->Invoke_3(objectRef, nullptr, &returnVal);
+    if (FAILED(hr) || !returnVal.punkVal) {
         Log(TEXT("Failed to invoke Create on managed instance: 0x%08lx"), hr); 
         return nullptr;
     }
-	_Type *returnType = nullptr;
-	hr = createMethod->get_returnType(&returnType);
+    _Type *returnType = nullptr;
+    hr = createMethod->get_returnType(&returnType);
 
-	if (FAILED(hr) || !returnType) {
-		Log(TEXT("Failed to get return type for Create method"));
-		return nullptr;
-	}
+    if (FAILED(hr) || !returnType) {
+        Log(TEXT("Failed to get return type for Create method"));
+        return nullptr;
+    }
 
-	CLRImageSource *imageSource = new CLRImageSource();
-	if (!imageSource->Attach(CLRObjectRef(returnVal.punkVal, nullptr), returnType)) {
-		Log(TEXT("Failed to attach unmanaged wrapper to managed ImageSource object"));
-		returnType->Release();
-		delete imageSource;
-		return nullptr;
-	} else {
-		returnType->Release();
-	}
+    CLRImageSource *imageSource = new CLRImageSource();
+    if (!imageSource->Attach(CLRObjectRef(returnVal.punkVal, nullptr), returnType)) {
+        Log(TEXT("Failed to attach unmanaged wrapper to managed ImageSource object"));
+        returnType->Release();
+        delete imageSource;
+        return nullptr;
+    } else {
+        returnType->Release();
+    }
 
 
-	return imageSource;   
+    return imageSource;   
 }
 
 std::wstring CLRImageSourceFactory::GetDisplayName()

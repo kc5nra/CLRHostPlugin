@@ -39,14 +39,14 @@ private:
 
     mscorlib::_AppDomain *appDomain;
     mscorlib::_Assembly *libraryAssembly;
-    
-    
+
+
     mscorlib::_Type *libraryType;
     mscorlib::_Type *pluginType;
     mscorlib::_Type *imageSourceType;
     mscorlib::_Type *imageSourceFactoryType;
     mscorlib::_Type *settingsPaneType;
-    
+
     IUnknown *libraryInstance;
 
     TCHAR *clrRuntimeVersion;
@@ -55,7 +55,7 @@ private:
     bool isLibraryLoaded;
 
     std::vector<CLRPlugin *> clrPlugins;
-    
+
 public:
     CLRHost::CLRHost(TCHAR *clrRuntimeVersion, CLRHostApi *clrApi);
     ~CLRHost();

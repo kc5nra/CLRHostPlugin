@@ -8,8 +8,8 @@ using namespace OBS;
 
 namespace OBS 
 {
-	public ref class AbstractImageSourceFactory abstract : public ImageSourceFactory
-	{
+    public ref class AbstractImageSourceFactory abstract : public ImageSourceFactory
+    {
     private:
         String^ className;
         String^ displayName;
@@ -19,7 +19,7 @@ namespace OBS
 
         virtual ImageSource^ Create() abstract;
         virtual void ShowConfiguration() abstract;
-        
+
         property String^ DisplayName 
         {
         public:
