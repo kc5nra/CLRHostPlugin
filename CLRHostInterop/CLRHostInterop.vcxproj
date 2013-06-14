@@ -68,24 +68,24 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Program Files (x86)\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\;$(LibraryPath)</LibraryPath>
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Program Files (x86)\Windows Kits\8.0\Lib\win8\um\x64;C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\x64;$(LibraryPath)</LibraryPath>
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Program Files (x86)\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\;$(LibraryPath)</LibraryPath>
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Program Files (x86)\Windows Kits\8.0\Lib\win8\um\x64;C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\x64;$(LibraryPath)</LibraryPath>
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -178,20 +178,22 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractImageSourceFactory.h" />
     <ClInclude Include="API.h" />
-    <ClInclude Include="HostedSettingsPane.h" />
+    <ClInclude Include="AbstractPlugin.h" />
+    <ClInclude Include="AbstractWPFSettingsPane.h" />
     <ClInclude Include="ImageSourceFactory.h" />
     <ClInclude Include="Plugin.h" />
-    <ClInclude Include="SampleImageSource.h" />
-    <ClInclude Include="SampleImageSourceFactory.h" />
     <ClInclude Include="SettingsPane.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractImageSourceFactory.cpp" />
     <ClCompile Include="API.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="HostedSettingsPane.cpp" />
+    <ClCompile Include="AbstractWPFSettingsPane.cpp" />
     <ClCompile Include="ImageSource.h" />
+    <ClCompile Include="AbstractPlugin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -199,11 +201,6 @@
   <ItemGroup>
     <ProjectReference Include="..\CLRHostPlugin.vcxproj">
       <Project>{d537a879-01b7-47ca-a757-367a63cd66c4}</Project>
-      <Private>true</Private>
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

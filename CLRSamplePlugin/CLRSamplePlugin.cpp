@@ -13,7 +13,7 @@ public:
 
     virtual bool LoadPlugin()
     {
-        
+		api->AddImageSourceFactory(
         return true;
     }
 

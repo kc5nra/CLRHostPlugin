@@ -8,51 +8,63 @@
     <Filter Include="Api">
       <UniqueIdentifier>{d7dc68ad-8399-4b7e-a0a6-7a636fd8fb5e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Samples">
-      <UniqueIdentifier>{2513f5b2-d392-4cfc-b57c-280ac26c7e48}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Headers">
       <UniqueIdentifier>{624ce925-b265-4c5e-8e2e-94fdd5cea8bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Api\Headers">
+      <UniqueIdentifier>{5b1ae3bb-279a-4b36-9610-b2b0ba1a79b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Api\Source">
+      <UniqueIdentifier>{58040719-65d3-4dd1-a0ee-d899cf97ea95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Api\Interfaces">
+      <UniqueIdentifier>{0f3c04f7-d32e-4a1d-b56d-4eb1ea7fe801}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector2.h">
-      <Filter>Api</Filter>
+      <Filter>Api\Headers</Filter>
     </ClInclude>
     <ClInclude Include="API.h">
-      <Filter>Api</Filter>
+      <Filter>Api\Headers</Filter>
     </ClInclude>
     <ClInclude Include="SettingsPane.h">
-      <Filter>Api</Filter>
+      <Filter>Api\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="SampleImageSource.h">
-      <Filter>Samples</Filter>
+    <ClInclude Include="AbstractImageSourceFactory.h">
+      <Filter>Api\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="ImageSourceFactory.h">
-      <Filter>Api</Filter>
+    <ClInclude Include="AbstractPlugin.h">
+      <Filter>Api\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="SampleImageSourceFactory.h">
-      <Filter>Samples</Filter>
+    <ClInclude Include="AbstractWPFSettingsPane.h">
+      <Filter>Api\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Plugin.h">
-      <Filter>Api</Filter>
+      <Filter>Api\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="HostedSettingsPane.h">
-      <Filter>Headers</Filter>
+    <ClInclude Include="ImageSourceFactory.h">
+      <Filter>Api\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImageSource.h">
-      <Filter>Api</Filter>
-    </ClCompile>
     <ClCompile Include="API.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HostedSettingsPane.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="AbstractPlugin.cpp">
+      <Filter>Api\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractWPFSettingsPane.cpp">
+      <Filter>Api\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageSource.h">
+      <Filter>Api\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractImageSourceFactory.cpp">
+      <Filter>Api\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

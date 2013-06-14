@@ -15,7 +15,7 @@ protected:
     mscorlib::_MethodInfo *tickMethod;
     mscorlib::_MethodInfo *renderMethod;
     mscorlib::_MethodInfo *getSizeMethod;
-    mscorlib::_MethodInfo *updateSettings;
+    mscorlib::_MethodInfo *updateSettingsMethod;
     mscorlib::_MethodInfo *beginSceneMethod;
     mscorlib::_MethodInfo *endSceneMethod;
 
@@ -27,7 +27,7 @@ public:
     void Preprocess();
     void Tick(float fSeconds);
     void Render(float x, float y, float width, float height);
-    CLRVector2& GetSize();
+    CLRVector2 *GetSize();
     void UpdateSettings();
     void BeginScene();
     void EndScene();

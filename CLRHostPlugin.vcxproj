@@ -224,6 +224,7 @@
     <ClCompile Include="CLRHostApi.cpp" />
     <ClCompile Include="CLRHost.cpp" />
     <ClCompile Include="CLRHostPlugin.cpp" />
+    <ClCompile Include="CLRImageSource.cpp" />
     <ClCompile Include="CLRImageSourceFactory.cpp" />
     <ClCompile Include="CLRObject.cpp" />
     <ClCompile Include="CLRObjectRef.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="CLRObjectRef.h" />
     <ClInclude Include="CLRPlugin.h" />
     <ClInclude Include="CLRVector2.h" />
+    <ClInclude Include="ImageSourceBridge.h" />
     <ClInclude Include="Localization.h" />
     <ClInclude Include="CLRHostPlugin.h" />
     <ClInclude Include="CLRSettingsPane.h" />

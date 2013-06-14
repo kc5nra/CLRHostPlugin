@@ -3,9 +3,11 @@
 #include "CLRObject.h"
 #include "CLRObjectRef.h"
 #include "CLRImageSource.h"
+
 #include <string>
 
 namespace mscorlib {
+    struct _EventInfo;
     struct _MethodInfo;
 }
 

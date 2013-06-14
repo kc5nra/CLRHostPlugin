@@ -1,11 +1,9 @@
 #pragma once
 
-#include "Plugin.h"
 #include "ImageSource.h"
 #include "SettingsPane.h"
-#include "HostedSettingsPane.h"
+#include "AbstractWPFSettingsPane.h"
 #include "ImageSourceFactory.h"
-
 
 using namespace OBS;
 
