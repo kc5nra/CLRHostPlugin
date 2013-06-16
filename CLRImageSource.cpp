@@ -29,7 +29,7 @@ bool CLRImageSource::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectT
     bstr_t updateSettingsMethodName("UpdateSettings");
     bstr_t beginSceneMethodName("BeginScene");
     bstr_t endSceneMethodName("EndScene");
-
+    
     HRESULT hr;
 
     hr = objectType->GetMethod_6(preprocessMethodName, &preprocessMethod);
@@ -77,7 +77,6 @@ bool CLRImageSource::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectT
     goto success;
 
 errorCleanup:
-
     Detach();
     return false;
 
@@ -115,6 +114,7 @@ void CLRImageSource::Detach()
         endSceneMethod->Release();
         endSceneMethod = nullptr;
     }
+    
     CLRObject::Detach();
 }
 

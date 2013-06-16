@@ -43,7 +43,12 @@ ImageSource* STDCALL CreateImageSource(XElement *element)
     auto imageSourceFactories = clrHostApi->GetImageSourceFactories();
     if (imageSourceFactories[className]) {
         CLRImageSource *imageSource = imageSourceFactories[className]->Create();
-        return new ImageSourceBridge(imageSource);
+        if (imageSource) {
+            return new ImageSourceBridge(imageSource);
+        } else {
+            Log(TEXT("ImageSourceFactory returned null CLRImageSource for class %s"), className.c_str());
+            return nullptr;
+        }
     } else {
         Log(TEXT("Couldn't find matching ImageSourceFactory for class %s"), className.c_str());
         return nullptr;
