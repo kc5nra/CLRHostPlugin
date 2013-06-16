@@ -10,16 +10,24 @@ namespace CSharpSamplePlugin
     class SampleImageSource : ImageSource
     {
         public void UpdateSettings()
-        { }
+        {
+            this.ToString();
+        }
 
         public void Tick(float seconds)
-        { }
+        {
+            this.ToString();
+        }
 
         public void Render(float x, float y, float width, float height)
-        { }
+        {
+            this.ToString();
+        }
 
         public void Preprocess()
-        { }
+        {
+            this.ToString();
+        }
 
         public Vector2 GetSize()
         {
@@ -27,9 +35,13 @@ namespace CSharpSamplePlugin
         }
 
         public void EndScene()
-        { }
+        {
+            this.ToString();
+        }
 
         public void BeginScene()
-        { }
+        {
+            this.ToString();
+        }
     }
 }

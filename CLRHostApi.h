@@ -16,4 +16,7 @@ public:
     CLR_API void CLRLog(std::wstring &logMessage);
     CLR_API void AddSettingsPane(CLRObjectRef &clrObjectReference);
     CLR_API void AddImageSourceFactory(CLRObjectRef &clrObjectReference);
+
+public:
+    std::map<std::wstring, CLRImageSourceFactory *> &GetImageSourceFactories() { return imageSourceFactories; }
 };

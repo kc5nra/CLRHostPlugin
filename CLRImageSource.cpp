@@ -142,16 +142,17 @@ void CLRImageSource::Tick(float seconds)
 
     variant_t objectRef(GetObjectRef());
     variant_t val(seconds);
-
-    SAFEARRAY *args = SafeArrayCreateVector(VT_R4, 0, 1);
+    HRESULT hr;
+    SAFEARRAY *args = SafeArrayCreateVector(VT_VARIANT, 0, 1);
     LONG index = 0;
-    SafeArrayPutElement(args, &index, &val);
+    
+    hr = SafeArrayPutElement(args, &index, &val);
 
-    HRESULT hr = tickMethod->Invoke_3(objectRef, args, nullptr);
+    hr = tickMethod->Invoke_3(objectRef, args, nullptr);
     SafeArrayDestroy(args);
-
+    
     if (FAILED(hr)) {
-        Log(TEXT("CLRVector2::Tick() Failed to invoked set on managed property Y: 0x%08lx"), hr); 
+        Log(TEXT("CLRVector2::Tick() failed to invoked on managed instance: 0x%08lx"), hr); 
         return;
     }
 
@@ -171,18 +172,21 @@ void CLRImageSource::Render(float x, float y, float width, float height)
     variant_t valWidth(width);
     variant_t valHeight(height);
 
-    SAFEARRAY *args = SafeArrayCreateVector(VT_R4, 0, 4);
+    SAFEARRAY *args = SafeArrayCreateVector(VT_VARIANT, 0, 4);
     LONG index = 0;
     SafeArrayPutElement(args, &index, &valX);
+    index++;
     SafeArrayPutElement(args, &index, &valY);
+    index++;
     SafeArrayPutElement(args, &index, &valWidth);
+    index++;
     SafeArrayPutElement(args, &index, &valHeight);
 
     HRESULT hr = renderMethod->Invoke_3(objectRef, args, nullptr);
     SafeArrayDestroy(args);
 
     if (FAILED(hr)) {
-        Log(TEXT("CLRImageSource::Render() Failed to invoked set on managed property Y: 0x%08lx"), hr); 
+        Log(TEXT("CLRImageSource::Render() failed to invoked on managed instance: 0x%08lx"), hr); 
         return;
     }
 
@@ -201,20 +205,20 @@ CLRVector2 *CLRImageSource::GetSize()
 
     HRESULT hr = getSizeMethod->Invoke_3(objectRef, nullptr, &returnVal);
     if (FAILED(hr) || !returnVal.punkVal) {
-        Log(TEXT("Failed to invoke GetSize on managed instance: 0x%08lx"), hr); 
+        Log(TEXT("CLRImageSource::GetSize() failed to invoke on managed instance: 0x%08lx"), hr); 
         return nullptr;
     }
     _Type *returnType = nullptr;
     hr = getSizeMethod->get_returnType(&returnType);
 
     if (FAILED(hr) || !returnType) {
-        Log(TEXT("Failed to get return type for GetSize method"));
+        Log(TEXT("CLRImageSource::GetSize() failed to get return type of managed method"));
         return nullptr;
     }
 
     CLRVector2 *vector2 = new CLRVector2();
     if (!vector2->Attach(CLRObjectRef(returnVal.punkVal, nullptr), returnType)) {
-        Log(TEXT("Failed to attach unmanaged wrapper to managed Vector2 object"));
+        Log(TEXT("CLRImageSource::GetSize() ailed to attach unmanaged wrapper to managed Vector2 object"));
         returnType->Release();
         delete vector2;
         return nullptr;
@@ -235,7 +239,7 @@ void CLRImageSource::UpdateSettings()
 
     HRESULT hr = updateSettingsMethod->Invoke_3(objectRef, nullptr, nullptr);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoke UpdateSettings on managed instance: 0x%08lx"), hr); 
+        Log(TEXT("CLRPlugin::UpdateSettings() failed to invoke on managed instance: 0x%08lx"), hr); 
     }
 
     return;
@@ -251,7 +255,7 @@ void CLRImageSource::BeginScene()
 
     HRESULT hr = beginSceneMethod->Invoke_3(objectRef, nullptr, nullptr);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoke BeginScene on managed instance: 0x%08lx"), hr); 
+        Log(TEXT("CLRPlugin::BeginScene() failed to invoke on managed instance: 0x%08lx"), hr); 
     }
 
     return;
@@ -267,7 +271,7 @@ void CLRImageSource::EndScene()
 
     HRESULT hr = endSceneMethod->Invoke_3(objectRef, nullptr, nullptr);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoke EndScene on managed instance: 0x%08lx"), hr); 
+        Log(TEXT("CLRPlugin::EndScene() failed to invoke on managed instance: 0x%08lx"), hr); 
     }
 
     return;

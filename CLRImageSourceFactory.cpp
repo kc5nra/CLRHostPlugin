@@ -171,7 +171,7 @@ void CLRImageSourceFactory::ShowConfiguration()
 
     variant_t objectRef(GetObjectRef());
 
-    HRESULT hr = getSourceClassNameMethod->Invoke_3(objectRef, nullptr, nullptr);
+    HRESULT hr = showConfigurationMethod->Invoke_3(objectRef, nullptr, nullptr);
     if (FAILED(hr)) {
         Log(TEXT("Failed to invoke ShowConfiguration on managed instance: 0x%08lx"), hr); 
         return;

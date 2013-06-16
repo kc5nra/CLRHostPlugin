@@ -17,7 +17,6 @@ namespace CSharpSamplePlugin
         public override bool LoadPlugin()
         {
             Api.AddImageSourceFactory(new SampleImageSourceFactory());
-            Api.AddImageSourceFactory(new SampleImageSourceFactory());
             return true;
         }
 
@@ -27,11 +26,9 @@ namespace CSharpSamplePlugin
 
         public override void OnStartStream()
         {
-            String h = ""; h.ToString();
         }
         public override void OnStopStream()
         {
-            String h = ""; h.ToString();
         }
     }
 }

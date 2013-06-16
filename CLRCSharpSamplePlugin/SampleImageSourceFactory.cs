@@ -22,7 +22,7 @@ namespace CSharpSamplePlugin
 
         public override void ShowConfiguration()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

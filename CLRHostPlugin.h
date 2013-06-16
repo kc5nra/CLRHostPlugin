@@ -32,6 +32,7 @@ public:
 
 public:
     CLRHost *GetCLRHost() { return clrHost; }
+    CLRHostApi *GetCLRApi() { return clrApi; }
 
 public:
     void LoadPlugins();
