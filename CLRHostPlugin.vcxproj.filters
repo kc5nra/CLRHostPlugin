@@ -23,22 +23,25 @@
       <Filter>Api</Filter>
     </ClInclude>
     <ClInclude Include="CLRImageSourceFactory.h">
-      <Filter>Wrappers</Filter>
+      <Filter>Source\Wrappers</Filter>
     </ClInclude>
     <ClInclude Include="CLRObject.h">
-      <Filter>Wrappers</Filter>
+      <Filter>Source\Wrappers</Filter>
     </ClInclude>
     <ClInclude Include="CLRImageSource.h">
-      <Filter>Wrappers</Filter>
+      <Filter>Source\Wrappers</Filter>
     </ClInclude>
     <ClInclude Include="CLRVector2.h">
-      <Filter>Wrappers</Filter>
+      <Filter>Source\Wrappers</Filter>
     </ClInclude>
     <ClInclude Include="CLRPlugin.h">
-      <Filter>Wrappers</Filter>
+      <Filter>Source\Wrappers</Filter>
     </ClInclude>
     <ClInclude Include="ImageSourceBridge.h">
       <Filter>Bridges</Filter>
+    </ClInclude>
+    <ClInclude Include="CLRXElement.h">
+      <Filter>Source\Wrappers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -51,11 +54,11 @@
     <Filter Include="Api">
       <UniqueIdentifier>{c26d3407-b1b8-4e8b-935c-5f10674e3f9d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Wrappers">
-      <UniqueIdentifier>{8db083cc-da46-4632-aa9b-72c689794312}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Bridges">
       <UniqueIdentifier>{be4550b2-c823-4fb7-8120-270a46857dfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Wrappers">
+      <UniqueIdentifier>{8db083cc-da46-4632-aa9b-72c689794312}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -72,19 +75,22 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="CLRImageSourceFactory.cpp">
-      <Filter>Wrappers</Filter>
+      <Filter>Source\Wrappers</Filter>
     </ClCompile>
     <ClCompile Include="CLRObject.cpp">
-      <Filter>Wrappers</Filter>
+      <Filter>Source\Wrappers</Filter>
     </ClCompile>
     <ClCompile Include="CLRVector2.cpp">
-      <Filter>Wrappers</Filter>
+      <Filter>Source\Wrappers</Filter>
     </ClCompile>
     <ClCompile Include="CLRPlugin.cpp">
-      <Filter>Wrappers</Filter>
+      <Filter>Source\Wrappers</Filter>
     </ClCompile>
     <ClCompile Include="CLRImageSource.cpp">
-      <Filter>Wrappers</Filter>
+      <Filter>Source\Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="CLRXElement.cpp">
+      <Filter>Source\Wrappers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

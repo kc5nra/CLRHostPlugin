@@ -3,9 +3,9 @@
 #include "API.h"
 
 using namespace System;
-using namespace OBS;
+using namespace CLROBS;
 
-namespace OBS {
+namespace CLROBS {
     public interface class Plugin
     {
         property API^ Api {

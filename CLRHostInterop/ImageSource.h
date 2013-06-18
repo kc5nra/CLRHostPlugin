@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Vector2.h"
+#include "XConfig.h"
 
-namespace OBS {
+namespace CLROBS {
     public interface class ImageSource
     {
         virtual void Preprocess();

@@ -40,9 +40,16 @@ ImageSource* STDCALL CreateImageSource(XElement *element)
     std::wstring className = element->GetParent()->GetString(TEXT("class"));
 
     CLRHostApi *clrHostApi = CLRHostPlugin::instance->GetCLRApi();
+    CLRHost *clrHost = CLRHostPlugin::instance->GetCLRHost();
+
     auto imageSourceFactories = clrHostApi->GetImageSourceFactories();
     if (imageSourceFactories[className]) {
-        CLRImageSource *imageSource = imageSourceFactories[className]->Create();
+        CLRXElement *clrElement = CLRXElement::Create(clrHost->GetXElementType(), element);
+        if (!clrElement) {
+            Log(TEXT("CLRHostApi::CreateImageSource() unable to create managed CLRXElement wrapper"));
+            return nullptr;
+        }
+        CLRImageSource *imageSource = imageSourceFactories[className]->Create(clrElement);
         if (imageSource) {
             return new ImageSourceBridge(imageSource);
         } else {
@@ -54,6 +61,7 @@ ImageSource* STDCALL CreateImageSource(XElement *element)
         return nullptr;
     }
 }
+
 void ConfigureImageSource(XElement *element, bool isInitializing)
 {
     if (element == nullptr) {
@@ -74,9 +82,16 @@ void ConfigureImageSource(XElement *element, bool isInitializing)
     std::wstring className = element->GetString(TEXT("class"));
 
     CLRHostApi *clrHostApi = CLRHostPlugin::instance->GetCLRApi();
+    CLRHost *clrHost = CLRHostPlugin::instance->GetCLRHost();
+
     auto imageSourceFactories = clrHostApi->GetImageSourceFactories();
     if (imageSourceFactories[className]) {
-        imageSourceFactories[className]->ShowConfiguration();
+        CLRXElement *clrElement = CLRXElement::Create(clrHost->GetXElementType(), element);
+        if (!clrElement) {
+            Log(TEXT("CLRHostApi::CreateImageSource() unable to create managed CLRXElement wrapper"));
+            return;
+        }
+        imageSourceFactories[className]->ShowConfiguration(clrElement);
     } else {
         Log(TEXT("Couldn't find matching ImageSourceFactory for class %s"), className.c_str());
         return;
@@ -106,4 +121,10 @@ void CLRHostApi::AddImageSourceFactory(CLRObjectRef &clrObjectRef)
     }
 
 
+}
+
+GSTexture CLRHostApi::SimpleCreateDynamicTexture(int width, int height, int colorFormat, bool isBuildingMipMaps)
+{
+	Texture *texture = GS->CreateTexture(width, height, static_cast<GSColorFormat>(colorFormat), nullptr, isBuildingMipMaps ? TRUE : FALSE, FALSE);
+    return GSTexture(texture, texture->GetD3DTexture());
 }

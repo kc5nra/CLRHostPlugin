@@ -2,7 +2,7 @@
 
 using namespace System;
 
-namespace OBS {
+namespace CLROBS {
     public interface class SettingsPane
     {
         virtual void CreatePane(IntPtr parentHwnd) = 0;

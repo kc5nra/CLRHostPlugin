@@ -3,9 +3,9 @@
 #include "Plugin.h"
 #include "API.h"
 
-using namespace OBS;
+using namespace CLROBS;
 
-namespace OBS 
+namespace CLROBS 
 {
     public ref class AbstractPlugin abstract : public Plugin
     {

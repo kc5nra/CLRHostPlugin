@@ -230,6 +230,7 @@
     <ClCompile Include="CLRObjectRef.cpp" />
     <ClCompile Include="CLRPlugin.cpp" />
     <ClCompile Include="CLRVector2.cpp" />
+    <ClCompile Include="CLRXElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CLRApiCommon.h" />
@@ -241,6 +242,7 @@
     <ClInclude Include="CLRObjectRef.h" />
     <ClInclude Include="CLRPlugin.h" />
     <ClInclude Include="CLRVector2.h" />
+    <ClInclude Include="CLRXElement.h" />
     <ClInclude Include="ImageSourceBridge.h" />
     <ClInclude Include="Localization.h" />
     <ClInclude Include="CLRHostPlugin.h" />

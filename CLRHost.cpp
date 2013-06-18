@@ -77,6 +77,10 @@ CLRHost::~CLRHost()
             settingsPaneType->Release();
             settingsPaneType = nullptr;
         }
+        if (xElementType) {
+            xElementType->Release();
+            xElementType = nullptr;
+        }
         if (libraryInstance) {
             libraryInstance->Release();
         }
@@ -123,11 +127,11 @@ bool CLRHost::Initialize()
     HRESULT hr; 
     std::vector<std::wstring> clrRuntimeList;
 
-    Log(TEXT("CLRHost::Initialize() Load and start the .NET runtime %s"), clrRuntimeVersion);
+    Log(TEXT("CLRHost::Initialize() attempting to load and start the .NET runtime %s"), clrRuntimeVersion);
 
     hr = CLRCreateInstance(CLSID_CLRMetaHost, IID_PPV_ARGS(&clrMetaHost)); 
     if (FAILED(hr)) { 
-        Log(TEXT("CLRCreateInstance failed: 0x%08lx"), hr); 
+        Log(TEXT("CLRCreateInstance() failed: 0x%08lx"), hr); 
         goto errorCleanup; 
     } 
 
@@ -143,7 +147,7 @@ bool CLRHost::Initialize()
         if (SUCCEEDED(hr)) {
             if (clrRuntimeList.size()) {
                 std::wstring version = *(clrRuntimeList.end() - 1);
-                Log(TEXT("Attempting to use %s .NET runtime"), version.c_str());
+                Log(TEXT("CLRHost::Initialize() attempting to use %s .NET runtime"), version.c_str());
 
                 hr = clrMetaHost->GetRuntime(version.c_str(), IID_PPV_ARGS(&clrRuntimeInfo)); 
                 if (FAILED(hr)) { 
@@ -151,14 +155,14 @@ bool CLRHost::Initialize()
                     goto errorCleanup; 
                 }
             } else {
-                Log(TEXT("No .NET Runtimes found!"));
+                Log(TEXT("CLRHost::Initialize() no .NET Runtimes found!"));
                 goto errorCleanup;
             }
         } else {
             Log(TEXT("CLRHost::GetInstalledClrRuntimes) failed: 0x%08lx"), hr); 
             goto errorCleanup;
         }
-    }
+	}
 
     BOOL isLoadable; 
     hr = clrRuntimeInfo->IsLoadable(&isLoadable); 
@@ -225,11 +229,12 @@ bool CLRHost::LoadInteropLibrary()
     bstr_t interopAssemblyDll(INTEROP_ASSEMBLY);
     bstr_t interopAssemblyName("CLRHost.Interop");
 
-    bstr_t assemblyClassName("OBS.API");
-    bstr_t pluginClassName("OBS.Plugin");
-    bstr_t imageSourceTypeName("OBS.ImageSource");
-    bstr_t imageSourceFactoryTypeName("OBS.ImageSourceFactory");
-    bstr_t settingsPaneTypeName("OBS.SettingsPane");
+    bstr_t assemblyClassName("CLROBS.API");
+    bstr_t pluginClassName("CLROBS.Plugin");
+    bstr_t imageSourceTypeName("CLROBS.ImageSource");
+    bstr_t imageSourceFactoryTypeName("CLROBS.ImageSourceFactory");
+    bstr_t settingsPaneTypeName("CLROBS.SettingsPane");
+    bstr_t xElementTypeName("CLROBS.XElement");
 
     SAFEARRAY *constructorArgs = nullptr;
     SAFEARRAY *apiArgs = nullptr;
@@ -283,40 +288,46 @@ bool CLRHost::LoadInteropLibrary()
     appDomainUnknown->Release();
     appDomainUnknown = nullptr;
 
-    Log(TEXT("Load the assembly %s"), INTEROP_ASSEMBLY_PATH); 
+    Log(TEXT("CLRHost::LoadInteropLibrary() load the assembly %s"), INTEROP_ASSEMBLY_PATH); 
     hr = appDomain->Load_2(interopAssemblyName, &libraryAssembly);
     if (FAILED(hr)) { 
-        Log(TEXT("Failed to load the assembly: 0x%08lx"), hr); 
+        Log(TEXT("CLRHost::LoadInteropLibrary() failed to load the assembly: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
     hr = libraryAssembly->GetType_2(assemblyClassName, &libraryType);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to get type definition of interop library API class: 0x%08lx"), hr); 
+        Log(TEXT("CLRHost::LoadInteropLibrary() failed to get type definition of interop library API class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
     hr = libraryAssembly->GetType_2(pluginClassName, &pluginType);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to get type definition of Plugin class: 0x%08lx"), hr); 
+        Log(TEXT("CLRHost::LoadInteropLibrary() failed to get type definition of Plugin class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
     hr = libraryAssembly->GetType_2(imageSourceTypeName, &imageSourceType);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to get type definition of ImageSource class: 0x%08lx"), hr); 
+        Log(TEXT("CLRHost::LoadInteropLibrary() failed to get type definition of ImageSource class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
     hr = libraryAssembly->GetType_2(imageSourceFactoryTypeName, &imageSourceFactoryType);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to get type definition of ImageSourceFactory class: 0x%08lx"), hr); 
+        Log(TEXT("CLRHost::LoadInteropLibrary() failed to get type definition of ImageSourceFactory class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
     hr = libraryAssembly->GetType_2(settingsPaneTypeName, &settingsPaneType);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to get type definition of SettingsPane class: 0x%08lx"), hr); 
+        Log(TEXT("CLRHost::LoadInteropLibrary() failed to get type definition of SettingsPane class: 0x%08lx"), hr); 
+        goto errorCleanup;
+    }
+
+    hr = libraryAssembly->GetType_2(xElementTypeName, &xElementType);
+    if (FAILED(hr)) {
+        Log(TEXT("CLRHost::LoadInteropLibrary() failed to get type definition of XElement class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
@@ -326,13 +337,13 @@ bool CLRHost::LoadInteropLibrary()
     hr = SafeArrayPutElement(apiArgs, &argIndex, &clrApiPtr); 
     if (FAILED(hr)) 
     { 
-        wprintf(L"SafeArrayPutElement failed: 0x%08lx\n", hr); 
+        wprintf(L"SafeArrayPutElement failed: 0x%08lx", hr); 
         goto errorCleanup; 
     }
 
     hr = libraryAssembly->CreateInstance_3(assemblyClassName, false, BindingFlags_Default, nullptr, apiArgs, nullptr, nullptr, &libraryPtr);
-    if (FAILED(hr)) {
-        Log(TEXT("Failed to instantiate our interop library class: 0x%08lx"), hr); 
+    if (FAILED(hr) || !libraryPtr.punkVal) {
+        Log(TEXT("CLRHost::LoadInteropLibrary() failed to instantiate our interop library class: 0x%08lx"), hr); 
         goto errorCleanup;
     }
 
@@ -379,9 +390,15 @@ errorCleanup:
         settingsPaneType->Release();
         settingsPaneType = nullptr;
     }
+    if (xElementType) {
+        xElementType->Release();
+        xElementType = nullptr;
+    }
     if (apiArgs) {
         SafeArrayDestroy(apiArgs);
     }
+
+    return false;
 success:
     return true;
 }
@@ -531,23 +548,38 @@ void CLRHost::LoadPlugins()
         SAFEARRAY *typeArray;
         _Type **types;
 
-        Log(TEXT("Load the plugin assembly %s"), file.c_str()); 
+        Log(TEXT("CLRHost::LoadPlugins() attempting to load the plugin assembly %s"), file.c_str()); 
         hr = appDomain->Load_2(bstrFile, &pluginAssembly);
         if (FAILED(hr)) { 
-            Log(TEXT("Failed to load the assembly %s: 0x%08lx"), file.c_str(), hr); 
+            Log(TEXT("CLRHost::LoadPlugins() failed to load the assembly %s: 0x%08lx"), file.c_str(), hr); 
             goto errorCleanup;
         }
 
-        pluginAssembly->GetTypes(&typeArray);
+        hr = pluginAssembly->GetTypes(&typeArray);
+        if (FAILED(hr)) {
+            Log(TEXT("CLRHost::LoadPlugins() failed to retrieve exported types in assembly %s: 0x%08lx"), file.c_str(), hr);
+            goto errorCleanup;
+        }
+
         types = (_Type **)typeArray->pvData;
 
+        bool hasPluginClass = false;
         for(ULONG i = 0; i < typeArray->rgsabound->cElements; i++) {
             _Type *type = types[i];
             CLRPlugin *plugin = CreatePluginInstance(file, type, pluginType, libraryType, libraryInstance);
             if (plugin && plugin->LoadPlugin()) {
                 clrPlugins.push_back(plugin);
-                Log(TEXT("Successfully added CLR Plugin %s"), plugin->GetPluginName().c_str());
+                
+                BSTR bstrTypeName;
+                type->get_ToString(&bstrTypeName);
+                std::wstring typeName = bstrTypeName;
+                ::SysFreeString(bstrTypeName);
+                Log(TEXT("CLRHost::LoadPlugins() successfully added CLR plugin [Type: %s, Name: %s]"), typeName.c_str(), plugin->GetPluginName().c_str());
+                hasPluginClass = true;
             }
+        }
+        if (!hasPluginClass) {
+            Log(TEXT("CLRHost::LoadPlugins() no valid plugin types found in assembly %s"), file.c_str());
         }
 
         SafeArrayDestroy(typeArray);

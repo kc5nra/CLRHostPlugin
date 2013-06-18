@@ -20,6 +20,17 @@ void __cdecl CrashError(const TCHAR *format, ...);
 #endif
 
 CLRObject::~CLRObject() {
+    if (objectType && objectRef) {
+        IDisposable *disposable;
+        HRESULT hr = objectRef->QueryInterface(&disposable);
+        if (SUCCEEDED(hr) && disposable) {
+            disposable->Dispose();
+        }
+        if (disposable) {
+            disposable->Release();
+            disposable = nullptr;
+        }
+    }
     Detach();
 }
 

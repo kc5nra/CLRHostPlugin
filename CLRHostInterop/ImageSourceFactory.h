@@ -2,14 +2,14 @@
 
 #include "ImageSource.h"
 
-using namespace OBS;
+using namespace CLROBS;
 using namespace System;
 
-namespace OBS {
+namespace CLROBS {
     public interface class ImageSourceFactory
     {
-        virtual ImageSource^ Create() = 0;
-        virtual void ShowConfiguration() = 0;
+        virtual ImageSource^ Create(XElement^ data) = 0;
+        virtual void ShowConfiguration(XElement^ data) = 0;
 
         property String^ DisplayName {
             virtual String^ get();

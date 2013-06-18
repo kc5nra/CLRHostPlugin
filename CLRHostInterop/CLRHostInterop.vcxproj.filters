@@ -46,12 +46,15 @@
     <ClInclude Include="ImageSourceFactory.h">
       <Filter>Api\Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicsSystem.h">
+      <Filter>Api\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="XConfig.h">
+      <Filter>Api\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="API.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AbstractPlugin.cpp">
@@ -64,6 +67,15 @@
       <Filter>Api\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="AbstractImageSourceFactory.cpp">
+      <Filter>Api\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="API.cpp">
+      <Filter>Api\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsSystem.cpp">
+      <Filter>Api\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="XConfig.cpp">
       <Filter>Api\Source</Filter>
     </ClCompile>
   </ItemGroup>

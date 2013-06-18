@@ -18,6 +18,8 @@
 *.suo
 *.opensdf
 
+CLRCSharpSamplePlugin/SharpDX
+
 #User files
 CLRHostInterop/x64/Debug
 CLRHostInterop/x64/Release

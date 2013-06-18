@@ -4,9 +4,9 @@
 #include "ImageSource.h"
 
 using namespace System;
-using namespace OBS;
+using namespace CLROBS;
 
-namespace OBS 
+namespace CLROBS 
 {
     public ref class AbstractImageSourceFactory abstract : public ImageSourceFactory
     {
@@ -17,8 +17,8 @@ namespace OBS
     public:
         AbstractImageSourceFactory();
 
-        virtual ImageSource^ Create() abstract;
-        virtual void ShowConfiguration() abstract;
+        virtual ImageSource^ Create(XElement^ data) abstract;
+        virtual void ShowConfiguration(XElement^ data) abstract;
 
         property String^ DisplayName 
         {

@@ -5,11 +5,12 @@
 #include "AbstractWPFSettingsPane.h"
 #include "ImageSourceFactory.h"
 
-using namespace OBS;
+using namespace CLROBS;
 
 class CLRHostApi;
 
-namespace OBS {
+namespace CLROBS {
+
     public ref class API
     {
     private:

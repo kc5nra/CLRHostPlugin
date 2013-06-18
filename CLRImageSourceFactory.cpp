@@ -87,39 +87,90 @@ void CLRImageSourceFactory::Detach()
     CLRObject::Detach();
 }
 
-CLRImageSource *CLRImageSourceFactory::Create()
+CLRImageSource *CLRImageSourceFactory::Create(CLRXElement *element)
 {
     if (!IsValid()) {
         Log(TEXT("CLRImageSourceFactory::Create() no managed object attached"));
         return nullptr;
     }
 
+    // Must Release
+    SAFEARRAY *createArgs = nullptr;
+    SAFEARRAY *parameterTypes = nullptr;
+    SAFEARRAY *constructors = nullptr;
+    SAFEARRAY *constructorParameters = nullptr;
+    _ParameterInfo *elementTypeInfo = nullptr;
+    _Type *elementType = nullptr;
+    _Type *returnType = nullptr;
+    CLRImageSource *imageSource;
+
+    // Local
+    HRESULT hr;
     variant_t objectRef(GetObjectRef());
     variant_t returnVal;
+    variant_t elementRef(element->GetObjectRef());
+    LONG argIndex = 0;
+        
+    createArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
 
-    HRESULT hr = createMethod->Invoke_3(objectRef, nullptr, &returnVal);
+    hr = SafeArrayPutElement(createArgs, &argIndex, &elementRef); 
+    if (FAILED(hr)) { 
+        Log(TEXT("CLRImageSourceFactory::Create() failed to set config argument pointer: 0x%08lx"), hr); 
+        goto errorCleanup;
+    }
+
+    hr = createMethod->Invoke_3(objectRef, createArgs, &returnVal);
     if (FAILED(hr) || !returnVal.punkVal) {
         Log(TEXT("Failed to invoke Create on managed instance: 0x%08lx"), hr); 
-        return nullptr;
+        goto errorCleanup;
     }
-    _Type *returnType = nullptr;
-    hr = createMethod->get_returnType(&returnType);
+    SafeArrayDestroy(createArgs);
+    createArgs = nullptr;
 
+    hr = createMethod->get_returnType(&returnType);
     if (FAILED(hr) || !returnType) {
         Log(TEXT("Failed to get return type for Create method"));
-        return nullptr;
+        goto errorCleanup;
     }
 
-    CLRImageSource *imageSource = new CLRImageSource();
+    imageSource = new CLRImageSource();
     if (!imageSource->Attach(CLRObjectRef(returnVal.punkVal, nullptr), returnType)) {
         Log(TEXT("Failed to attach unmanaged wrapper to managed ImageSource object"));
-        returnType->Release();
-        delete imageSource;
-        return nullptr;
-    } else {
-        returnType->Release();
+        goto errorCleanup;
     }
+    returnType->Release();
+    goto success;
 
+errorCleanup:
+    if (parameterTypes) {
+        SafeArrayDestroy(parameterTypes);
+        parameterTypes = nullptr;
+    }
+    if (createArgs) {
+        SafeArrayDestroy(createArgs);
+        createArgs = nullptr;
+    }
+    if (constructors) {
+        SafeArrayDestroy(constructors);
+        constructors = nullptr;
+    }
+    if (constructorParameters) {
+        SafeArrayDestroy(constructorParameters);
+        constructorParameters = nullptr;
+    }
+    if (elementType) {
+        elementType->Release();
+        elementType = nullptr;
+    }
+    if (returnType) {
+        returnType->Release();
+        returnType = nullptr;
+    }
+    if (imageSource) {
+        delete imageSource;
+        imageSource = nullptr;
+    }
+success:
 
     return imageSource;   
 }
@@ -162,14 +213,16 @@ std::wstring CLRImageSourceFactory::GetSourceClassName()
     return std::wstring((const wchar_t*)returnVal.bstrVal);
 }
 
-void CLRImageSourceFactory::ShowConfiguration()
+void CLRImageSourceFactory::ShowConfiguration(CLRXElement *element)
 {
     if (!IsValid()) {
         Log(TEXT("CLRImageSourceFactory::ShowConfiguration() no managed object attached"));
         return;
     }
-
+                
     variant_t objectRef(GetObjectRef());
+
+
 
     HRESULT hr = showConfigurationMethod->Invoke_3(objectRef, nullptr, nullptr);
     if (FAILED(hr)) {

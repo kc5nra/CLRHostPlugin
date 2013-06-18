@@ -1,6 +1,6 @@
 #pragma once
 
-namespace OBS {
+namespace CLROBS {
     public ref class Vector2
     {
     private:

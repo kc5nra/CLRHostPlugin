@@ -116,13 +116,12 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\OBS\OBSApi;$(ProjectDir)..</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OBSApi.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>"$(SolutionDir)..\OBS\OBSApi\x64\Debug";%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OutDir)$(ProjectName).dll" "$(SolutionDir)..\OBS\rundir\plugins\CLRHostPlugin"</Command>
@@ -182,18 +181,22 @@
     <ClInclude Include="API.h" />
     <ClInclude Include="AbstractPlugin.h" />
     <ClInclude Include="AbstractWPFSettingsPane.h" />
+    <ClInclude Include="GraphicsSystem.h" />
     <ClInclude Include="ImageSourceFactory.h" />
     <ClInclude Include="Plugin.h" />
     <ClInclude Include="SettingsPane.h" />
     <ClInclude Include="Vector2.h" />
+    <ClInclude Include="XConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractImageSourceFactory.cpp" />
     <ClCompile Include="API.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="AbstractWPFSettingsPane.cpp" />
+    <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="ImageSource.h" />
     <ClCompile Include="AbstractPlugin.cpp" />
+    <ClCompile Include="XConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

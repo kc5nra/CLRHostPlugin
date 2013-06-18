@@ -25,7 +25,7 @@ namespace mscorlib {
 #define INTEROP_PATH_SEARCH     TEXT("plugins\\CLRHostPlugin\\*.dll")
 #define INTEROP_ASSEMBLY        TEXT("CLRHost.Interop.dll")
 #define INTEROP_ASSEMBLY_PATH   INTEROP_PATH INTEROP_ASSEMBLY
-#define INTEROP_LOAD_CLASS      TEXT("OBS.API")
+#define INTEROP_LOAD_CLASS      TEXT("CLROBS.API")
 
 class CLRHost {
 
@@ -46,6 +46,7 @@ private:
     mscorlib::_Type *imageSourceType;
     mscorlib::_Type *imageSourceFactoryType;
     mscorlib::_Type *settingsPaneType;
+    mscorlib::_Type *xElementType;
 
     IUnknown *libraryInstance;
 
@@ -72,5 +73,6 @@ public:
     mscorlib::_Type *GetImageSourceType() { return imageSourceType; }
     mscorlib::_Type *GetImageSourceFactoryType() { return imageSourceFactoryType; }
     mscorlib::_Type *GetSettingsPaneType() { return settingsPaneType; }
+    mscorlib::_Type *GetXElementType() { return xElementType; }
 
 };

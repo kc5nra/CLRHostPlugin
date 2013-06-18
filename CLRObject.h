@@ -22,7 +22,7 @@ public:
     virtual void Detach();
     virtual bool IsValid() { return (objectRef != nullptr && objectType != nullptr ); }
 
-protected:
+public:
     IUnknown *GetObjectRef() { return objectRef; }
     mscorlib::_Type *GetObjectType() { return objectType; }
 };

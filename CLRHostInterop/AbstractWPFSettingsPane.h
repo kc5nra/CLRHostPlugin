@@ -2,7 +2,7 @@
 
 #include "SettingsPane.h"
 
-using namespace OBS;
+using namespace CLROBS;
 using namespace System;
 using namespace System::Windows;
 using namespace System::Windows::Interop;
@@ -10,13 +10,13 @@ using namespace System::Windows::Interop;
 #define WS_CHILD    0x40000000L
 #define WS_VISIBLE  0x10000000L
 
-namespace OBS 
+namespace CLROBS 
 {
     public ref class AbstractWPFSettingsPane abstract: public SettingsPane {
     public:
         virtual void CreatePane(IntPtr parentHwnd) sealed;
         virtual void DestroyPane() = 0;
-        virtual String ^GetCategory() = 0;
+        virtual System::String ^GetCategory() = 0;
         virtual void ApplySettings() = 0;
         virtual void CancelSettings() = 0;
         virtual bool HasDefaults() = 0;
