@@ -50,6 +50,7 @@ ImageSource* STDCALL CreateImageSource(XElement *element)
             return nullptr;
         }
         CLRImageSource *imageSource = imageSourceFactories[className]->Create(clrElement);
+        delete clrElement;
         if (imageSource) {
             return new ImageSourceBridge(imageSource);
         } else {
@@ -92,6 +93,7 @@ void ConfigureImageSource(XElement *element, bool isInitializing)
             return;
         }
         imageSourceFactories[className]->ShowConfiguration(clrElement);
+        delete clrElement;
     } else {
         Log(TEXT("Couldn't find matching ImageSourceFactory for class %s"), className.c_str());
         return;

@@ -24,34 +24,34 @@ namespace CSharpSamplePlugin
 
         public override void ShowConfiguration(XElement data)
         {
-            data.SetString("Hello", "Hello");
-            String hello = data.GetString("Hello");
-            data.SetInt("Int", 5);
-            int num = data.GetInt("Int");
+            //data.SetString("Hello", "Hello");
+            //String hello = data.GetString("Hello");
+            //data.SetInt("Int", 5);
+            //int num = data.GetInt("Int");
 
-            List<int> l = new List<int>();
-            l.Add(1);
-            l.Add(5);
+            //List<int> l = new List<int>();
+            //l.Add(1);
+            //l.Add(5);
 
-            data.SetIntList("intlist", l);
-            l.Clear();
+            //data.SetIntList("intlist", l);
+            //l.Clear();
 
-            l = data.GetIntList("intlist");
+            //l = data.GetIntList("intlist");
 
-            Window window = new Window();
-            SampleConfigurationDialog configDialog = new SampleConfigurationDialog();
-            window.Width = 400;
-            window.Height = 400;
-            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            window.Content = configDialog;
-            bool? returnVal = window.ShowDialog();
-            if (returnVal.HasValue && returnVal.Value)
-            {
-            }
-            else
-            {
+            //Window window = new Window();
+            //SampleConfigurationDialog configDialog = new SampleConfigurationDialog();
+            //window.Width = 400;
+            //window.Height = 400;
+            //window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            //window.Content = configDialog;
+            //bool? returnVal = window.ShowDialog();
+            //if (returnVal.HasValue && returnVal.Value)
+            //{
+            //}
+            //else
+            //{
 
-            }
+            //}
         }
     }
 }
