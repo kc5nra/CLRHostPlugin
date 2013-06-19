@@ -63,16 +63,16 @@ ImageSource* STDCALL CreateImageSource(XElement *element)
     }
 }
 
-void ConfigureImageSource(XElement *element, bool isInitializing)
+bool ConfigureImageSource(XElement *element, bool isInitializing)
 {
     if (element == nullptr) {
         Log(TEXT("Configuration element is null, skipping"));
-        return;
+        return false;
     }
 
     if (!element->HasItem(TEXT("class"))) {
         Log(TEXT("Configuration element doesn't have class name, skipping"));
-        return;
+        return false;
     }
 
     XElement *data = element->GetElement(TEXT("data"));
@@ -87,16 +87,17 @@ void ConfigureImageSource(XElement *element, bool isInitializing)
 
     auto imageSourceFactories = clrHostApi->GetImageSourceFactories();
     if (imageSourceFactories[className]) {
-        CLRXElement *clrElement = CLRXElement::Create(clrHost->GetXElementType(), element);
+        CLRXElement *clrElement = CLRXElement::Create(clrHost->GetXElementType(), data);
         if (!clrElement) {
             Log(TEXT("CLRHostApi::CreateImageSource() unable to create managed CLRXElement wrapper"));
-            return;
+            return false;
         }
-        imageSourceFactories[className]->ShowConfiguration(clrElement);
+        bool returnValue = imageSourceFactories[className]->ShowConfiguration(clrElement);
         delete clrElement;
+        return returnValue;
     } else {
         Log(TEXT("Couldn't find matching ImageSourceFactory for class %s"), className.c_str());
-        return;
+        return false;
     }
 }
 
@@ -122,11 +123,9 @@ void CLRHostApi::AddImageSourceFactory(CLRObjectRef &clrObjectRef)
         delete imageSourceFactory;
     }
 
-
 }
 
-GSTexture CLRHostApi::SimpleCreateDynamicTexture(int width, int height, int colorFormat, bool isBuildingMipMaps)
+void *CLRHostApi::GetMainWindowHandle()
 {
-	Texture *texture = GS->CreateTexture(width, height, static_cast<GSColorFormat>(colorFormat), nullptr, isBuildingMipMaps ? TRUE : FALSE, FALSE);
-    return GSTexture(texture, texture->GetD3DTexture());
+    return API->GetMainWindow();
 }

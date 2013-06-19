@@ -18,12 +18,12 @@ namespace CSharpSamplePlugin
             instance = this;
 
             // Setup the default properties
-            Name = "Sample Plugin Name";
-            Description = "Sample Plugin Description";
+            Name = "Sample Image Plugin";
+            Description = "Sample Image Plugin lets you show a picture";
         }
         public override bool LoadPlugin()
         {
-            Api.AddImageSourceFactory(new SampleImageSourceFactory());
+            API.Instance.AddImageSourceFactory(new SampleImageSourceFactory());
             return true;
         }
 

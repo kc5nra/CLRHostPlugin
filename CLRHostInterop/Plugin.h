@@ -8,10 +8,6 @@ using namespace CLROBS;
 namespace CLROBS {
     public interface class Plugin
     {
-        property API^ Api {
-            virtual API^ get() abstract;
-            virtual void set(API^ api) abstract;
-        }
 
         virtual bool LoadPlugin() = 0;
         virtual void UnloadPlugin() = 0;

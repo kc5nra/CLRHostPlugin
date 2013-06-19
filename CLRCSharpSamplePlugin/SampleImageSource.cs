@@ -4,44 +4,77 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CLROBS;
+using System.Threading;
+using System.IO;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace CSharpSamplePlugin
 {
-    class SampleImageSource : ImageSource
+    class SampleImageSource : CLROBS.ImageSource, IDisposable
     {
 
+        private Object textureLock = new Object();
         private Texture texture = null;
+        private XElement config;
 
-        public SampleImageSource()
+        public SampleImageSource(XElement config)
         {
-            byte[] data = new byte[100 * 100 * 4];
-            for (int i = 0; i < data.Length; i++)
-            {
-                data[i] = (byte)0xFF;
-            }
-
-            texture = GS.CreateTexture(100, 100, GSColorFormat.GS_BGRA, data, false, false);
+            this.config = config;
+            UpdateSettings();
         }
+        
+        private void LoadTexture(String imageFile)
+        {
 
+            lock (textureLock)
+            {
+                texture.Dispose();
+                texture = null;
+
+                if (File.Exists(imageFile))
+                {
+                    BitmapImage src = new BitmapImage();
+                    
+                    src.BeginInit();
+                    src.UriSource = new Uri(imageFile);
+                    src.EndInit();
+
+                    
+                    WriteableBitmap wb = new WriteableBitmap(src);
+              
+                    texture = GS.CreateTexture((UInt32)wb.PixelWidth, (UInt32)wb.PixelHeight, GSColorFormat.GS_BGRA, wb.BackBuffer, false, true);
+                }
+                else
+                {
+                    texture = null;
+                }
+            }
+        }
 
         public void UpdateSettings()
         {
-            this.ToString();
+            XElement dataElement = config.GetElement("data");
+            LoadTexture(config.GetString("file"));
         }
 
         public void Tick(float seconds)
         {
-            this.ToString();
         }
 
         public void Render(float x, float y, float width, float height)
         {
-            this.ToString();
+            lock (textureLock)
+            {
+                if (texture != null)
+                {
+                    GS.DrawSprite(texture, 0xFFFFFFFF, x, y, x + width, y + height);
+                }
+            }
         }
 
         public void Preprocess()
         {
-            this.ToString();
         }
 
         public Vector2 GetSize()
@@ -51,25 +84,27 @@ namespace CSharpSamplePlugin
 
         public void EndScene()
         {
-            this.ToString();
         }
 
         public void BeginScene()
         {
-            this.ToString();
         }
 
         public void Dispose()
         {
-            if (texture != null)
+            lock (textureLock)
             {
-                texture.Dispose();
+                if (texture != null)
+                {
+                    texture.Dispose();
+                    texture = null;
+                }
             }
         }
 
         private API Api
         {
-            get { return SamplePlugin.Instance.Api; }
+            get { return API.Instance; }
         }
 
         private GraphicsSystem GS

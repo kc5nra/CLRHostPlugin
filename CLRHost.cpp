@@ -239,7 +239,7 @@ bool CLRHost::LoadInteropLibrary()
     SAFEARRAY *constructorArgs = nullptr;
     SAFEARRAY *apiArgs = nullptr;
     LONG argIndex;
-    variant_t clrApiPtr((long)clrApi);
+    variant_t clrApiPtr((long long)clrApi);
     variant_t libraryPtr;
 
     hr = corRuntimeHost->CreateDomainSetup(&appDomainSetupUnknown);
@@ -433,15 +433,8 @@ CLRPlugin *CreatePluginInstance(std::wstring &typeName, _Type *type, _Type *plug
     _ConstructorInfo *constructor = nullptr;
     SAFEARRAY *constructorArgs = nullptr;
 
-    bstr_t setApiMethodName("set_Api");
-    _MethodInfo *setApiMethod = nullptr;
-    SAFEARRAY *apiArgs = nullptr;
-    variant_t apiArg(libraryInstance);
-
     VARIANT_BOOL isAbstract;
     VARIANT_BOOL isAssignable;
-
-    LONG index;
 
     variant_t pluginInstance;
 
@@ -476,31 +469,6 @@ CLRPlugin *CreatePluginInstance(std::wstring &typeName, _Type *type, _Type *plug
     constructor->Release();
     constructor = nullptr;
 
-    apiArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
-    index = 0;
-    hr = SafeArrayPutElement(apiArgs, &index, &apiArg); 
-    if (FAILED(hr)) 
-    { 
-        Log(TEXT("SafeArrayPutElement failed: 0x%08lx"), hr); 
-        goto errorCleanup; 
-    }
-    hr = pluginType->GetMethod_6(setApiMethodName, &setApiMethod);
-    if (FAILED(hr))
-    {
-        Log(TEXT("Failed to get setter method for property Api on plugin instance of type %s: 0x%08lx"), typeName.c_str(), hr);
-        goto errorCleanup;
-    }
-
-    hr = setApiMethod->Invoke_3(pluginInstance, apiArgs, nullptr);
-    if (FAILED(hr))
-    {
-        Log(TEXT("Failed to set API object to plugin instance of type %s: 0x%08lx"), typeName.c_str(), hr);
-        goto errorCleanup;
-    }
-
-    SafeArrayDestroy(apiArgs);
-    apiArgs = nullptr;
-
     CLRPlugin *plugin = new CLRPlugin();
     if (plugin->Attach(CLRObjectRef(pluginInstance.punkVal, nullptr),  pluginType)) {
         return plugin;
@@ -517,14 +485,6 @@ errorCleanup:
     if (constructor) {
         constructor->Release();
         constructor = nullptr;
-    }
-    if (setApiMethod) {
-        setApiMethod->Release();
-        setApiMethod = nullptr;
-    }
-    if (apiArgs) {
-        SafeArrayDestroy(apiArgs);
-        apiArgs = nullptr;
     }
 
     return nullptr;

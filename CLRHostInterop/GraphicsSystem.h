@@ -166,6 +166,12 @@ namespace CLROBS
 
     public:
         
+        Texture^ CreateTexture(unsigned int width, unsigned int height, GSColorFormat colorFormat, System::IntPtr data, bool isBuildingMipMaps, bool isStatic)
+        {
+            ::Texture *texture = GS->CreateTexture(width, height, static_cast<::GSColorFormat>(colorFormat), data.ToPointer(), isBuildingMipMaps, isStatic);
+            return gcnew Texture(texture);
+        }
+
         Texture^ CreateTexture(unsigned int width, unsigned int height, GSColorFormat colorFormat, array<System::Byte>^ data, bool isBuildingMipMaps, bool isStatic)
         {
             pin_ptr<unsigned char> dataPtr = &data[0];
@@ -180,6 +186,4 @@ namespace CLROBS
         }
 
     };
-
-
 };

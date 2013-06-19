@@ -213,17 +213,18 @@ std::wstring CLRImageSourceFactory::GetSourceClassName()
     return std::wstring((const wchar_t*)returnVal.bstrVal);
 }
 
-void CLRImageSourceFactory::ShowConfiguration(CLRXElement *element)
+bool CLRImageSourceFactory::ShowConfiguration(CLRXElement *element)
 {
     if (!IsValid()) {
         Log(TEXT("CLRImageSourceFactory::ShowConfiguration() no managed object attached"));
-        return;
+        return false;
     }
     HRESULT hr;            
     variant_t objectRef(GetObjectRef());
     SAFEARRAY *createArgs = nullptr;
     variant_t elementRef(element->GetObjectRef());
     LONG argIndex = 0;
+    variant_t returnVal(false);
 
     createArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
 
@@ -233,7 +234,7 @@ void CLRImageSourceFactory::ShowConfiguration(CLRXElement *element)
         goto errorCleanup;
     }
 
-    hr = showConfigurationMethod->Invoke_3(objectRef, createArgs, nullptr);
+    hr = showConfigurationMethod->Invoke_3(objectRef, createArgs, &returnVal);
     if (FAILED(hr)) {
         Log(TEXT("CLRImageSourceFactory::ShowConfiguration() failed to invoke ShowConfiguration on managed instance: 0x%08lx"), hr); 
         goto errorCleanup;
@@ -250,5 +251,5 @@ errorCleanup:
     }
 
 success:
-    return;
+    return returnVal.boolVal == VARIANT_TRUE;
 }

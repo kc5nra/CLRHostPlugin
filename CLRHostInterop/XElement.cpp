@@ -21,32 +21,113 @@ void CLROBS::XElement::Name::set(System::String^ name)
     element->SetName(ToWString(name).c_str());
 }
 
-
-void CLROBS::XElement::ReverseOrder() { 
-    element->ReverseOrder(); 
+bool CLROBS::XElement::Import(System::String^ name)
+{
+    return element->Import(ToWString(name).c_str());
 }
 
-void CLROBS::XElement::MoveUp()
+bool CLROBS::XElement::Export(System::String^ name)
 {
-    element->MoveUp();
-}
-
-void CLROBS::XElement::MoveDown()
-{
-    element->MoveDown();
-}
-void CLROBS::XElement::MoveToTop()
-{
-    element->MoveToTop();
-}
-void CLROBS::XElement::MoveToBottom()
-{
-    element->MoveToBottom();
+    return element->Export(ToWString(name).c_str());
 }
 
 bool CLROBS::XElement::HasItem(System::String^ name)
 {
     return element->HasItem(ToWString(name).c_str());
+}
+
+void CLROBS::XElement::RemoveItem(System::String^ name)
+{
+    return element->RemoveItem(ToWString(name).c_str());
+}
+void CLROBS::XElement::ReverseOrder() { element->ReverseOrder(); }
+void CLROBS::XElement::MoveUp() { element->MoveUp(); }
+void CLROBS::XElement::MoveDown() { element->MoveDown(); }
+void CLROBS::XElement::MoveToTop() { element->MoveToTop(); }
+void CLROBS::XElement::MoveToBottom() { element->MoveToBottom(); }
+
+CLROBS::XElement^ CLROBS::XElement::GetParent()
+{
+    ::XElement *elementPtr = element->GetParent();
+    return elementPtr ? gcnew CLROBS::XElement(elementPtr) : nullptr;
+}
+
+System::Int32 CLROBS::XElement::ElementCount()
+{
+    return element->NumElements();
+}
+
+System::Int32 CLROBS::XElement::ElementCount(System::String^ name)
+{
+    return element->NumElements(ToWString(name).c_str());
+}
+
+CLROBS::XElement^ CLROBS::XElement::GetElement(System::String^ name)
+{
+    ::XElement *elementPtr = element->GetElement(ToWString(name).c_str());
+    return elementPtr ? gcnew CLROBS::XElement(elementPtr) : nullptr;
+}
+CLROBS::XElement^ CLROBS::XElement::GetElementById(System::Int32 elementId)
+{
+    ::XElement *elementPtr = element->GetElementByID(elementId);
+    return elementPtr ? gcnew CLROBS::XElement(elementPtr) : nullptr;
+}
+
+CLROBS::XElement^ CLROBS::XElement::GetElementByItem(
+    System::String^ name, 
+    System::String^ itemName, 
+    System::String^ itemValue)
+{
+    ::XElement *elementPtr = element->GetElementByItem(
+        ToWString(name).c_str(), 
+        ToWString(itemName).c_str(),
+        ToWString(itemValue).c_str());
+
+    return elementPtr ? gcnew CLROBS::XElement(elementPtr) : nullptr;
+}
+CLROBS::XElement^ CLROBS::XElement::CreateElement(System::String^ name)
+{
+    ::XElement *elementPtr = element->CreateElement(ToWString(name).c_str());
+    return elementPtr ? gcnew CLROBS::XElement(elementPtr) : nullptr;
+}
+
+CLROBS::XElement^ CLROBS::XElement::InsertElement(
+    System::Int32 position, 
+    System::String^ name)
+{
+    ::XElement *elementPtr = element->InsertElement(position, ToWString(name).c_str());
+    return elementPtr ? gcnew CLROBS::XElement(elementPtr) : nullptr;
+}
+
+CLROBS::XElement^ CLROBS::XElement::CopyElement(
+    CLROBS::XElement^ elementToCopy, 
+    System::String^ newName)
+{
+    ::XElement *elementPtr = element->CopyElement(
+        elementToCopy->element,
+        ToWString(newName).c_str());
+    return elementPtr ? gcnew CLROBS::XElement(elementPtr) : nullptr;
+}
+
+Generic::List<CLROBS::XElement^>^ CLROBS::XElement::GetElementList(System::String^ name)
+{
+    List<::XElement *> list;
+    element->GetElementList(ToWString(name).c_str(), list);
+    auto returnList = gcnew Generic::List<CLROBS::XElement ^>();
+    for(unsigned int i = 0; i < list.Num(); i++) {
+        returnList->Add(gcnew CLROBS::XElement(list[i]));
+    }
+    return returnList;
+}
+
+void CLROBS::XElement::RemoveElement(CLROBS::XElement^ elementToRemove)
+{
+    element->RemoveElement(elementToRemove->element);
+}
+
+void CLROBS::XElement::RemoveElement(System::String^ name)
+{
+    element->RemoveElement(ToWString(name).c_str());
 }
 
 System::String^ CLROBS::XElement::GetString(System::String^ name) { 
@@ -264,4 +345,45 @@ void CLROBS::XElement::AddHex(System::String^ name, System::Int32 hex)
 void CLROBS::XElement::AddColor(System::String^ name, System::Int32 color)
 {
     AddHex(name, color);
+}
+
+void CLROBS::XElement::AddStringList(System::String^ name, Generic::List<System::String^>^ list)
+{
+    StringList _list;
+    for(int i = 0; i < list->Count; i++) {
+        _list.Add(ToWString(list[i]).c_str());
+    }
+    element->AddStringList(ToWString(name).c_str(), _list);
+}
+
+void CLROBS::XElement::AddIntList(System::String^ name, Generic::List<System::Int32>^ list)
+{
+    List<int> _list;
+    for(int i = 0; i < list->Count; i++) {
+        _list.Add(list[i]);
+    }
+    element->AddIntList(ToWString(name).c_str(), _list);
+}
+
+void CLROBS::XElement::AddFloatList(System::String^ name, Generic::List<float>^ list)
+{
+    List<float> _list;
+    for(int i = 0; i < list->Count; i++) {
+        _list.Add(list[i]);
+    }
+    element->AddFloatList(ToWString(name).c_str(), _list);
+}
+
+void CLROBS::XElement::AddHexList(System::String^ name, Generic::List<System::Int32>^ list)
+{
+    List<DWORD> _list;
+    for(int i = 0; i < list->Count; i++) {
+        _list.Add(list[i]);
+    }
+    element->AddHexList(ToWString(name).c_str(), _list);
+}
+
+void CLROBS::XElement::AddColorList(System::String^ name, Generic::List<System::Int32>^ list)
+{
+    AddHexList(name, list);
 }

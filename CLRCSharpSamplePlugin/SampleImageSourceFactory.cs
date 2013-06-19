@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CLROBS;
 
 using System.Windows;
+using System.Windows.Media;
 
 namespace CSharpSamplePlugin
 {
@@ -14,44 +15,20 @@ namespace CSharpSamplePlugin
         public SampleImageSourceFactory()
         {
             this.ClassName = "SampleImageSourceClass";
-            this.DisplayName = "Sample ImageSource Description";
+            this.DisplayName = ".NET Image Source";
         }
 
-        public override ImageSource Create(XElement data)
+        public override CLROBS.ImageSource Create(XElement data)
         {
-            return new SampleImageSource();
+            return new SampleImageSource(data);
         }
 
-        public override void ShowConfiguration(XElement data)
+        public override bool ShowConfiguration(XElement data)
         {
-            //data.SetString("Hello", "Hello");
-            //String hello = data.GetString("Hello");
-            //data.SetInt("Int", 5);
-            //int num = data.GetInt("Int");
+            SampleConfigurationDialog dialog = new SampleConfigurationDialog(data);
 
-            //List<int> l = new List<int>();
-            //l.Add(1);
-            //l.Add(5);
-
-            //data.SetIntList("intlist", l);
-            //l.Clear();
-
-            //l = data.GetIntList("intlist");
-
-            //Window window = new Window();
-            //SampleConfigurationDialog configDialog = new SampleConfigurationDialog();
-            //window.Width = 400;
-            //window.Height = 400;
-            //window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            //window.Content = configDialog;
-            //bool? returnVal = window.ShowDialog();
-            //if (returnVal.HasValue && returnVal.Value)
-            //{
-            //}
-            //else
-            //{
-
-            //}
+            bool? returnVal = dialog.ShowDialog();
+            return returnVal.GetValueOrDefault(false);
         }
     }
 }

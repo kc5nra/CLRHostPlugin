@@ -2,8 +2,11 @@
 
 #include "ImageSourceFactory.h"
 #include "ImageSource.h"
+#include "API.h"
 
 using namespace System;
+using namespace System::Windows;
+using namespace System::Windows::Interop;
 using namespace CLROBS;
 
 namespace CLROBS 
@@ -17,8 +20,10 @@ namespace CLROBS
     public:
         AbstractImageSourceFactory();
 
+    public: // ImageSourceFactory
+
         virtual ImageSource^ Create(XElement^ data) abstract;
-        virtual void ShowConfiguration(XElement^ data) abstract;
+        virtual bool ShowConfiguration(XElement^ data) abstract;
 
         property String^ DisplayName 
         {
@@ -35,5 +40,8 @@ namespace CLROBS
         protected:
             void set(String^ className); 
         }  
+
     };
+
+    
 };

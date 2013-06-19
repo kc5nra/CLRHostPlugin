@@ -10,15 +10,6 @@ AbstractPlugin::~AbstractPlugin()
 {
 }
 
-API^ AbstractPlugin::Api::get()
-{
-    return api;
-}
-void AbstractPlugin::Api::set(API^ api)
-{
-    this->api = api;
-}
-
 String^ AbstractPlugin::Name::get()
 {
     return pluginName;

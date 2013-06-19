@@ -11,7 +11,6 @@ namespace CLROBS
     {
 
     private:
-        API^ api;
         String^ pluginName;
         String^ pluginDescription;
 
@@ -19,10 +18,6 @@ namespace CLROBS
         AbstractPlugin();
         ~AbstractPlugin();
     public:
-        property API^ Api {
-            virtual API^ get() sealed;
-            virtual void set(API^ api) sealed;
-        }
 
         virtual bool LoadPlugin() abstract;
         virtual void UnloadPlugin() abstract;

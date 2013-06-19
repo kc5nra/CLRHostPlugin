@@ -32,23 +32,24 @@ CLRXElement * CLRXElement::Create(_Type *type, void *elementPointer)
     // Local
     HRESULT hr;
     LONG index = 0;
-    variant_t elementRef((long)elementPointer);
+    
+    variant_t elementRef((long long) elementPointer);
     variant_t instance;
-
+    
     hr = type->GetConstructors_2(&constructors);
-    if (FAILED(hr) || !constructors) {
+    if (FAILED(hr) || !constructors || constructors->rgsabound->cElements != 2) {
         Log(TEXT("CLRXElement::Create() failed to retrieve constructors from managed XElement type: 0x%08lx"), hr); 
         goto errorCleanup;
     }
     
     constructorInfos = (_ConstructorInfo **)constructors->pvData;
-
-    constructorInfo = constructorInfos[0];
+    constructorInfo = constructorInfos[1];
     constructorInfo->AddRef();
     SafeArrayDestroy(constructors);
     
     constructorParameters = SafeArrayCreateVector(VT_VARIANT, 0, 1);
     hr = SafeArrayPutElement(constructorParameters, &index, &elementRef);
+    
     if (FAILED(hr)) {
         Log(TEXT("CLRXElement::Create() failed to set constructor argument: 0x%08lx"), hr); 
         goto errorCleanup;

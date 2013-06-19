@@ -16,3 +16,8 @@ void API::AddImageSourceFactory(ImageSourceFactory^ imageSourceFactory)
     CLRObjectRef objectRef(unkRef.ToPointer(), nullptr);
     clrHostApi->AddImageSourceFactory(objectRef);
 }
+
+IntPtr API::GetMainWindowHandle()
+{
+    return IntPtr(clrHostApi->GetMainWindowHandle());
+}

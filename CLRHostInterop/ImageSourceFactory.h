@@ -9,7 +9,7 @@ namespace CLROBS {
     public interface class ImageSourceFactory
     {
         virtual ImageSource^ Create(XElement^ data) = 0;
-        virtual void ShowConfiguration(XElement^ data) = 0;
+        virtual bool ShowConfiguration(XElement^ data) = 0;
 
         property String^ DisplayName {
             virtual String^ get();

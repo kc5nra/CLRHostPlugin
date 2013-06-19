@@ -24,7 +24,7 @@ public:
 
 public:
     CLRImageSource *Create(CLRXElement *data);
-    void ShowConfiguration(CLRXElement *data);
+    bool ShowConfiguration(CLRXElement *data);
     std::wstring GetDisplayName();
     std::wstring GetSourceClassName();
     

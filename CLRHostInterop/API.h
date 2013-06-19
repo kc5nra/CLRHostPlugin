@@ -9,21 +9,32 @@ using namespace CLROBS;
 
 class CLRHostApi;
 
-namespace CLROBS {
-
+namespace CLROBS 
+{
+    
     public ref class API
     {
+    private:
+        static API^ instance = nullptr;
+    public:
+        static property API^ Instance
+        {
+        public:
+            API^ get() { return instance; }
+        }
     private:
         CLRHostApi *clrHostApi;
 
     public:
-        API(long clrHostApiPointer)
+        API(long long api)
         {
-            this->clrHostApi = reinterpret_cast<CLRHostApi *>(clrHostApiPointer);
+            instance = this;
+            this->clrHostApi = reinterpret_cast<CLRHostApi *>(api);
         }
 
     public:
         void AddSettingsPane(SettingsPane^ settingsPane);
         void AddImageSourceFactory(ImageSourceFactory^ imageSourceFactory);
+        IntPtr API::GetMainWindowHandle();
     };
 };

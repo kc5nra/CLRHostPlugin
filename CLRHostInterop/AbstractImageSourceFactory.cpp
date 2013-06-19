@@ -1,5 +1,8 @@
 #include "AbstractImageSourceFactory.h"
 
+#define WS_CHILD    0x40000000L
+#define WS_VISIBLE  0x10000000L
+
 AbstractImageSourceFactory::AbstractImageSourceFactory()
 {
     this->ClassName = gcnew String("DefaultImageSourceClassName");

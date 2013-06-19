@@ -66,9 +66,6 @@
     <ClCompile Include="ImageSource.h">
       <Filter>Api\Interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="AbstractImageSourceFactory.cpp">
-      <Filter>Api\Source</Filter>
-    </ClCompile>
     <ClCompile Include="API.cpp">
       <Filter>Api\Source</Filter>
     </ClCompile>
@@ -76,6 +73,9 @@
       <Filter>Api\Source</Filter>
     </ClCompile>
     <ClCompile Include="XElement.cpp">
+      <Filter>Api\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractImageSourceFactory.cpp">
       <Filter>Api\Source</Filter>
     </ClCompile>
   </ItemGroup>
