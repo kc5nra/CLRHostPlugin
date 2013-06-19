@@ -49,7 +49,7 @@
     <ClInclude Include="GraphicsSystem.h">
       <Filter>Api\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="XConfig.h">
+    <ClInclude Include="XElement.h">
       <Filter>Api\Headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -75,7 +75,7 @@
     <ClCompile Include="GraphicsSystem.cpp">
       <Filter>Api\Source</Filter>
     </ClCompile>
-    <ClCompile Include="XConfig.cpp">
+    <ClCompile Include="XElement.cpp">
       <Filter>Api\Source</Filter>
     </ClCompile>
   </ItemGroup>

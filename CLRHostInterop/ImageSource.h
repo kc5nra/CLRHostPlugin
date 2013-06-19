@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vector2.h"
-#include "XConfig.h"
+#include "XElement.h"
 
 namespace CLROBS {
     public interface class ImageSource

@@ -186,7 +186,7 @@
     <ClInclude Include="Plugin.h" />
     <ClInclude Include="SettingsPane.h" />
     <ClInclude Include="Vector2.h" />
-    <ClInclude Include="XConfig.h" />
+    <ClInclude Include="XElement.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractImageSourceFactory.cpp" />
@@ -196,7 +196,7 @@
     <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="ImageSource.h" />
     <ClCompile Include="AbstractPlugin.cpp" />
-    <ClCompile Include="XConfig.cpp" />
+    <ClCompile Include="XElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

@@ -219,14 +219,36 @@ void CLRImageSourceFactory::ShowConfiguration(CLRXElement *element)
         Log(TEXT("CLRImageSourceFactory::ShowConfiguration() no managed object attached"));
         return;
     }
-                
+    HRESULT hr;            
     variant_t objectRef(GetObjectRef());
+    SAFEARRAY *createArgs = nullptr;
+    variant_t elementRef(element->GetObjectRef());
+    LONG argIndex = 0;
 
+    createArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
 
-
-    HRESULT hr = showConfigurationMethod->Invoke_3(objectRef, nullptr, nullptr);
-    if (FAILED(hr)) {
-        Log(TEXT("Failed to invoke ShowConfiguration on managed instance: 0x%08lx"), hr); 
-        return;
+    hr = SafeArrayPutElement(createArgs, &argIndex, &elementRef); 
+    if (FAILED(hr)) { 
+        Log(TEXT("CLRImageSourceFactory::ShowConfiguration() failed to set config argument pointer: 0x%08lx"), hr); 
+        goto errorCleanup;
     }
+
+    hr = showConfigurationMethod->Invoke_3(objectRef, createArgs, nullptr);
+    if (FAILED(hr)) {
+        Log(TEXT("CLRImageSourceFactory::ShowConfiguration() failed to invoke ShowConfiguration on managed instance: 0x%08lx"), hr); 
+        goto errorCleanup;
+    }
+    SafeArrayDestroy(createArgs);
+    createArgs = nullptr;
+
+    goto success;
+
+errorCleanup:
+    if (createArgs) {
+        SafeArrayDestroy(createArgs);
+        createArgs = nullptr;
+    }
+
+success:
+    return;
 }
