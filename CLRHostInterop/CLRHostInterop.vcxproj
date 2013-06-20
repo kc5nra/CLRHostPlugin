@@ -153,13 +153,12 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\OBS\OBSApi;$(ProjectDir)..</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OBSApi.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>"$(SolutionDir)..\OBS\OBSApi\x64\Release";%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OutDir)$(ProjectName).dll" "$(SolutionDir)..\OBS\rundir\plugins\CLRHostPlugin</Command>
@@ -177,6 +176,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractImageSource.h" />
     <ClInclude Include="AbstractImageSourceFactory.h" />
     <ClInclude Include="API.h" />
     <ClInclude Include="AbstractPlugin.h" />
@@ -189,6 +189,7 @@
     <ClInclude Include="XElement.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractImageSource.cpp" />
     <ClCompile Include="AbstractImageSourceFactory.cpp" />
     <ClCompile Include="API.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />

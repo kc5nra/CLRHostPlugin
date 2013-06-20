@@ -25,7 +25,7 @@ bool CLRImageSource::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectT
     bstr_t preprocessMethodName("Preprocess");
     bstr_t tickMethodName("Tick");
     bstr_t renderMethodName("Render");
-    bstr_t getSizeMethodName("GetSize");
+    bstr_t getSizeMethodName("get_Size");
     bstr_t updateSettingsMethodName("UpdateSettings");
     bstr_t beginSceneMethodName("BeginScene");
     bstr_t endSceneMethodName("EndScene");

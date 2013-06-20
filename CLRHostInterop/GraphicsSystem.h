@@ -1,10 +1,12 @@
 #pragma once
 
+class Texture;
+class GraphicsSystem;
+
 namespace CLROBS 
 {
-
     public enum class GSDrawMode {
-        GS_POINTS = GS_POINTS,
+        GS_POINTS,
         GS_LINES, 
         GS_LINESTRIP, 
         GS_TRIANGLES, 
@@ -12,7 +14,7 @@ namespace CLROBS
     };
 
     public enum class GSColorFormat {
-        GS_UNKNOWNFORMAT = GS_UNKNOWNFORMAT, 
+        GS_UNKNOWNFORMAT, 
         GS_ALPHA, 
         GS_GRAYSCALE, 
         GS_RGB, 
@@ -30,12 +32,12 @@ namespace CLROBS
     };
 
     public enum class GSIndexType {
-        GS_UNSIGNED_SHORT = GS_UNSIGNED_SHORT,
+        GS_UNSIGNED_SHORT,
         GS_UNSIGNED_LONG
     };
 
     public enum class GSBlendType {
-        GS_BLEND_ZERO = GS_BLEND_ZERO,
+        GS_BLEND_ZERO,
         GS_BLEND_ONE, 
         GS_BLEND_SRCCOLOR, 
         GS_BLEND_INVSRCCOLOR, 
@@ -51,7 +53,7 @@ namespace CLROBS
 
     public enum class GSSampleFilter
     {
-        GS_FILTER_LINEAR = GS_FILTER_LINEAR,
+        GS_FILTER_LINEAR,
         GS_FILTER_POINT,
         GS_FILTER_ANISOTROPIC,
         GS_FILTER_MIN_MAG_POINT_MIP_LINEAR,
@@ -67,7 +69,7 @@ namespace CLROBS
 
     public enum class GSAddressMode
     {
-        GS_ADDRESS_CLAMP = GS_ADDRESS_CLAMP,
+        GS_ADDRESS_CLAMP,
         GS_ADDRESS_WRAP,
         GS_ADDRESS_MIRROR,
         GS_ADDRESS_BORDER,
@@ -79,7 +81,7 @@ namespace CLROBS
 
     public enum class GSImageFormat
     {
-        GS_IMAGEFORMAT_A8 = GS_IMAGEFORMAT_A8,
+        GS_IMAGEFORMAT_A8,
         GS_IMAGEFORMAT_L8,
         GS_IMAGEFORMAT_RGB,
         GS_IMAGEFORMAT_RGBX,
@@ -91,6 +93,8 @@ namespace CLROBS
         GS_IMAGEFORMAT_BGRA,
     };
 
+
+
     public ref class Texture
     {
 
@@ -98,52 +102,42 @@ namespace CLROBS
         ::Texture *texture;
 
     public:
-        Texture(::Texture *texture)
-        {
-            this->texture = texture;
-        }
-        ~Texture()
-        {
-            delete texture;
-        }
+        Texture(::Texture *texture);
+        ~Texture();
 
     public:
         
-        void SetImage(System::Byte data[], GSImageFormat imageFormat, unsigned int pitch)
-        {
-            pin_ptr<unsigned char *> dataPtr = &data;
-            texture->SetImage(static_cast<void *>(dataPtr), static_cast<::GSImageFormat>(imageFormat), pitch);
-        }
+        void SetImage(System::Byte data[], GSImageFormat imageFormat, unsigned int pitch);
 
     public:
         property GSColorFormat Format
         {
         public:
-            GSColorFormat get() { return static_cast<GSColorFormat>(texture->GetFormat()); }
+            GSColorFormat get();
         }
 
         property unsigned int Width
         {
         public:
-            unsigned int get() { return texture->Width(); }
+            unsigned int get();
         }
 
         property unsigned int Height
         {
         public:
-            unsigned int get() { return texture->Height(); }
+            unsigned int get();
         }
 
         property System::IntPtr D3DTexture
         {
         public:
-            System::IntPtr get() { return System::IntPtr(texture->GetD3DTexture()); }
+            System::IntPtr get();
         }
 
         property System::IntPtr OBSTexture
         {
         public:
-            System::IntPtr get() { return System::IntPtr(texture); }
+            System::IntPtr get();
         }
     };
 
@@ -166,24 +160,9 @@ namespace CLROBS
 
     public:
         
-        Texture^ CreateTexture(unsigned int width, unsigned int height, GSColorFormat colorFormat, System::IntPtr data, bool isBuildingMipMaps, bool isStatic)
-        {
-            ::Texture *texture = GS->CreateTexture(width, height, static_cast<::GSColorFormat>(colorFormat), data.ToPointer(), isBuildingMipMaps, isStatic);
-            return gcnew Texture(texture);
-        }
-
-        Texture^ CreateTexture(unsigned int width, unsigned int height, GSColorFormat colorFormat, array<System::Byte>^ data, bool isBuildingMipMaps, bool isStatic)
-        {
-            pin_ptr<unsigned char> dataPtr = &data[0];
-            ::Texture *texture = GS->CreateTexture(width, height, static_cast<::GSColorFormat>(colorFormat), dataPtr, isBuildingMipMaps, isStatic);
-            return gcnew Texture(texture);
-        }
-
-        void DrawSprite(Texture^ texture, unsigned int color, float x, float y, float x2, float y2)
-        {
-            ::Texture *nativeTexture = static_cast<::Texture *>(texture->OBSTexture.ToPointer());
-            GS->DrawSprite(nativeTexture, color, x, y, x2, y2);
-        }
+        Texture^ CreateTexture(unsigned int width, unsigned int height, GSColorFormat colorFormat, System::IntPtr data, bool isBuildingMipMaps, bool isStatic);
+        Texture^ CreateTexture(unsigned int width, unsigned int height, GSColorFormat colorFormat, array<System::Byte>^ data, bool isBuildingMipMaps, bool isStatic);
+        void DrawSprite(Texture^ texture, unsigned int color, float x, float y, float x2, float y2);
 
     };
 };

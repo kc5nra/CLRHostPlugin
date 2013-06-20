@@ -19,11 +19,10 @@ namespace CLROBS
         ~AbstractPlugin();
     public:
 
-        virtual bool LoadPlugin() abstract;
-        virtual void UnloadPlugin() abstract;
-
-        virtual void OnStartStream() abstract;
-        virtual void OnStopStream() abstract;
+        virtual bool LoadPlugin() { return true; };
+        virtual void UnloadPlugin() {};
+        virtual void OnStartStream() {};
+        virtual void OnStopStream() {};
 
         property String^ Name
         {

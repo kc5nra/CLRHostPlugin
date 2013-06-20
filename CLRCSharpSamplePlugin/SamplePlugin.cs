@@ -9,6 +9,7 @@ namespace CSharpSamplePlugin
     class SamplePlugin : AbstractPlugin
     {
         private static SamplePlugin instance;
+        
         public static SamplePlugin Instance {
             get { return instance; }
         }
@@ -21,21 +22,11 @@ namespace CSharpSamplePlugin
             Name = "Sample Image Plugin";
             Description = "Sample Image Plugin lets you show a picture";
         }
+        
         public override bool LoadPlugin()
         {
             API.Instance.AddImageSourceFactory(new SampleImageSourceFactory());
             return true;
-        }
-
-        public override void UnloadPlugin()
-        {
-        }
-
-        public override void OnStartStream()
-        {
-        }
-        public override void OnStopStream()
-        {
         }
     }
 }

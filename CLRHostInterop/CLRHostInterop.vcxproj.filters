@@ -52,6 +52,9 @@
     <ClInclude Include="XElement.h">
       <Filter>Api\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="AbstractImageSource.h">
+      <Filter>Api\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -76,6 +79,9 @@
       <Filter>Api\Source</Filter>
     </ClCompile>
     <ClCompile Include="AbstractImageSourceFactory.cpp">
+      <Filter>Api\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractImageSource.cpp">
       <Filter>Api\Source</Filter>
     </ClCompile>
   </ItemGroup>

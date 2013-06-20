@@ -11,9 +11,8 @@ using System.Windows.Media;
 
 namespace CSharpSamplePlugin
 {
-    class SampleImageSource : CLROBS.ImageSource, IDisposable
+    class SampleImageSource : AbstractImageSource, IDisposable
     {
-
         private Object textureLock = new Object();
         private Texture texture = null;
         private XElement config;
@@ -29,8 +28,11 @@ namespace CSharpSamplePlugin
 
             lock (textureLock)
             {
-                texture.Dispose();
-                texture = null;
+                if (texture != null)
+                {
+                    texture.Dispose();
+                    texture = null;
+                }
 
                 if (File.Exists(imageFile))
                 {
@@ -39,11 +41,17 @@ namespace CSharpSamplePlugin
                     src.BeginInit();
                     src.UriSource = new Uri(imageFile);
                     src.EndInit();
-
                     
                     WriteableBitmap wb = new WriteableBitmap(src);
               
                     texture = GS.CreateTexture((UInt32)wb.PixelWidth, (UInt32)wb.PixelHeight, GSColorFormat.GS_BGRA, wb.BackBuffer, false, true);
+
+                    XElement parent = config.GetParent();
+                    parent.SetInt("cx", wb.PixelWidth);
+                    parent.SetInt("cy", wb.PixelHeight);
+                    Size.X = (float)wb.PixelWidth;
+                    Size.Y = (float)wb.PixelHeight;
+
                 }
                 else
                 {
@@ -52,17 +60,13 @@ namespace CSharpSamplePlugin
             }
         }
 
-        public void UpdateSettings()
+        override public void UpdateSettings()
         {
             XElement dataElement = config.GetElement("data");
             LoadTexture(config.GetString("file"));
         }
 
-        public void Tick(float seconds)
-        {
-        }
-
-        public void Render(float x, float y, float width, float height)
+        override public void Render(float x, float y, float width, float height)
         {
             lock (textureLock)
             {
@@ -71,23 +75,6 @@ namespace CSharpSamplePlugin
                     GS.DrawSprite(texture, 0xFFFFFFFF, x, y, x + width, y + height);
                 }
             }
-        }
-
-        public void Preprocess()
-        {
-        }
-
-        public Vector2 GetSize()
-        {
-            return new Vector2(100f, 100f);
-        }
-
-        public void EndScene()
-        {
-        }
-
-        public void BeginScene()
-        {
         }
 
         public void Dispose()
@@ -100,16 +87,6 @@ namespace CSharpSamplePlugin
                     texture = null;
                 }
             }
-        }
-
-        private API Api
-        {
-            get { return API.Instance; }
-        }
-
-        private GraphicsSystem GS
-        {
-            get { return GraphicsSystem.Instance; }
         }
     }
 }

@@ -9,7 +9,13 @@ namespace CLROBS {
         virtual void Preprocess();
         virtual void Tick(float fSeconds);
         virtual void Render(float x, float y, float width, float height);
-        virtual Vector2^ GetSize();
+        
+        property Vector2^ Size
+        {
+            virtual Vector2^ get();
+            virtual void set(Vector2^ size);
+        }
+        
         virtual void UpdateSettings();
         virtual void BeginScene() ;
         virtual void EndScene();

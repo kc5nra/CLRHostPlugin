@@ -57,7 +57,6 @@ namespace CSharpSamplePlugin
             if (dlg.ShowDialog().GetValueOrDefault()) {
                 LoadImage(new Uri(dlg.FileName));
             }
-            
         }
 
         private void LoadImage(Uri imageUri)

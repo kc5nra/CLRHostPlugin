@@ -23,7 +23,7 @@ namespace CLROBS {
         property float Y
         {
             float get() { return this->y; }
-            void set(float x) { this->y = y; }
+            void set(float y) { this->y = y; }
         }
     };
 }
