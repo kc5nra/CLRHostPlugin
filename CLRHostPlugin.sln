@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CLRHostPlugin", "CLRHostPlugin\CLRHostPlugin.vcxproj", "{D537A879-01B7-47CA-A757-367A63CD66C4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CLRHost.Interop", "CLRHostInterop\CLRHostInterop.vcxproj", "{18746141-1223-4FDF-BD6E-E7536CCADE4F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D537A879-01B7-47CA-A757-367A63CD66C4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D537A879-01B7-47CA-A757-367A63CD66C4}.Debug|Win32.Build.0 = Debug|Win32
+		{D537A879-01B7-47CA-A757-367A63CD66C4}.Debug|x64.ActiveCfg = Debug|x64
+		{D537A879-01B7-47CA-A757-367A63CD66C4}.Debug|x64.Build.0 = Debug|x64
+		{D537A879-01B7-47CA-A757-367A63CD66C4}.Release|Win32.ActiveCfg = Release|Win32
+		{D537A879-01B7-47CA-A757-367A63CD66C4}.Release|Win32.Build.0 = Release|Win32
+		{D537A879-01B7-47CA-A757-367A63CD66C4}.Release|x64.ActiveCfg = Release|x64
+		{D537A879-01B7-47CA-A757-367A63CD66C4}.Release|x64.Build.0 = Release|x64
+		{18746141-1223-4FDF-BD6E-E7536CCADE4F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{18746141-1223-4FDF-BD6E-E7536CCADE4F}.Debug|Win32.Build.0 = Debug|Win32
+		{18746141-1223-4FDF-BD6E-E7536CCADE4F}.Debug|x64.ActiveCfg = Debug|x64
+		{18746141-1223-4FDF-BD6E-E7536CCADE4F}.Debug|x64.Build.0 = Debug|x64
+		{18746141-1223-4FDF-BD6E-E7536CCADE4F}.Release|Win32.ActiveCfg = Release|Win32
+		{18746141-1223-4FDF-BD6E-E7536CCADE4F}.Release|Win32.Build.0 = Release|Win32
+		{18746141-1223-4FDF-BD6E-E7536CCADE4F}.Release|x64.ActiveCfg = Release|x64
+		{18746141-1223-4FDF-BD6E-E7536CCADE4F}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
