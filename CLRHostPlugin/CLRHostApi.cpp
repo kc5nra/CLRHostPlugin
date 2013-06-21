@@ -16,11 +16,6 @@ CLRHostApi::~CLRHostApi()
     imageSourceFactories.clear();
 }
 
-void CLRHostApi::CLRLog(std::wstring &logMessage)
-{
-    Log(TEXT("CLRApi>> %s"), logMessage.c_str());
-}
-
 void CLRHostApi::AddSettingsPane(CLRObjectRef &clrObjectReference)
 {
 
@@ -63,7 +58,7 @@ ImageSource* STDCALL CreateImageSource(XElement *element)
     }
 }
 
-bool ConfigureImageSource(XElement *element, bool isInitializing)
+bool STDCALL ConfigureImageSource(XElement *element, bool isInitializing)
 {
     if (element == nullptr) {
         Log(TEXT("Configuration element is null, skipping"));
@@ -123,9 +118,4 @@ void CLRHostApi::AddImageSourceFactory(CLRObjectRef &clrObjectRef)
         delete imageSourceFactory;
     }
 
-}
-
-void *CLRHostApi::GetMainWindowHandle()
-{
-    return API->GetMainWindow();
 }

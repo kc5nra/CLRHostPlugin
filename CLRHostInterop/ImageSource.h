@@ -7,7 +7,7 @@ namespace CLROBS {
     public interface class ImageSource
     {
         virtual void Preprocess();
-        virtual void Tick(float fSeconds);
+        virtual void Tick(float seconds);
         virtual void Render(float x, float y, float width, float height);
         
         property Vector2^ Size

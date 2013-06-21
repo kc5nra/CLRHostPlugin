@@ -77,7 +77,11 @@ namespace CLROBS {
         void MoveToTop();
         void MoveToBottom();
 
-        XElement^ GetParent();
+        property XElement^ Parent 
+        {
+        public:
+            CLROBS::XElement^ get();
+        }
 
         System::Int32 ElementCount();
         System::Int32 ElementCount(System::String^ name);

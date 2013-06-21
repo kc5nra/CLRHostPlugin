@@ -8,16 +8,8 @@ namespace CSharpSamplePlugin
 {
     class SamplePlugin : AbstractPlugin
     {
-        private static SamplePlugin instance;
-        
-        public static SamplePlugin Instance {
-            get { return instance; }
-        }
-
         public SamplePlugin()
         {
-            instance = this;
-
             // Setup the default properties
             Name = "Sample Image Plugin";
             Description = "Sample Image Plugin lets you show a picture";

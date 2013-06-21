@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 namespace CSharpSamplePlugin
 {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for SampleConfiguration.xaml
     /// </summary>
     public partial class SampleConfigurationDialog : Window
     {

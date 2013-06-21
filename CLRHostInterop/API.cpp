@@ -1,23 +1,24 @@
+#include "OBSApi.h"
 #include "API.h"
 #include "CLRHostApi.h"
 
 using namespace System::Runtime::InteropServices;
 
-void API::AddSettingsPane(SettingsPane^ settingsPane)
+void API::AddSettingsPane(CLROBS::SettingsPane^ settingsPane)
 {
-    IntPtr unkRef = Marshal::GetIUnknownForObject(settingsPane);
+    System::IntPtr unkRef = Marshal::GetIUnknownForObject(settingsPane);
     CLRObjectRef objectRef(unkRef.ToPointer(), nullptr);
     clrHostApi->AddSettingsPane(objectRef);
 }
 
-void API::AddImageSourceFactory(ImageSourceFactory^ imageSourceFactory)
+void API::AddImageSourceFactory(CLROBS::ImageSourceFactory^ imageSourceFactory)
 {
-    IntPtr unkRef = Marshal::GetIUnknownForObject(imageSourceFactory);
+    System::IntPtr unkRef = Marshal::GetIUnknownForObject(imageSourceFactory);
     CLRObjectRef objectRef(unkRef.ToPointer(), nullptr);
     clrHostApi->AddImageSourceFactory(objectRef);
 }
 
-IntPtr API::GetMainWindowHandle()
+System::IntPtr API::GetMainWindowHandle()
 {
-    return IntPtr(clrHostApi->GetMainWindowHandle());
+    return System::IntPtr(::API->GetMainWindow());
 }

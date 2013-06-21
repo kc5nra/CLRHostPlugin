@@ -14,11 +14,11 @@ namespace CLROBS {
         virtual void OnStartStream() = 0;
         virtual void OnStopStream() = 0;
 
-        property String^ Name {
-            virtual String^ get();
+        property System::String^ Name {
+            virtual System::String^ get();
         }
-        property String^ Description {
-            virtual String^ get();
+        property System::String^ Description {
+            virtual System::String^ get();
         }
     };
 };

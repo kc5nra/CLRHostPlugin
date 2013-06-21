@@ -34,10 +34,10 @@ CLRSamplePlugin/win32/Release
 CLRCSharpSamplePlugin/bin
 CLRCSharpSamplePlugin/obj
 
-x64/Debug
-x64/Release
-win32/Debug
-win32/Release
+CLRHostPlugin/x64/Debug
+CLRHostPlugin/x64/Release
+CLRHostPlugin/win32/Debug
+CLRHostPlugin/win32/Release
 
 Releasex86
 Releasex64

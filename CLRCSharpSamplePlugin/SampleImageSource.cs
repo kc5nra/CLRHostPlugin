@@ -46,9 +46,9 @@ namespace CSharpSamplePlugin
               
                     texture = GS.CreateTexture((UInt32)wb.PixelWidth, (UInt32)wb.PixelHeight, GSColorFormat.GS_BGRA, wb.BackBuffer, false, true);
 
-                    XElement parent = config.GetParent();
-                    parent.SetInt("cx", wb.PixelWidth);
-                    parent.SetInt("cy", wb.PixelHeight);
+                    config.Parent.SetInt("cx", wb.PixelWidth);
+                    config.Parent.SetInt("cy", wb.PixelHeight);
+
                     Size.X = (float)wb.PixelWidth;
                     Size.Y = (float)wb.PixelHeight;
 

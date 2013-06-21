@@ -11,11 +11,11 @@ namespace CLROBS {
         virtual ImageSource^ Create(XElement^ data) = 0;
         virtual bool ShowConfiguration(XElement^ data) = 0;
 
-        property String^ DisplayName {
-            virtual String^ get();
+        property System::String^ DisplayName {
+            virtual System::String^ get();
         }
-        property String^ ClassName {
-            virtual String^ get();
+        property System::String^ ClassName {
+            virtual System::String^ get();
         }      
     };
 };

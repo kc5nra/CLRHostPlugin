@@ -46,7 +46,7 @@ void CLROBS::XElement::MoveDown() { element->MoveDown(); }
 void CLROBS::XElement::MoveToTop() { element->MoveToTop(); }
 void CLROBS::XElement::MoveToBottom() { element->MoveToBottom(); }
 
-CLROBS::XElement^ CLROBS::XElement::GetParent()
+CLROBS::XElement^ CLROBS::XElement::Parent::get()
 {
     ::XElement *elementPtr = element->GetParent();
     return elementPtr ? gcnew CLROBS::XElement(elementPtr) : nullptr;
