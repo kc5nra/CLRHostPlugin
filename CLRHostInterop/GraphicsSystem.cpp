@@ -11,10 +11,15 @@ CLROBS::Texture::~Texture()
     delete texture;
 }
 
-void CLROBS::Texture::SetImage(System::Byte data[], GSImageFormat imageFormat, unsigned int pitch)
+void CLROBS::Texture::SetImage(System::IntPtr data, GSImageFormat imageFormat, unsigned int pitch)
 {
-    pin_ptr<unsigned char *> dataPtr = &data;
-    texture->SetImage(static_cast<void *>(dataPtr), static_cast<::GSImageFormat>(imageFormat), pitch);
+    texture->SetImage(data.ToPointer(), static_cast<::GSImageFormat>(imageFormat), pitch);
+}
+
+void CLROBS::Texture::SetImage(array<System::Byte>^ data, GSImageFormat imageFormat, unsigned int pitch)
+{
+    pin_ptr<unsigned char> dataPtr = &data[0];
+    texture->SetImage(dataPtr, static_cast<::GSImageFormat>(imageFormat), pitch);
 }
 
 CLROBS::GSColorFormat CLROBS::Texture::Format::get() 
@@ -67,9 +72,12 @@ CLROBS::Texture^ CLROBS::GraphicsSystem::CreateTexture(unsigned int width, unsig
 
 CLROBS::Texture^ CLROBS::GraphicsSystem::CreateTexture(unsigned int width, unsigned int height, CLROBS::GSColorFormat colorFormat, array<System::Byte>^ data, bool isBuildingMipMaps, bool isStatic)
 {
-    pin_ptr<unsigned char> dataPtr = &data[0];
-    ::Texture *texture = GS->CreateTexture(width, height, static_cast<::GSColorFormat>(colorFormat), dataPtr, isBuildingMipMaps, isStatic);
-    return gcnew Texture(texture);
+    if (data != nullptr) {
+        pin_ptr<unsigned char> dataPtr = &data[0];
+        return gcnew Texture(GS->CreateTexture(width, height, static_cast<::GSColorFormat>(colorFormat), dataPtr, isBuildingMipMaps, isStatic));
+    } else {
+        return gcnew Texture(GS->CreateTexture(width, height, static_cast<::GSColorFormat>(colorFormat), nullptr, isBuildingMipMaps, isStatic));
+    }
 }
 
 void CLROBS::GraphicsSystem::DrawSprite(CLROBS::Texture^ texture, unsigned int color, float x, float y, float x2, float y2)

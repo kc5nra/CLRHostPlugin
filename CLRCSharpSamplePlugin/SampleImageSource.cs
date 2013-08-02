@@ -44,7 +44,9 @@ namespace CSharpSamplePlugin
                     
                     WriteableBitmap wb = new WriteableBitmap(src);
               
-                    texture = GS.CreateTexture((UInt32)wb.PixelWidth, (UInt32)wb.PixelHeight, GSColorFormat.GS_BGRA, wb.BackBuffer, false, true);
+                    texture = GS.CreateTexture((UInt32)wb.PixelWidth, (UInt32)wb.PixelHeight, GSColorFormat.GS_BGRA, null, false, false);
+
+                    texture.SetImage(wb.BackBuffer, GSImageFormat.GS_IMAGEFORMAT_BGRA, (UInt32)(wb.PixelWidth * 4));
 
                     config.Parent.SetInt("cx", wb.PixelWidth);
                     config.Parent.SetInt("cy", wb.PixelHeight);

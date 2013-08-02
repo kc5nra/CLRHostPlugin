@@ -34,3 +34,15 @@ cd Releasex86
 7z a CHP-%CHP_VERSION_BARE%-x86.7z .
 move CHP-%CHP_VERSION_BARE%-x86.7z ..
 cd ..
+
+rd Samples /s /q
+mkdir Samples
+mkdir Samples\CLRCSharpSamplePlugin
+xcopy CLRCSharpSamplePlugin\* Samples\CLRCSharpSamplePlugin /s
+rd /s /q Samples\CLRCSharpSamplePlugin\bin
+rd /s /q Samples\CLRCSharpSamplePlugin\obj
+
+cd Samples
+7z a CHP-%CHP_VERSION_BARE%-Samples.7z .
+move CHP-%CHP_VERSION_BARE%-Samples.7z ..
+cd ..

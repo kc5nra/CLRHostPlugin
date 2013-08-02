@@ -107,7 +107,8 @@ namespace CLROBS
 
     public:
         
-        void SetImage(System::Byte data[], GSImageFormat imageFormat, unsigned int pitch);
+        void SetImage(array<System::Byte>^ data, GSImageFormat imageFormat, unsigned int pitch);
+        void SetImage(System::IntPtr data, GSImageFormat imageFormat, unsigned int pitch);
 
     public:
         property GSColorFormat Format
