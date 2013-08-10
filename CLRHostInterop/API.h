@@ -5,6 +5,8 @@
 #include "AbstractWPFSettingsPane.h"
 #include "ImageSourceFactory.h"
 
+using namespace System::Threading;
+using namespace System::Threading::Tasks;
 using namespace CLROBS;
 
 class CLRHostApi;
@@ -26,6 +28,7 @@ namespace CLROBS
         CLRHostApi *clrHostApi;
 
     public:
+        
         API(long long api)
         {
             instance = this;
@@ -36,5 +39,6 @@ namespace CLROBS
         void AddSettingsPane(SettingsPane^ settingsPane);
         void AddImageSourceFactory(ImageSourceFactory^ imageSourceFactory);
         IntPtr API::GetMainWindowHandle();
+        void Log(System::String^ format, ...array<System::Object^> ^arguments);
     };
 };

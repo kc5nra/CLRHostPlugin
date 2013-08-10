@@ -1,15 +1,8 @@
 #include "XElement.h"
 #include "OBSApi.h"
+#include "OBSUtils.h"
 
-#include <msclr\marshal_cppstd.h>
-
-using namespace msclr::interop;
 using namespace CLROBS;
-
-std::wstring ToWString(System::String^ string)
-{
-    return marshal_as<std::wstring, System::String^>(string);
-}
 
 System::String^ CLROBS::XElement::Name::get() 
 { 

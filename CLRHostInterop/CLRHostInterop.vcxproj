@@ -199,6 +199,8 @@
     <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="ImageSource.h" />
     <ClCompile Include="AbstractPlugin.cpp" />
+    <ClCompile Include="OBSUtils.cpp" />
+    <ClCompile Include="OBSUtils.h" />
     <ClCompile Include="XElement.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -84,6 +84,12 @@
     <ClCompile Include="AbstractImageSource.cpp">
       <Filter>Api\Source</Filter>
     </ClCompile>
+    <ClCompile Include="OBSUtils.h">
+      <Filter>Api\Headers</Filter>
+    </ClCompile>
+    <ClCompile Include="OBSUtils.cpp">
+      <Filter>Api\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

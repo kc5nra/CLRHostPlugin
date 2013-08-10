@@ -102,7 +102,7 @@ CLRImageSource *CLRImageSourceFactory::Create(CLRXElement *element)
     _ParameterInfo *elementTypeInfo = nullptr;
     _Type *elementType = nullptr;
     _Type *returnType = nullptr;
-    CLRImageSource *imageSource;
+    CLRImageSource *imageSource = nullptr;
 
     // Local
     HRESULT hr;

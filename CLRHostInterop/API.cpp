@@ -1,6 +1,7 @@
 #include "OBSApi.h"
 #include "API.h"
 #include "CLRHostApi.h"
+#include "OBSUtils.h"
 
 using namespace System::Runtime::InteropServices;
 
@@ -21,4 +22,10 @@ void API::AddImageSourceFactory(CLROBS::ImageSourceFactory^ imageSourceFactory)
 System::IntPtr API::GetMainWindowHandle()
 {
     return System::IntPtr(::API->GetMainWindow());
+}
+
+void API::Log(System::String^ format, ...array<System::Object^> ^arguments)
+{
+    System::String ^formattedString = System::String::Format(format, arguments);
+    ::Log(L"CLRHost:: %s", ToWString(formattedString).c_str());
 }
