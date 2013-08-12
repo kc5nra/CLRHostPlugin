@@ -233,6 +233,7 @@
     <ClCompile Include="CLRObject.cpp" />
     <ClCompile Include="CLRObjectRef.cpp" />
     <ClCompile Include="CLRPlugin.cpp" />
+    <ClCompile Include="CLRSettingsPane.cpp" />
     <ClCompile Include="CLRVector2.cpp" />
     <ClCompile Include="CLRXElement.cpp" />
   </ItemGroup>
@@ -251,6 +252,7 @@
     <ClInclude Include="Localization.h" />
     <ClInclude Include="CLRHostPlugin.h" />
     <ClInclude Include="CLRSettingsPane.h" />
+    <ClInclude Include="SettingsPaneBridge.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,9 +13,6 @@
     <ClInclude Include="CLRHostApi.h">
       <Filter>Api</Filter>
     </ClInclude>
-    <ClInclude Include="CLRSettingsPane.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="CLRObjectRef.h">
       <Filter>Api</Filter>
     </ClInclude>
@@ -42,6 +39,12 @@
     </ClInclude>
     <ClInclude Include="CLRXElement.h">
       <Filter>Source\Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="CLRSettingsPane.h">
+      <Filter>Source\Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsPaneBridge.h">
+      <Filter>Bridges</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +93,9 @@
       <Filter>Source\Wrappers</Filter>
     </ClCompile>
     <ClCompile Include="CLRXElement.cpp">
+      <Filter>Source\Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="CLRSettingsPane.cpp">
       <Filter>Source\Wrappers</Filter>
     </ClCompile>
   </ItemGroup>

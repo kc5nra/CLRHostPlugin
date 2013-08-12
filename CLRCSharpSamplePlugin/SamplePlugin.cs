@@ -18,6 +18,7 @@ namespace CSharpSamplePlugin
         public override bool LoadPlugin()
         {
             API.Instance.AddImageSourceFactory(new SampleImageSourceFactory());
+            API.Instance.AddSettingsPane(new SampleSettingsPane());
             return true;
         }
     }

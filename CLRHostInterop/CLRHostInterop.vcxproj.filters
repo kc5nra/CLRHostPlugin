@@ -28,16 +28,10 @@
     <ClInclude Include="API.h">
       <Filter>Api\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="SettingsPane.h">
-      <Filter>Api\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="AbstractImageSourceFactory.h">
       <Filter>Api\Headers</Filter>
     </ClInclude>
     <ClInclude Include="AbstractPlugin.h">
-      <Filter>Api\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractWPFSettingsPane.h">
       <Filter>Api\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Plugin.h">
@@ -55,15 +49,18 @@
     <ClInclude Include="AbstractImageSource.h">
       <Filter>Api\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="SettingsPane.h">
+      <Filter>Api\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractWPFSettingsPane.h">
+      <Filter>Api\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AbstractPlugin.cpp">
-      <Filter>Api\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AbstractWPFSettingsPane.cpp">
       <Filter>Api\Source</Filter>
     </ClCompile>
     <ClCompile Include="ImageSource.h">
@@ -88,6 +85,9 @@
       <Filter>Api\Headers</Filter>
     </ClCompile>
     <ClCompile Include="OBSUtils.cpp">
+      <Filter>Api\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractWPFSettingsPane.cpp">
       <Filter>Api\Source</Filter>
     </ClCompile>
   </ItemGroup>

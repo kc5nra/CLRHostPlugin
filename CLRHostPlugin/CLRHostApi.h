@@ -11,6 +11,7 @@ class CLRHostApi
 {
 private:
     std::map<std::wstring, CLRImageSourceFactory *> imageSourceFactories;
+
 public:
     ~CLRHostApi();
 public:

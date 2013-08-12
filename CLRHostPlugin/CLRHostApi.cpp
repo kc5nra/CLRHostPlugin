@@ -3,7 +3,9 @@
 #include "CLRHostPlugin.h"
 #include "CLRImageSource.h"
 #include "CLRImageSourceFactory.h"
+#include "CLRSettingsPane.h"
 #include "ImageSourceBridge.h"
+#include "SettingsPaneBridge.h"
 
 CLRHostApi::~CLRHostApi()
 {
@@ -16,10 +18,16 @@ CLRHostApi::~CLRHostApi()
     imageSourceFactories.clear();
 }
 
-void CLRHostApi::AddSettingsPane(CLRObjectRef &clrObjectReference)
+void CLRHostApi::AddSettingsPane(CLRObjectRef &clrObjectRef)
 {
+    CLRHost *clrHost = CLRHostPlugin::instance->GetCLRHost();
 
+    CLRSettingsPane *clrSettingsPane = new CLRSettingsPane();
+    if (clrSettingsPane->Attach(clrObjectRef, clrHost->GetSettingsPaneType())) {
+        OBSAddSettingsPane(new SettingsPaneBridge(clrSettingsPane));
+    }
 }
+
 ImageSource* STDCALL CreateImageSource(XElement *element)
 {
     if (element == nullptr) 
