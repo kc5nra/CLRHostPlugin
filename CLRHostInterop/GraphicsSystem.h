@@ -92,17 +92,15 @@ namespace CLROBS
         GS_IMAGEFORMAT_BGRX,
         GS_IMAGEFORMAT_BGRA,
     };
-
-
-
+    
     public ref class Texture
     {
 
     private:
         ::Texture *texture;
-
     public:
         Texture(::Texture *texture);
+        Texture(System::IntPtr texture);
         ~Texture();
 
     public:
@@ -161,6 +159,8 @@ namespace CLROBS
 
     public:
         
+        System::IntPtr CreateSharedTexture(unsigned int width, unsigned int height, GSColorFormat colorFormat);
+        Texture^ CreateTextureFromSharedHandle(unsigned int width, unsigned int height, System::IntPtr sharedHandle);
         Texture^ CreateTexture(unsigned int width, unsigned int height, GSColorFormat colorFormat, System::IntPtr data, bool isBuildingMipMaps, bool isStatic);
         Texture^ CreateTexture(unsigned int width, unsigned int height, GSColorFormat colorFormat, array<System::Byte>^ data, bool isBuildingMipMaps, bool isStatic);
         void DrawSprite(Texture^ texture, unsigned int color, float x, float y, float x2, float y2);

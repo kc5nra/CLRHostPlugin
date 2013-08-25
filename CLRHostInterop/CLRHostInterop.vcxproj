@@ -68,29 +68,33 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Program Files (x86)\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;C:\Program Files (x86)\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\;$(LibraryPath)</LibraryPath>
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <GenerateManifest>false</GenerateManifest>
+    <IncludePath>C:\Program Files\Microsoft SDKs\Windows\v6.0A;$(DXSDK_DIR)Include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Program Files (x86)\Windows Kits\8.0\Lib\win8\um\x64;C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x64;C:\Program Files (x86)\Windows Kits\8.0\Lib\win8\um\x64;C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\x64;$(LibraryPath)</LibraryPath>
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <GenerateManifest>false</GenerateManifest>
+    <IncludePath>C:\Program Files\Microsoft SDKs\Windows\v6.0A;$(DXSDK_DIR)Include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>C:\Program Files (x86)\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;C:\Program Files (x86)\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\;$(LibraryPath)</LibraryPath>
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <GenerateManifest>false</GenerateManifest>
+    <IncludePath>C:\Program Files\Microsoft SDKs\Windows\v6.0A;$(DXSDK_DIR)Include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>C:\Program Files (x86)\Windows Kits\8.0\Lib\win8\um\x64;C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x64;C:\Program Files (x86)\Windows Kits\8.0\Lib\win8\um\x64;C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib\x64;$(LibraryPath)</LibraryPath>
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <GenerateManifest>false</GenerateManifest>
+    <IncludePath>C:\Program Files\Microsoft SDKs\Windows\v6.0A;$(DXSDK_DIR)Include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -101,10 +105,11 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)..\OBS\OBSApi;$(ProjectDir)..\CLRHostPlugin</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OBSApi.lib</AdditionalDependencies>
+      <AdditionalDependencies>OBSApi.lib;dxgi.lib;dxguid.lib;d3d10_1.lib;d3dx10.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>"$(SolutionDir)..\OBS\OBSApi\Debug";%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -120,10 +125,11 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)..\OBS\OBSApi;$(ProjectDir)..\CLRHostPlugin</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OBSApi.lib</AdditionalDependencies>
+      <AdditionalDependencies>OBSApi.lib;dxgi.lib;dxguid.lib;d3d10_1.lib;d3dx10.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>"$(SolutionDir)..\OBS\OBSApi\x64\Debug";%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -138,10 +144,11 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)..\OBS\OBSApi;$(ProjectDir)..\CLRHostPlugin</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OBSApi.lib</AdditionalDependencies>
+      <AdditionalDependencies>OBSApi.lib;dxgi.lib;dxguid.lib;d3d10_1.lib;d3dx10.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>"$(SolutionDir)..\OBS\OBSApi\Release";%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -156,10 +163,11 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)..\OBS\OBSApi;$(ProjectDir)..\CLRHostPlugin</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OBSApi.lib</AdditionalDependencies>
+      <AdditionalDependencies>OBSApi.lib;dxgi.lib;dxguid.lib;d3d10_1.lib;d3dx10.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>"$(SolutionDir)..\OBS\OBSApi\x64\Release";%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>

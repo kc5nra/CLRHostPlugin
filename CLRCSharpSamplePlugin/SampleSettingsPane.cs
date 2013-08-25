@@ -27,7 +27,7 @@ namespace CSharpSamplePlugin
         
         public override bool HasDefaults()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public override void SetDefaults()

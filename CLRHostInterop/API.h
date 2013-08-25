@@ -6,7 +6,6 @@
 #include "ImageSourceFactory.h"
 
 using namespace System::Threading;
-using namespace System::Threading::Tasks;
 using namespace CLROBS;
 
 class CLRHostApi;
@@ -32,6 +31,11 @@ namespace CLROBS
         API(long long api)
         {
             instance = this;
+            
+            if (Application::Current == nullptr) {
+                Application::Application().ShutdownMode = ShutdownMode::OnExplicitShutdown;
+            }
+
             this->clrHostApi = reinterpret_cast<CLRHostApi *>(api);
         }
 
@@ -40,5 +44,7 @@ namespace CLROBS
         void AddImageSourceFactory(ImageSourceFactory^ imageSourceFactory);
         IntPtr API::GetMainWindowHandle();
         void Log(System::String^ format, ...array<System::Object^> ^arguments);
+        System::String^ GetPluginDataPath();
+        void SetChangedSettings(bool isChanged);
     };
 };

@@ -120,6 +120,32 @@ HRESULT GetInstalledClrRuntimes(ICLRMetaHost *clrMetaHost, std::vector<std::wstr
     return hr;
 }
 
+void GetFilesInDirectory(std::vector<std::wstring> &list, std::wstring pattern, int attributes)
+{
+
+    WIN32_FIND_DATA search_data;
+
+    memset(&search_data, 0, sizeof(WIN32_FIND_DATA));
+
+    HANDLE handle = FindFirstFile(pattern.c_str(), &search_data);
+
+    while(handle != INVALID_HANDLE_VALUE)
+    {
+        if (search_data.dwFileAttributes & attributes) {
+            std::wstring file(search_data.cFileName);
+            if (file != INTEROP_ASSEMBLY) {
+                list.push_back(file);
+            }
+        }
+
+        if(FindNextFile(handle, &search_data) == FALSE) {
+            break;
+        }
+    }
+
+    FindClose(handle);
+}
+
 bool CLRHost::Initialize() 
 {
     assert(!isInitialized);
@@ -146,6 +172,9 @@ bool CLRHost::Initialize()
         hr = GetInstalledClrRuntimes(clrMetaHost, clrRuntimeList);
         if (SUCCEEDED(hr)) {
             if (clrRuntimeList.size()) {
+                for(auto itor = clrRuntimeList.begin(); itor < clrRuntimeList.end(); itor++) {
+                    Log(TEXT("CLRHost::Initialize() Found version %s .NET runtime"), (*(itor)).c_str());
+                }
                 std::wstring version = *(clrRuntimeList.end() - 1);
                 Log(TEXT("CLRHost::Initialize() attempting to use %s .NET runtime"), version.c_str());
 
@@ -253,7 +282,6 @@ bool CLRHost::LoadInteropLibrary()
         Log(TEXT("IAppDomainSetup::QueryInterface() failed: 0x%08lx"), hr);
         goto errorCleanup;
     }
-
     hr = appDomainSetup->put_ApplicationBase(bstrPluginPath);
     if (FAILED(hr)) {
         Log(TEXT("IAppDomainSetup::put_ApplicationBase(%s) failed: 0x%08lx"), INTEROP_PATH, hr);
@@ -269,7 +297,24 @@ bool CLRHost::LoadInteropLibrary()
         Log(TEXT("IAppDomainSetup::put_ApplicationName(%s) failed: 0x%08lx"), INTEROP_ASSEMBLY, hr);
         goto errorCleanup;
     }
-
+    {
+        std::vector<std::wstring> files;
+        GetFilesInDirectory(files, INTEROP_PATH TEXT("*"), FILE_ATTRIBUTE_DIRECTORY);
+        std::wstring combinedPath;
+        for(auto itor = files.begin(); itor < files.end(); itor++)
+        {
+            if (*itor != TEXT(".") && *itor != TEXT("..")) {
+                combinedPath.append(*itor).append(L";");
+            }
+        }
+   
+        bstr_t combinedPathString(combinedPath.c_str());
+        hr = appDomainSetup->put_PrivateBinPath(combinedPathString);
+        if (FAILED(hr)) {
+            Log(TEXT("IAppDomainSetup::put_PrivateBinPath(%s) failed: 0x%08lx"), INTEROP_ASSEMBLY, hr);
+            goto errorCleanup;
+        }
+    }
 
     hr = corRuntimeHost->CreateDomainEx(interopAssemblyDll, appDomainSetup, nullptr, &appDomainUnknown);
     if (FAILED(hr)) {
@@ -403,30 +448,6 @@ success:
     return true;
 }
 
-void GetFilesInDirectory(std::vector<std::wstring> &list, std::wstring directoryName)
-{
-
-    WIN32_FIND_DATA search_data;
-
-    memset(&search_data, 0, sizeof(WIN32_FIND_DATA));
-
-    HANDLE handle = FindFirstFile(INTEROP_PATH_SEARCH, &search_data);
-
-    while(handle != INVALID_HANDLE_VALUE)
-    {
-        std::wstring file(search_data.cFileName);
-        if (file != INTEROP_ASSEMBLY) {
-            list.push_back(file);
-        }
-
-        if(FindNextFile(handle, &search_data) == FALSE) {
-            break;
-        }
-    }
-
-    FindClose(handle);
-}
-
 CLRPlugin *CreatePluginInstance(std::wstring &typeName, _Type *type, _Type *pluginType, _Type *libraryType, IUnknown *libraryInstance) {
     HRESULT hr;
 
@@ -497,7 +518,7 @@ void CLRHost::LoadPlugins()
     }
 
     std::vector<std::wstring> files;
-    GetFilesInDirectory(files, INTEROP_PATH);
+    GetFilesInDirectory(files, INTEROP_PATH TEXT("*.dll"), -1);
     HRESULT hr;
 
     for(auto i = files.begin(); i < files.end(); i++) {

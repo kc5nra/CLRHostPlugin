@@ -25,10 +25,7 @@ CLRObject::~CLRObject() {
         HRESULT hr = objectRef->QueryInterface(&disposable);
         if (SUCCEEDED(hr) && disposable) {
             disposable->Dispose();
-        }
-        if (disposable) {
             disposable->Release();
-            disposable = nullptr;
         }
     }
     Detach();

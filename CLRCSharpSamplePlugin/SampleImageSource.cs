@@ -11,7 +11,7 @@ using System.Windows.Media;
 
 namespace CSharpSamplePlugin
 {
-    class SampleImageSource : AbstractImageSource, IDisposable
+    class SampleImageSource : AbstractImageSource//, IDisposable
     {
         private Object textureLock = new Object();
         private Texture texture = null;
