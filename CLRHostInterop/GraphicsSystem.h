@@ -164,6 +164,8 @@ namespace CLROBS
         Texture^ CreateTexture(unsigned int width, unsigned int height, GSColorFormat colorFormat, System::IntPtr data, bool isBuildingMipMaps, bool isStatic);
         Texture^ CreateTexture(unsigned int width, unsigned int height, GSColorFormat colorFormat, array<System::Byte>^ data, bool isBuildingMipMaps, bool isStatic);
         void DrawSprite(Texture^ texture, unsigned int color, float x, float y, float x2, float y2);
+        void DrawSpriteEx(Texture^ texture, unsigned int color, float x, float y, float x2, float y2, float u, float v, float u2, float v2);
+        void DrawSpriteExRotate(Texture^ texture, unsigned int color, float x, float y, float x2, float y2, float u, float v, float u2, float v2, float degrees);
 
     };
 };

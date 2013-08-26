@@ -46,5 +46,6 @@ namespace CLROBS
         void Log(System::String^ format, ...array<System::Object^> ^arguments);
         System::String^ GetPluginDataPath();
         void SetChangedSettings(bool isChanged);
+        int GetMaxFPS();
     };
 };

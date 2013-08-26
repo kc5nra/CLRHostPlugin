@@ -126,3 +126,15 @@ void CLROBS::GraphicsSystem::DrawSprite(CLROBS::Texture^ texture, unsigned int c
     ::Texture *nativeTexture = static_cast<::Texture *>(texture->OBSTexture.ToPointer());
     GS->DrawSprite(nativeTexture, color, x, y, x2, y2);
 }
+
+void CLROBS::GraphicsSystem::DrawSpriteEx(CLROBS::Texture^ texture, unsigned int color, float x, float y, float x2, float y2, float u, float v, float u2, float v2)
+{
+    ::Texture *nativeTexture = static_cast<::Texture *>(texture->OBSTexture.ToPointer());
+    GS->DrawSpriteEx(nativeTexture, color, x, y, x2, y2, u, v, u2, v2);
+}
+
+void CLROBS::GraphicsSystem::DrawSpriteExRotate(CLROBS::Texture^ texture, unsigned int color, float x, float y, float x2, float y2, float u, float v, float u2, float v2, float degrees)
+{
+    ::Texture *nativeTexture = static_cast<::Texture *>(texture->OBSTexture.ToPointer());
+    GS->DrawSpriteExRotate(nativeTexture, color, x, y, x2, y2, u, v, u2, v2, degrees);
+}

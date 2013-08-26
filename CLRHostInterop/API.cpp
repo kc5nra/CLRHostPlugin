@@ -39,3 +39,8 @@ void API::SetChangedSettings(bool isChanged)
 {
     ::API->SetChangedSettings(isChanged);
 }
+
+int API::GetMaxFPS()
+{
+    return ::API->GetMaxFPS();
+}
