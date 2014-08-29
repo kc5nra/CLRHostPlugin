@@ -4,6 +4,7 @@
 
 using namespace msclr::interop;
 
-namespace CLROBS {
+namespace CLROBS
+{
     std::wstring ToWString(System::String^ string);
 };

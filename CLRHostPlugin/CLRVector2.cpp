@@ -6,40 +6,25 @@
 
 bool CLRVector2::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectType)
 {
-    CLRObject::Attach(clrObjectRef, objectType);
+    if (CLRObject::Attach(clrObjectRef, objectType)) {
+        if (!CLR_GET_METHOD(objectType, "get_X", &getXMethod)) {
+            goto errorCleanup;
+        }
 
-    bstr_t getXMethodName("get_X");
-    bstr_t setXMethodName("set_X");
-    bstr_t getYMethodName("get_Y");
-    bstr_t setYMethodName("set_Y");
+        if (!CLR_GET_METHOD(objectType, "set_X", &setXMethod)) {
+            goto errorCleanup;
+        }
 
-    HRESULT hr;
+        if (!CLR_GET_METHOD(objectType, "get_Y", &getYMethod)) {
+            goto errorCleanup;
+        }
 
-    hr = objectType->GetMethod_6(getXMethodName, &getXMethod);
-    if (FAILED(hr)) {
-        Log(TEXT("Failed to get Create method definition of ImageSourceFactory class: 0x%08lx"), hr); 
-        goto errorCleanup;
+        if (!CLR_GET_METHOD(objectType, "set_Y", &setYMethod)) {
+            goto errorCleanup;
+        }
+
+        goto success;
     }
-
-    hr = objectType->GetMethod_6(setXMethodName, &setXMethod);
-    if (FAILED(hr)) {
-        Log(TEXT("Failed to get GetDisplayName method definition of ImageSourceFactory class: 0x%08lx"), hr); 
-        goto errorCleanup;
-    }
-
-    hr = objectType->GetMethod_6(getYMethodName, &getYMethod);
-    if (FAILED(hr)) {
-        Log(TEXT("Failed to get GetSourceClassName method definition of ImageSourceFactory class: 0x%08lx"), hr); 
-        goto errorCleanup;
-    }
-
-    hr = objectType->GetMethod_6(setYMethodName, &setYMethod);
-    if (FAILED(hr)) {
-        Log(TEXT("Failed to get ShowConfiguration method definition of ImageSourceFactory class: 0x%08lx"), hr); 
-        goto errorCleanup;
-    }
-
-    goto success;
 
 errorCleanup:
 
@@ -74,17 +59,15 @@ void CLRVector2::Detach()
 
 float CLRVector2::getX()
 {
-    if (!IsValid()) {
-        Log(TEXT("CLRVector2::getX() no managed object attached"));
-        return 0.0f;
-    }
+    CLROBJECT_CHECK_VALID_NONVOID(0);
 
     variant_t objectRef(GetObjectRef());
     variant_t returnVal;
 
     HRESULT hr = getXMethod->Invoke_3(objectRef, nullptr, &returnVal);
     if (FAILED(hr)) {
-        Log(TEXT("CLRVector2::getX() Failed to invoked get on managed property Y: 0x%08lx"), hr); 
+        Log(L"CLRVector2::getX() Failed to invoked get on managed "
+            L"property Y: 0x%08lx", hr);
         return 0.0f;
     }
 
@@ -93,9 +76,7 @@ float CLRVector2::getX()
 
 void CLRVector2::setX(float x)
 {
-    if (!IsValid()) {
-        Log(TEXT("CLRVector2::setX() no managed object attached"));
-    }
+    CLROBJECT_CHECK_VALID_VOID();
 
     variant_t objectRef(GetObjectRef());
     variant_t returnVal;
@@ -108,7 +89,8 @@ void CLRVector2::setX(float x)
     SafeArrayDestroy(args);
 
     if (FAILED(hr)) {
-        Log(TEXT("CLRVector2::setX() Failed to invoked set on managed property X: 0x%08lx"), hr); 
+        Log(L"CLRVector2::setX() Failed to invoked set on managed "
+            L"property X: 0x%08lx", hr);
         return;
     }
 
@@ -117,17 +99,15 @@ void CLRVector2::setX(float x)
 
 float CLRVector2::getY()
 {
-    if (!IsValid()) {
-        Log(TEXT("CLRVector2::getY() no managed object attached"));
-        return 0.0f;
-    }
+    CLROBJECT_CHECK_VALID_NONVOID(0);
 
     variant_t objectRef(GetObjectRef());
     variant_t returnVal;
 
     HRESULT hr = getYMethod->Invoke_3(objectRef, nullptr, &returnVal);
     if (FAILED(hr)) {
-        Log(TEXT("CLRVector2::getY() Failed to invoked get on managed property Y: 0x%08lx"), hr); 
+        Log(L"CLRVector2::getY() Failed to invoked get on managed property "
+            L"Y: 0x%08lx", hr);
         return 0.0f;
     }
 
@@ -136,9 +116,7 @@ float CLRVector2::getY()
 
 void CLRVector2::setY(float y)
 {
-    if (!IsValid()) {
-        Log(TEXT("CLRVector2::setY() no managed object attached"));
-    }
+    CLROBJECT_CHECK_VALID_VOID();
 
     variant_t objectRef(GetObjectRef());
     variant_t returnVal;
@@ -151,7 +129,8 @@ void CLRVector2::setY(float y)
     SafeArrayDestroy(args);
 
     if (FAILED(hr)) {
-        Log(TEXT("CLRVector2::setY() Failed to invoked set on managed property Y: 0x%08lx"), hr); 
+        Log(L"CLRVector2::setY() Failed to invoked set on managed property "
+            L"Y: 0x%08lx", hr);
         return;
     }
 

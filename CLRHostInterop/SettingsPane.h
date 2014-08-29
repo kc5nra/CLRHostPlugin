@@ -2,7 +2,8 @@
 
 using namespace System;
 
-namespace CLROBS {
+namespace CLROBS
+{
     public interface class SettingsPane
     {
         virtual long long CreatePane(long long parentHwnd) = 0;

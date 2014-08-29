@@ -11,8 +11,8 @@
 #define CHP_VERSION L" !INTERNAL VERSION!"
 #endif
 
-static CTSTR localizationStrings[] = {
-    KEY("PluginName"),			L"CLR Host Plugin",
-    KEY("PluginDescription"),	L"Allows plugins to be written in any CLR language\n\n"
-                                L"Plugin Version: " CHP_VERSION,
+static CTSTR localizationStrings [] = {
+    KEY("PluginName"), L"CLR Host Plugin",
+    KEY("PluginDescription"), L"Allows plugins to be written in any CLR language\n\n"
+    L"Plugin Version: " CHP_VERSION,
 };

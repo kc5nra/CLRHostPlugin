@@ -8,41 +8,25 @@
 
 bool CLRImageSourceFactory::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectType)
 {
-    CLRObject::Attach(clrObjectRef, objectType);
+    if (CLRObject::Attach(clrObjectRef, objectType)) {
+        if (!CLR_GET_METHOD(objectType, "Create", &createMethod)) {
+            goto errorCleanup;
+        }
 
-    bstr_t createMethodName("Create");
-    bstr_t getDisplayNameMethodName("get_DisplayName");
-    bstr_t getSourceClassNameMethodName("get_ClassName");
-    bstr_t showConfigurationMethodName("ShowConfiguration");
+        if (!CLR_GET_METHOD(objectType, "get_DisplayName", &getDisplayNameMethod)) {
+            goto errorCleanup;
+        }
 
+        if (!CLR_GET_METHOD(objectType, "get_ClassName", &getSourceClassNameMethod)) {
+            goto errorCleanup;
+        }
 
-    HRESULT hr;
+        if (!CLR_GET_METHOD(objectType, "ShowConfiguration", &showConfigurationMethod)) {
+            goto errorCleanup;
+        }
 
-    hr = objectType->GetMethod_6(createMethodName, &createMethod);
-    if (FAILED(hr)) {
-        Log(TEXT("Failed to get Create method definition of ImageSourceFactory class: 0x%08lx"), hr); 
-        goto errorCleanup;
+        goto success;
     }
-
-    hr = objectType->GetMethod_6(getDisplayNameMethodName, &getDisplayNameMethod);
-    if (FAILED(hr)) {
-        Log(TEXT("Failed to get GetDisplayName method definition of ImageSourceFactory class: 0x%08lx"), hr); 
-        goto errorCleanup;
-    }
-
-    hr = objectType->GetMethod_6(getSourceClassNameMethodName, &getSourceClassNameMethod);
-    if (FAILED(hr)) {
-        Log(TEXT("Failed to get GetSourceClassName method definition of ImageSourceFactory class: 0x%08lx"), hr); 
-        goto errorCleanup;
-    }
-
-    hr = objectType->GetMethod_6(showConfigurationMethodName, &showConfigurationMethod);
-    if (FAILED(hr)) {
-        Log(TEXT("Failed to get ShowConfiguration method definition of ImageSourceFactory class: 0x%08lx"), hr); 
-        goto errorCleanup;
-    }
-
-    goto success;
 
 errorCleanup:
 
@@ -77,10 +61,7 @@ void CLRImageSourceFactory::Detach()
 
 CLRImageSource *CLRImageSourceFactory::Create(CLRXElement *element)
 {
-    if (!IsValid()) {
-        Log(TEXT("CLRImageSourceFactory::Create() no managed object attached"));
-        return nullptr;
-    }
+    CLROBJECT_CHECK_VALID_NONVOID(nullptr);
 
     // Must Release
     SAFEARRAY *createArgs = nullptr;
@@ -98,18 +79,19 @@ CLRImageSource *CLRImageSourceFactory::Create(CLRXElement *element)
     variant_t returnVal;
     variant_t elementRef(element->GetObjectRef());
     LONG argIndex = 0;
-        
+
     createArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
 
-    hr = SafeArrayPutElement(createArgs, &argIndex, &elementRef); 
-    if (FAILED(hr)) { 
-        Log(TEXT("CLRImageSourceFactory::Create() failed to set config argument pointer: 0x%08lx"), hr); 
+    hr = SafeArrayPutElement(createArgs, &argIndex, &elementRef);
+    if (FAILED(hr)) {
+        Log(L"CLRImageSourceFactory::Create() failed to set config argument "
+            L"pointer: 0x%08lx", hr);
         goto errorCleanup;
     }
 
     hr = createMethod->Invoke_3(objectRef, createArgs, &returnVal);
     if (FAILED(hr) || !returnVal.punkVal) {
-        Log(TEXT("Failed to invoke Create on managed instance: 0x%08lx"), hr); 
+        Log(L"Failed to invoke Create on managed instance: 0x%08lx", hr);
         goto errorCleanup;
     }
     SafeArrayDestroy(createArgs);
@@ -117,13 +99,14 @@ CLRImageSource *CLRImageSourceFactory::Create(CLRXElement *element)
 
     hr = createMethod->get_returnType(&returnType);
     if (FAILED(hr) || !returnType) {
-        Log(TEXT("Failed to get return type for Create method"));
+        Log(L"Failed to get return type for Create method");
         goto errorCleanup;
     }
 
     imageSource = new CLRImageSource();
     if (!imageSource->Attach(CLRObjectRef(returnVal.punkVal, nullptr), returnType)) {
-        Log(TEXT("Failed to attach unmanaged wrapper to managed ImageSource object"));
+        Log(L"Failed to attach unmanaged wrapper to managed ImageSource "
+            L"object");
         goto errorCleanup;
     }
     returnType->Release();
@@ -160,54 +143,48 @@ errorCleanup:
     }
 success:
 
-    return imageSource;   
+    return imageSource;
 }
 
 std::wstring CLRImageSourceFactory::GetDisplayName()
 {
-    if (!IsValid()) {
-        Log(TEXT("CLRImageSourceFactory::GetDisplayName() no managed object attached"));
-        return std::wstring(TEXT("!error! see log"));
-    }
+    CLROBJECT_CHECK_VALID_NONVOID(std::wstring(L"!error! see log"));
 
     variant_t objectRef(GetObjectRef());
     variant_t returnVal;
 
     HRESULT hr = getDisplayNameMethod->Invoke_3(objectRef, nullptr, &returnVal);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoke GetDisplayName on managed instance: 0x%08lx"), hr); 
-        return std::wstring(TEXT("!error! see log"));
+        Log(L"Failed to invoke GetDisplayName on managed instance: "
+            L"0x%08lx", hr);
+        return std::wstring(L"!error! see log");
     }
 
-    return std::wstring((const wchar_t*)returnVal.bstrVal);
+    return std::wstring((const wchar_t*) returnVal.bstrVal);
 }
 
 std::wstring CLRImageSourceFactory::GetSourceClassName()
 {
-    if (!IsValid()) {
-        Log(TEXT("CLRImageSourceFactory::GetSourceClassName() no managed object attached"));
-        return std::wstring(TEXT("!error! see log"));
-    }
+    CLROBJECT_CHECK_VALID_NONVOID(std::wstring(L"!error! see log"));
 
     variant_t objectRef(GetObjectRef());
     variant_t returnVal;
 
     HRESULT hr = getSourceClassNameMethod->Invoke_3(objectRef, nullptr, &returnVal);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to invoke GetSourceClassName on managed instance: 0x%08lx"), hr); 
-        return std::wstring(TEXT("!error! see log"));
+        Log(L"Failed to invoke GetSourceClassName on managed instance: 0x%08lx",
+            hr);
+        return std::wstring(L"!error! see log");
     }
 
-    return std::wstring((const wchar_t*)returnVal.bstrVal);
+    return std::wstring((const wchar_t*) returnVal.bstrVal);
 }
 
 bool CLRImageSourceFactory::ShowConfiguration(CLRXElement *element)
 {
-    if (!IsValid()) {
-        Log(TEXT("CLRImageSourceFactory::ShowConfiguration() no managed object attached"));
-        return false;
-    }
-    HRESULT hr;            
+    CLROBJECT_CHECK_VALID_NONVOID(false);
+
+    HRESULT hr;
     variant_t objectRef(GetObjectRef());
     SAFEARRAY *createArgs = nullptr;
     variant_t elementRef(element->GetObjectRef());
@@ -216,15 +193,17 @@ bool CLRImageSourceFactory::ShowConfiguration(CLRXElement *element)
 
     createArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
 
-    hr = SafeArrayPutElement(createArgs, &argIndex, &elementRef); 
-    if (FAILED(hr)) { 
-        Log(TEXT("CLRImageSourceFactory::ShowConfiguration() failed to set config argument pointer: 0x%08lx"), hr); 
+    hr = SafeArrayPutElement(createArgs, &argIndex, &elementRef);
+    if (FAILED(hr)) {
+        Log(L"CLRImageSourceFactory::ShowConfiguration() failed to set config "
+            L"argument pointer: 0x%08lx", hr);
         goto errorCleanup;
     }
 
     hr = showConfigurationMethod->Invoke_3(objectRef, createArgs, &returnVal);
     if (FAILED(hr)) {
-        Log(TEXT("CLRImageSourceFactory::ShowConfiguration() failed to invoke ShowConfiguration on managed instance: 0x%08lx"), hr); 
+        Log(L"CLRImageSourceFactory::ShowConfiguration() failed to invoke "
+            L"ShowConfiguration on managed instance: 0x%08lx", hr);
         goto errorCleanup;
     }
     SafeArrayDestroy(createArgs);

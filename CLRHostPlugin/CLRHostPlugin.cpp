@@ -11,35 +11,41 @@
 HINSTANCE CLRHostPlugin::hinstDLL = NULL;
 CLRHostPlugin *CLRHostPlugin::instance = NULL;
 
-CLRHostPlugin::CLRHostPlugin() {
-
+CLRHostPlugin::CLRHostPlugin()
+{
     CLRHostPlugin::instance = this;
 
     isDynamicLocale = false;
 
     if (!locale->HasLookup(KEY("PluginName"))) {
         isDynamicLocale = true;
-        int localizationStringCount = sizeof(localizationStrings) / sizeof(CTSTR);
-        Log(TEXT("CLR host plugin strings not found, dynamically loading %d strings"), sizeof(localizationStrings) / sizeof(CTSTR));
-        for(int i = 0; i < localizationStringCount; i += 2) {
-            locale->AddLookupString(localizationStrings[i], localizationStrings[i+1]);
+        int localizationStringCount =
+            sizeof(localizationStrings) / sizeof(CTSTR);
+        Log(L"CLR host plugin strings not found, dynamically loading %d "
+            L"strings", sizeof(localizationStrings) / sizeof(CTSTR));
+        for (int i = 0; i < localizationStringCount; i += 2) {
+            locale->AddLookupString(localizationStrings[i],
+                localizationStrings[i + 1]);
         }
         if (!locale->HasLookup(KEY("PluginName"))) {
-            AppWarning(TEXT("Uh oh..., unable to dynamically add our localization keys"));
+            AppWarning(L"Uh oh..., unable to dynamically add our "
+                L"localization keys");
         }
     }
 
     clrApi = new CLRHostApi();
     clrHost = new CLRHost(nullptr, clrApi);
-    clrHost->Initialize();     
+    clrHost->Initialize();
 }
 
-CLRHostPlugin::~CLRHostPlugin() {
-
+CLRHostPlugin::~CLRHostPlugin()
+{
     if (isDynamicLocale) {
-        int localizationStringCount = sizeof(localizationStrings) / sizeof(CTSTR);
-        Log(TEXT("CLR host plugin instance deleted; removing dynamically loaded localization strings"));
-        for(int i = 0; i < localizationStringCount; i += 2) {
+        int localizationStringCount =
+            sizeof(localizationStrings) / sizeof(CTSTR);
+        Log(L"CLR host plugin instance deleted; removing dynamically "
+            L"loaded localization strings");
+        for (int i = 0; i < localizationStringCount; i += 2) {
             locale->RemoveLookupString(localizationStrings[i]);
         }
     }
@@ -55,12 +61,10 @@ CLRHostPlugin::~CLRHostPlugin() {
         delete clrApi;
         clrApi = nullptr;
     }
-
 }
 
 void CLRHostPlugin::LoadPlugins()
 {
-
     if (clrHost->LoadInteropLibrary()) {
         clrHost->LoadPlugins();
     }
@@ -72,7 +76,7 @@ void CLRHostPlugin::UnloadPlugins()
 }
 
 void CLRHostPlugin::OnStartStream()
-{ 
+{
     clrHost->OnStartStream();
 }
 
@@ -83,7 +87,7 @@ void CLRHostPlugin::OnStopStream()
 
 bool LoadPlugin()
 {
-    if(CLRHostPlugin::instance != NULL) {
+    if (CLRHostPlugin::instance != NULL) {
         return false;
     }
     CLRHostPlugin::instance = new CLRHostPlugin();
@@ -93,7 +97,7 @@ bool LoadPlugin()
 
 void UnloadPlugin()
 {
-    if(CLRHostPlugin::instance == NULL) {
+    if (CLRHostPlugin::instance == NULL) {
         return;
     }
 
@@ -104,7 +108,7 @@ void UnloadPlugin()
 
 void OnStartStream()
 {
-    if(CLRHostPlugin::instance == NULL) {
+    if (CLRHostPlugin::instance == NULL) {
         return;
     }
     CLRHostPlugin::instance->OnStartStream();
@@ -112,7 +116,7 @@ void OnStartStream()
 
 void OnStopStream()
 {
-    if(CLRHostPlugin::instance == NULL) {
+    if (CLRHostPlugin::instance == NULL) {
         return;
     }
     CLRHostPlugin::instance->OnStopStream();
@@ -128,9 +132,12 @@ CTSTR GetPluginDescription()
     return STR("PluginDescription");
 }
 
-BOOL CALLBACK DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+BOOL CALLBACK DllMain(
+    HINSTANCE hinstDLL,
+    DWORD fdwReason,
+    LPVOID lpvReserved)
 {
-    if(fdwReason == DLL_PROCESS_ATTACH) {
+    if (fdwReason == DLL_PROCESS_ATTACH) {
         CLRHostPlugin::hinstDLL = hinstDLL;
     }
     return TRUE;

@@ -19,7 +19,7 @@ public:
         delete clrImageSource;
     }
 
-    virtual void Preprocess() 
+    virtual void Preprocess()
     {
         clrImageSource->Preprocess();
     }
@@ -42,17 +42,17 @@ public:
         return vectSize;
     }
 
-    virtual void UpdateSettings() 
+    virtual void UpdateSettings()
     {
         clrImageSource->UpdateSettings();
     }
 
-    virtual void BeginScene() 
+    virtual void BeginScene()
     {
         clrImageSource->BeginScene();
     }
 
-    virtual void EndScene() 
+    virtual void EndScene()
     {
         clrImageSource->EndScene();
     }

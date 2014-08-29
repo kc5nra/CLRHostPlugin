@@ -225,6 +225,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CLRApiCommon.cpp" />
     <ClCompile Include="CLRHostApi.cpp" />
     <ClCompile Include="CLRHost.cpp" />
     <ClCompile Include="CLRHostPlugin.cpp" />

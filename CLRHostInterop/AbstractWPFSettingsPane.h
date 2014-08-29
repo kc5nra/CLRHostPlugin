@@ -2,7 +2,6 @@
 
 #include "SettingsPane.h"
 
-using namespace CLROBS;
 using namespace System;
 using namespace System::Windows;
 using namespace System::Windows::Interop;
@@ -17,10 +16,10 @@ using namespace System::Windows::Interop;
 #define _DS_CONTROL             0x00000400L
 #define _WS_CHILD               0x40000000L
 
-namespace CLROBS 
+namespace CLROBS
 {
-    public ref class AbstractWPFSettingsPane abstract: public SettingsPane {
-    
+    public ref class AbstractWPFSettingsPane abstract : public SettingsPane
+    {
     private:
         HwndSource^ hwndSource;
         System::String ^category;
@@ -37,7 +36,7 @@ namespace CLROBS
         virtual bool HasDefaults() = 0;
         virtual void SetDefaults() = 0;
 
-        property System::String^ Category 
+        property System::String^ Category
         {
         public:
             virtual System::String^ get();

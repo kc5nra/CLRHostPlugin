@@ -3,13 +3,10 @@
 #include "Plugin.h"
 #include "API.h"
 
-using namespace CLROBS;
-
-namespace CLROBS 
+namespace CLROBS
 {
     public ref class AbstractPlugin abstract : public Plugin
     {
-
     private:
         String^ pluginName;
         String^ pluginDescription;
@@ -19,10 +16,17 @@ namespace CLROBS
         ~AbstractPlugin();
     public:
 
-        virtual bool LoadPlugin() { return true; };
-        virtual void UnloadPlugin() {};
-        virtual void OnStartStream() {};
-        virtual void OnStopStream() {};
+        virtual bool LoadPlugin()
+        {
+            return true;
+        };
+
+        virtual void UnloadPlugin()
+        {};
+        virtual void OnStartStream()
+        {};
+        virtual void OnStopStream()
+        {};
 
         property String^ Name
         {
@@ -30,8 +34,8 @@ namespace CLROBS
             virtual String^ get() sealed;
         protected:
             void set(String^ name);
-        }    
-        property String^ Description 
+        }
+        property String^ Description
         {
         public:
             virtual String^ get() sealed;

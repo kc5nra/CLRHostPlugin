@@ -1,34 +1,30 @@
 #include "AbstractImageSource.h"
 
-using namespace CLROBS;
-
-AbstractImageSource::AbstractImageSource()
+namespace CLROBS
 {
-    size = gcnew Vector2(0.0f, 0.0f);
-}
+    AbstractImageSource::AbstractImageSource()
+    {
+        size = gcnew Vector2(0.0f, 0.0f);
+    }
 
- 
-Vector2^ AbstractImageSource::Size::get()
-{ 
-    return size; 
-}
-void AbstractImageSource::Size::set(Vector2^ size) 
-{ 
-    this->size = size; 
-}
+    Vector2^ AbstractImageSource::Size::get()
+    {
+        return size;
+    }
+    void AbstractImageSource::Size::set(Vector2^ size)
+    {
+        this->size = size;
+    }
 
-void AbstractImageSource::Preprocess() 
-{
-}
+    void AbstractImageSource::Preprocess()
+    {}
 
-void AbstractImageSource::Tick(float fSeconds) 
-{
-}
+    void AbstractImageSource::Tick(float fSeconds)
+    {}
 
-void AbstractImageSource::BeginScene() 
-{
-}
+    void AbstractImageSource::BeginScene()
+    {}
 
-void AbstractImageSource::EndScene() 
-{
+    void AbstractImageSource::EndScene()
+    {}
 }

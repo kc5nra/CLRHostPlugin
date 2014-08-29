@@ -7,9 +7,8 @@
 using namespace System;
 using namespace System::Windows;
 using namespace System::Windows::Interop;
-using namespace CLROBS;
 
-namespace CLROBS 
+namespace CLROBS
 {
     public ref class AbstractImageSourceFactory abstract : public ImageSourceFactory
     {
@@ -25,7 +24,7 @@ namespace CLROBS
         virtual ImageSource^ Create(XElement^ data) abstract;
         virtual bool ShowConfiguration(XElement^ data) abstract;
 
-        property String^ DisplayName 
+        property String^ DisplayName
         {
         public:
             virtual String^ get() sealed;
@@ -33,15 +32,12 @@ namespace CLROBS
             void set(String^ displayName);
         }
 
-        property String^ ClassName 
+        property String^ ClassName
         {
         public:
             virtual String^ get() sealed;
         protected:
-            void set(String^ className); 
-        }  
-
+            void set(String^ className);
+        }
     };
-
-    
 };

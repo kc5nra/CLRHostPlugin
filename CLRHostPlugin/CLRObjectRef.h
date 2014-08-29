@@ -14,10 +14,21 @@ public:
     CLRObjectRef(void *objectRef, void *typeRef);
 
 public:
-    void *GetObjectRef() { return objectRef; }
-    void *GetTypeRef() { return typeRef; }
+    void *GetObjectRef()
+    {
+        return objectRef;
+    }
+    void *GetTypeRef()
+    {
+        return typeRef;
+    }
 
-    bool isObjectRefNull() { return objectRef == nullptr; }
-    bool isTypeRefNull() { return typeRef == nullptr; }
-
+    bool isObjectRefNull()
+    {
+        return objectRef == nullptr;
+    }
+    bool isTypeRefNull()
+    {
+        return typeRef == nullptr;
+    }
 };

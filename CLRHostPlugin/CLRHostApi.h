@@ -7,7 +7,7 @@
 #include "CLRObjectRef.h"
 #include "CLRImageSourceFactory.h"
 
-class CLRHostApi 
+class CLRHostApi
 {
 private:
     std::map<std::wstring, CLRImageSourceFactory *> imageSourceFactories;
@@ -19,5 +19,8 @@ public:
     CLR_API void AddImageSourceFactory(CLRObjectRef &clrObjectReference);
 
 public:
-    std::map<std::wstring, CLRImageSourceFactory *> &GetImageSourceFactories() { return imageSourceFactories; }
+    std::map<std::wstring, CLRImageSourceFactory *> &GetImageSourceFactories()
+    {
+        return imageSourceFactories;
+    }
 };

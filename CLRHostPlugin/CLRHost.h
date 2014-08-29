@@ -14,21 +14,21 @@ struct ICLRRuntimeInfo;
 struct ICLRRuntimeHost;
 struct ICorRuntimeHost;
 
-
-namespace mscorlib {
+namespace mscorlib
+{
     struct _AppDomain;
     struct _Assembly;
     struct _Type;
 }
 
-#define INTEROP_PATH            TEXT("plugins\\CLRHostPlugin\\")
-#define INTEROP_PATH_SEARCH     TEXT("plugins\\CLRHostPlugin\\*.dll")
-#define INTEROP_ASSEMBLY        TEXT("CLRHost.Interop.dll")
+#define INTEROP_PATH            L"plugins\\CLRHostPlugin\\"
+#define INTEROP_PATH_SEARCH     L"plugins\\CLRHostPlugin\\*.dll"
+#define INTEROP_ASSEMBLY        L"CLRHost.Interop.dll"
 #define INTEROP_ASSEMBLY_PATH   INTEROP_PATH INTEROP_ASSEMBLY
-#define INTEROP_LOAD_CLASS      TEXT("CLROBS.API")
+#define INTEROP_LOAD_CLASS      L"CLROBS.API"
 
-class CLRHost {
-
+class CLRHost
+{
 private:
 
     CLRHostApi *clrApi;
@@ -39,7 +39,6 @@ private:
 
     mscorlib::_AppDomain *appDomain;
     mscorlib::_Assembly *libraryAssembly;
-
 
     mscorlib::_Type *libraryType;
     mscorlib::_Type *pluginType;
@@ -70,9 +69,20 @@ public:
     void OnStopStream();
 
 public:
-    mscorlib::_Type *GetImageSourceType() { return imageSourceType; }
-    mscorlib::_Type *GetImageSourceFactoryType() { return imageSourceFactoryType; }
-    mscorlib::_Type *GetSettingsPaneType() { return settingsPaneType; }
-    mscorlib::_Type *GetXElementType() { return xElementType; }
-
+    mscorlib::_Type *GetImageSourceType()
+    {
+        return imageSourceType;
+    }
+    mscorlib::_Type *GetImageSourceFactoryType()
+    {
+        return imageSourceFactoryType;
+    }
+    mscorlib::_Type *GetSettingsPaneType()
+    {
+        return settingsPaneType;
+    }
+    mscorlib::_Type *GetXElementType()
+    {
+        return xElementType;
+    }
 };

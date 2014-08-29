@@ -2,10 +2,10 @@
 
 #include "ImageSource.h"
 
-using namespace CLROBS;
 using namespace System;
 
-namespace CLROBS {
+namespace CLROBS
+{
     public interface class ImageSourceFactory
     {
         virtual ImageSource^ Create(XElement^ data) = 0;
@@ -16,6 +16,6 @@ namespace CLROBS {
         }
         property System::String^ ClassName {
             virtual System::String^ get();
-        }      
+        }
     };
 };

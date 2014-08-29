@@ -4,22 +4,22 @@ class XElement;
 
 using namespace System::Collections;
 
-namespace CLROBS {
-
+namespace CLROBS
+{
     /// <summary>
-    /// XElement allows you to marshal and unmarshal config 
+    /// XElement allows you to marshal and unmarshal config
     /// information from a file in a JSON-like format</summary>
     public ref class XElement
     {
     private:
         ::XElement *element;
-    
+
     public:
-        XElement(long long elementPtr) 
+        XElement(long long elementPtr)
         {
             this->element = reinterpret_cast<::XElement *>(elementPtr);
         }
-    
+
         XElement(void *elementPtr)
         {
             this->element = static_cast<::XElement *>(elementPtr);
@@ -51,12 +51,12 @@ namespace CLROBS {
 
         virtual int GetHashCode() override
         {
-            return (int)element;
+            return (int) element;
         }
 
     public: //XBaseItem
-        
-        property System::String^ Name 
+
+        property System::String^ Name
         {
         public:
             System::String^ get();
@@ -67,17 +67,17 @@ namespace CLROBS {
 
         bool Import(System::String^ name);
         bool Export(System::String^ name);
-        
+
         bool HasItem(System::String^ name);
         void RemoveItem(System::String^ name);
-        
+
         void ReverseOrder();
         void MoveUp();
         void MoveDown();
         void MoveToTop();
         void MoveToBottom();
 
-        property XElement^ Parent 
+        property XElement^ Parent
         {
         public:
             CLROBS::XElement^ get();
@@ -106,7 +106,7 @@ namespace CLROBS {
         System::Int32 GetColor(System::String^ name, System::Int32 defaultValue);
         System::Int32 GetHex(System::String^ name);
         System::Int32 GetHex(System::String^ name, System::Int32 defaultValue);
-        
+
         Generic::List<System::String^>^ GetStringList(System::String^ name);
         Generic::List<System::Int32>^ GetIntList(System::String^ name);
         Generic::List<float>^ GetFloatList(System::String^ name);
@@ -124,7 +124,7 @@ namespace CLROBS {
         void SetFloatList(System::String^ name, Generic::List<float>^ list);
         void SetHexList(System::String^ name, Generic::List<System::Int32>^ list);
         void SetColorList(System::String^ name, Generic::List<System::Int32>^ list);
-        
+
         void AddString(System::String^ name, System::String^ string);
         void AddInt(System::String^ name, System::Int32 number);
         void AddFloat(System::String^ name, float number);
@@ -136,5 +136,5 @@ namespace CLROBS {
         void AddFloatList(System::String^ name, Generic::List<float>^ list);
         void AddHexList(System::String^ name, Generic::List<System::Int32>^ list);
         void AddColorList(System::String^ name, Generic::List<System::Int32>^ list);
-    };   
+    };
 };

@@ -104,5 +104,8 @@
     <ClCompile Include="CLRSettingsPane.cpp">
       <Filter>Source\Wrappers</Filter>
     </ClCompile>
+    <ClCompile Include="CLRApiCommon.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

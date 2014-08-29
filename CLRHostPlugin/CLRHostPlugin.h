@@ -16,7 +16,6 @@ class CLRHost;
 
 class CLRHostPlugin
 {
-
 public:
     static HINSTANCE hinstDLL;
     static CLRHostPlugin *instance;
@@ -33,15 +32,20 @@ public:
     ~CLRHostPlugin();
 
 public:
-    CLRHost *GetCLRHost() { return clrHost; }
-    CLRHostApi *GetCLRApi() { return clrApi; }
+    CLRHost *GetCLRHost()
+    {
+        return clrHost;
+    }
+    CLRHostApi *GetCLRApi()
+    {
+        return clrApi;
+    }
 
 public:
     void LoadPlugins();
     void UnloadPlugins();
     void OnStartStream();
     void OnStopStream();
-
 };
 
 EXTERN_DLL_EXPORT bool LoadPlugin();

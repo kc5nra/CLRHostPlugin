@@ -5,7 +5,7 @@
 
 #include "mscorelib.h"
 
-CLRHost::CLRHost(TCHAR *clrRuntimeVersion, CLRHostApi *clrApi) 
+CLRHost::CLRHost(TCHAR *clrRuntimeVersion, CLRHostApi *clrApi)
 {
     clrMetaHost = nullptr;
     clrRuntimeInfo = nullptr;
@@ -14,26 +14,24 @@ CLRHost::CLRHost(TCHAR *clrRuntimeVersion, CLRHostApi *clrApi)
     isInitialized = false;
     isLibraryLoaded = false;
     this->clrApi = clrApi;
-
 }
 
 CLRHost::~CLRHost()
 {
     if (isInitialized) {
-
         corRuntimeHost->Stop();
 
-        if (clrMetaHost) { 
-            clrMetaHost->Release(); 
-            clrMetaHost = nullptr; 
-        } 
-        if (clrRuntimeInfo) { 
-            clrRuntimeInfo->Release(); 
-            clrRuntimeInfo = nullptr; 
-        } 
-        if (corRuntimeHost) { 
-            corRuntimeHost->Release(); 
-            corRuntimeHost = nullptr; 
+        if (clrMetaHost) {
+            clrMetaHost->Release();
+            clrMetaHost = nullptr;
+        }
+        if (clrRuntimeInfo) {
+            clrRuntimeInfo->Release();
+            clrRuntimeInfo = nullptr;
+        }
+        if (corRuntimeHost) {
+            corRuntimeHost->Release();
+            corRuntimeHost = nullptr;
         }
     }
     if (isLibraryLoaded) {
@@ -71,12 +69,11 @@ CLRHost::~CLRHost()
     }
 }
 
-HRESULT 
-GetInstalledClrRuntimes(
-    ICLRMetaHost *clrMetaHost, 
+HRESULT GetInstalledClrRuntimes(
+    ICLRMetaHost *clrMetaHost,
     std::vector<std::wstring>& clrRuntimeList)
 {
-    HRESULT hr = S_OK;		
+    HRESULT hr = S_OK;
     clrRuntimeList.clear();
 
     IEnumUnknown* runtimeEnumerator = nullptr;
@@ -107,20 +104,18 @@ GetInstalledClrRuntimes(
     return hr;
 }
 
-void 
-GetFilesInDirectory(
-    std::vector<std::wstring> &list, 
-    std::wstring pattern, 
+void GetFilesInDirectory(
+    std::vector<std::wstring> &list,
+    std::wstring pattern,
     int attributes)
 {
-
     WIN32_FIND_DATA search_data;
 
     memset(&search_data, 0, sizeof(WIN32_FIND_DATA));
 
     HANDLE handle = FindFirstFile(pattern.c_str(), &search_data);
 
-    while(handle != INVALID_HANDLE_VALUE)
+    while (handle != INVALID_HANDLE_VALUE)
     {
         if (search_data.dwFileAttributes & attributes) {
             std::wstring file(search_data.cFileName);
@@ -129,7 +124,7 @@ GetFilesInDirectory(
             }
         }
 
-        if(FindNextFile(handle, &search_data) == FALSE) {
+        if (FindNextFile(handle, &search_data) == FALSE) {
             break;
         }
     }
@@ -137,26 +132,28 @@ GetFilesInDirectory(
     FindClose(handle);
 }
 
-bool 
-CLRHost::Initialize() 
+bool CLRHost::Initialize()
 {
     assert(!isInitialized);
 
-    HRESULT hr; 
+    HRESULT hr;
     std::vector<std::wstring> clrRuntimeList;
 
-    Log(TEXT("CLRHost::Initialize() attempting to load and start the .NET runtime %s"), clrRuntimeVersion);
+    Log(L"CLRHost::Initialize() attempting to load and start the .NET runtime "
+        L"%s", clrRuntimeVersion);
 
-    hr = CLRCreateInstance(CLSID_CLRMetaHost, IID_PPV_ARGS(&clrMetaHost)); 
-    if (FAILED(hr)) { 
-        Log(TEXT("CLRCreateInstance() failed: 0x%08lx"), hr); 
-        goto errorCleanup; 
-    } 
+    hr = CLRCreateInstance(CLSID_CLRMetaHost, IID_PPV_ARGS(&clrMetaHost));
+    if (FAILED(hr)) {
+        Log(L"CLRCreateInstance() failed: 0x%08lx", hr);
+        goto errorCleanup;
+    }
 
     if (clrRuntimeVersion) {
-        hr = clrMetaHost->GetRuntime(clrRuntimeVersion, IID_PPV_ARGS(&clrRuntimeInfo)); 
-        if (FAILED(hr)) { 
-            Log(TEXT("ICLRMetaHost::GetRuntime(%s) failed: 0x%08lx"), clrRuntimeVersion, hr); 
+        hr = clrMetaHost->GetRuntime(clrRuntimeVersion,
+            IID_PPV_ARGS(&clrRuntimeInfo));
+        if (FAILED(hr)) {
+            Log(L"ICLRMetaHost::GetRuntime(%s) failed: 0x%08lx",
+                clrRuntimeVersion, hr);
         }
     }
 
@@ -164,79 +161,92 @@ CLRHost::Initialize()
         hr = GetInstalledClrRuntimes(clrMetaHost, clrRuntimeList);
         if (SUCCEEDED(hr)) {
             if (clrRuntimeList.size()) {
-                for(auto itor = clrRuntimeList.begin(); itor < clrRuntimeList.end(); itor++) {
-                    Log(TEXT("CLRHost::Initialize() Found version %s .NET runtime"), (*(itor)).c_str());
+                for (auto itor = clrRuntimeList.begin();
+                    itor < clrRuntimeList.end(); itor++)
+                {
+                    Log(L"CLRHost::Initialize() Found version %s .NET runtime",
+                        (*(itor)).c_str());
                 }
-                std::wstring version = *(clrRuntimeList.end() - 1);
-                Log(TEXT("CLRHost::Initialize() attempting to use %s .NET runtime"), version.c_str());
 
-                hr = clrMetaHost->GetRuntime(version.c_str(), IID_PPV_ARGS(&clrRuntimeInfo)); 
-                if (FAILED(hr)) { 
-                    Log(TEXT("ICLRMetaHost::GetRuntime(%s) failed: 0x%08lx"), version.c_str(), hr); 
-                    goto errorCleanup; 
+                std::wstring version = *(clrRuntimeList.end() - 1);
+
+                Log(L"CLRHost::Initialize() attempting to use %s .NET runtime",
+                    version.c_str());
+
+                hr = clrMetaHost->GetRuntime(version.c_str(),
+                    IID_PPV_ARGS(&clrRuntimeInfo));
+
+                if (FAILED(hr)) {
+                    Log(L"ICLRMetaHost::GetRuntime(%s) failed: 0x%08lx",
+                        version.c_str(), hr);
+                    goto errorCleanup;
                 }
-            } else {
-                Log(TEXT("CLRHost::Initialize() no .NET Runtimes found!"));
+            }
+            else {
+                Log(L"CLRHost::Initialize() no .NET Runtimes found!");
                 goto errorCleanup;
             }
-        } else {
-            Log(TEXT("CLRHost::GetInstalledClrRuntimes) failed: 0x%08lx"), hr); 
+        }
+        else {
+            Log(L"CLRHost::GetInstalledClrRuntimes) failed: 0x%08lx", hr);
             goto errorCleanup;
         }
-	}
-
-    BOOL isLoadable; 
-    hr = clrRuntimeInfo->IsLoadable(&isLoadable); 
-    if (FAILED(hr)) { 
-        Log(TEXT("ICLRRuntimeInfo::IsLoadable() failed: 0x%08lx"), hr); 
-        goto errorCleanup; 
-    } 
-
-    if (!isLoadable) { 
-        Log(TEXT(".NET runtime %s cannot be loaded"), clrRuntimeVersion); 
-        goto errorCleanup; 
-    } 
-
-    hr = clrRuntimeInfo->GetInterface(CLSID_CorRuntimeHost, IID_ICorRuntimeHost, (LPVOID *)&corRuntimeHost);
-    if (FAILED(hr)) { 
-        Log(TEXT("ICLRRuntimeInfo::GetInterface() failed when retrieving ICorRuntimeHost instance: 0x%08lx"), hr); 
-        goto errorCleanup; 
     }
 
-    // Start the CLR. 
-    hr = corRuntimeHost->Start(); 
-    if (FAILED(hr)) { 
-        Log(TEXT("ICorRuntimeHost::Start() failed: 0x%08lx"), hr); 
-        goto errorCleanup; 
+    BOOL isLoadable;
+    hr = clrRuntimeInfo->IsLoadable(&isLoadable);
+    if (FAILED(hr)) {
+        Log(L"ICLRRuntimeInfo::IsLoadable() failed: 0x%08lx", hr);
+        goto errorCleanup;
+    }
+
+    if (!isLoadable) {
+        Log(L".NET runtime %s cannot be loaded", clrRuntimeVersion);
+        goto errorCleanup;
+    }
+
+    hr = clrRuntimeInfo->GetInterface(CLSID_CorRuntimeHost, IID_ICorRuntimeHost,
+        (LPVOID *) &corRuntimeHost);
+    if (FAILED(hr)) {
+        Log(L"ICLRRuntimeInfo::GetInterface() failed when retrieving "
+            L"ICorRuntimeHost instance: 0x%08lx", hr);
+        goto errorCleanup;
+    }
+
+    // Start the CLR.
+    hr = corRuntimeHost->Start();
+    if (FAILED(hr)) {
+        Log(L"ICorRuntimeHost::Start() failed: 0x%08lx", hr);
+        goto errorCleanup;
     }
 
     isInitialized = true;
     goto success;
 
-errorCleanup: 
+errorCleanup:
 
-    if (clrMetaHost) { 
-        clrMetaHost->Release(); 
-        clrMetaHost = nullptr; 
-    } 
-    if (clrRuntimeInfo) { 
-        clrRuntimeInfo->Release(); 
-        clrRuntimeInfo = nullptr; 
-    } 
+    if (clrMetaHost) {
+        clrMetaHost->Release();
+        clrMetaHost = nullptr;
+    }
+    if (clrRuntimeInfo) {
+        clrRuntimeInfo->Release();
+        clrRuntimeInfo = nullptr;
+    }
     if (corRuntimeHost) {
         corRuntimeHost->Release();
         corRuntimeHost = nullptr;
     }
 
 success:
-    return isInitialized; 
+    return isInitialized;
 }
 
-bool 
-CLRHost::LoadInteropLibrary() 
+bool CLRHost::LoadInteropLibrary()
 {
     if (!isInitialized) {
-        Log(TEXT("CLRHost::LoadInteropLibrary() Runtime not initialized, examine log for cause"));
+        Log(L"CLRHost::LoadInteropLibrary() Runtime not initialized, "
+            L"examine log for cause");
         return false;
     }
 
@@ -261,133 +271,158 @@ CLRHost::LoadInteropLibrary()
     SAFEARRAY *constructorArgs = nullptr;
     SAFEARRAY *apiArgs = nullptr;
     LONG argIndex;
-    variant_t clrApiPtr((long long)clrApi);
+    variant_t clrApiPtr((long long) clrApi);
     variant_t libraryPtr;
 
     hr = corRuntimeHost->CreateDomainSetup(&appDomainSetupUnknown);
     if (FAILED(hr)) {
-        Log(TEXT("ICorRuntimeHost::CreateDomainSetup() failed: 0x%08lx"), hr);
+        Log(L"ICorRuntimeHost::CreateDomainSetup() failed: 0x%08lx", hr);
         goto errorCleanup;
     }
 
-    hr = appDomainSetupUnknown->QueryInterface( __uuidof( mscorlib::IAppDomainSetup), (void**)&appDomainSetup);
+    hr = appDomainSetupUnknown->QueryInterface(
+        __uuidof(mscorlib::IAppDomainSetup), (void**) &appDomainSetup);
     if (FAILED(hr)) {
-        Log(TEXT("IAppDomainSetup::QueryInterface() failed: 0x%08lx"), hr);
+        Log(L"IAppDomainSetup::QueryInterface() failed: 0x%08lx", hr);
         goto errorCleanup;
     }
+
     hr = appDomainSetup->put_ApplicationBase(bstrPluginPath);
     if (FAILED(hr)) {
-        Log(TEXT("IAppDomainSetup::put_ApplicationBase(%s) failed: 0x%08lx"), INTEROP_PATH, hr);
+        Log(L"IAppDomainSetup::put_ApplicationBase(%s) failed: 0x%08lx",
+            INTEROP_PATH, hr);
         goto errorCleanup;
     }
+
     hr = appDomainSetup->put_ShadowCopyFiles(isShadowCopyFiles);
     if (FAILED(hr)) {
-        Log(TEXT("IAppDomainSetup::put_ShadowCopyFiles(%s) failed: 0x%08lx"), TEXT("TRUE"), hr);
+        Log(L"IAppDomainSetup::put_ShadowCopyFiles(%s) failed: 0x%08lx",
+            L"TRUE", hr);
         goto errorCleanup;
     }
+
     hr = appDomainSetup->put_ApplicationName(interopAssemblyDll);
     if (FAILED(hr)) {
-        Log(TEXT("IAppDomainSetup::put_ApplicationName(%s) failed: 0x%08lx"), INTEROP_ASSEMBLY, hr);
+        Log(L"IAppDomainSetup::put_ApplicationName(%s) failed: 0x%08lx",
+            INTEROP_ASSEMBLY, hr);
         goto errorCleanup;
     }
     {
         std::vector<std::wstring> files;
-        GetFilesInDirectory(files, INTEROP_PATH TEXT("*"), FILE_ATTRIBUTE_DIRECTORY);
+        GetFilesInDirectory(files, INTEROP_PATH L"*",
+            FILE_ATTRIBUTE_DIRECTORY);
+
         std::wstring combinedPath;
-        for(auto itor = files.begin(); itor < files.end(); itor++)
+        for (auto itor = files.begin(); itor < files.end(); itor++)
         {
-            if (*itor != TEXT(".") && *itor != TEXT("..")) {
+            if (*itor != L"." && *itor != L"..") {
                 combinedPath.append(*itor).append(L";");
             }
         }
-   
+
         bstr_t combinedPathString(combinedPath.c_str());
         hr = appDomainSetup->put_PrivateBinPath(combinedPathString);
         if (FAILED(hr)) {
-            Log(TEXT("IAppDomainSetup::put_PrivateBinPath(%s) failed: 0x%08lx"), INTEROP_ASSEMBLY, hr);
+            Log(L"IAppDomainSetup::put_PrivateBinPath(%s) failed: 0x%08lx",
+                INTEROP_ASSEMBLY, hr);
             goto errorCleanup;
         }
     }
 
-    hr = corRuntimeHost->CreateDomainEx(interopAssemblyDll, appDomainSetup, nullptr, &appDomainUnknown);
+    hr = corRuntimeHost->CreateDomainEx(interopAssemblyDll, appDomainSetup,
+        nullptr, &appDomainUnknown);
     if (FAILED(hr)) {
-        Log(TEXT("ICorRuntimeHost::CreateDomainEx(%s, ...) failed: 0x%08lx"), INTEROP_ASSEMBLY, hr);
+        Log(L"ICorRuntimeHost::CreateDomainEx(%s, ...) failed: 0x%08lx",
+            INTEROP_ASSEMBLY, hr);
         goto errorCleanup;
     }
 
     appDomainSetup->Release();
     appDomainSetup = nullptr;
 
-    hr = appDomainUnknown->QueryInterface(__uuidof( mscorlib::_AppDomain ), (void**)&appDomain);
+    hr = appDomainUnknown->QueryInterface(__uuidof(mscorlib::_AppDomain),
+        (void**) &appDomain);
     if (FAILED(hr)) {
-        Log(TEXT("IAppDomain::QueryInterface(%s, ...) failed: 0x%08lx"), hr);
+        Log(L"IAppDomain::QueryInterface(%s, ...) failed: 0x%08lx", hr);
         goto errorCleanup;
     }
     appDomainUnknown->Release();
     appDomainUnknown = nullptr;
 
-    Log(TEXT("CLRHost::LoadInteropLibrary() load the assembly %s"), INTEROP_ASSEMBLY_PATH); 
+    Log(L"CLRHost::LoadInteropLibrary() load the assembly %s",
+        INTEROP_ASSEMBLY_PATH);
+
     hr = appDomain->Load_2(interopAssemblyName, &libraryAssembly);
-    if (FAILED(hr)) { 
-        Log(TEXT("CLRHost::LoadInteropLibrary() failed to load the assembly: 0x%08lx"), hr); 
+    if (FAILED(hr)) {
+        Log(L"CLRHost::LoadInteropLibrary() failed to load the assembly: "
+            L"0x%08lx", hr);
         goto errorCleanup;
     }
 
     hr = libraryAssembly->GetType_2(assemblyClassName, &libraryType);
     if (FAILED(hr)) {
-        Log(TEXT("CLRHost::LoadInteropLibrary() failed to get type definition of interop library API class: 0x%08lx"), hr); 
+        Log(L"CLRHost::LoadInteropLibrary() failed to get type definition of "
+            L"interop library API class: 0x%08lx", hr);
         goto errorCleanup;
     }
 
     hr = libraryAssembly->GetType_2(pluginClassName, &pluginType);
     if (FAILED(hr)) {
-        Log(TEXT("CLRHost::LoadInteropLibrary() failed to get type definition of Plugin class: 0x%08lx"), hr); 
+        Log(L"CLRHost::LoadInteropLibrary() failed to get type definition of "
+            L"Plugin class: 0x%08lx", hr);
         goto errorCleanup;
     }
 
     hr = libraryAssembly->GetType_2(imageSourceTypeName, &imageSourceType);
     if (FAILED(hr)) {
-        Log(TEXT("CLRHost::LoadInteropLibrary() failed to get type definition of ImageSource class: 0x%08lx"), hr); 
+        Log(L"CLRHost::LoadInteropLibrary() failed to get type definition "
+            L"of ImageSource class: 0x%08lx", hr);
         goto errorCleanup;
     }
 
-    hr = libraryAssembly->GetType_2(imageSourceFactoryTypeName, &imageSourceFactoryType);
+    hr = libraryAssembly->GetType_2(imageSourceFactoryTypeName,
+        &imageSourceFactoryType);
     if (FAILED(hr)) {
-        Log(TEXT("CLRHost::LoadInteropLibrary() failed to get type definition of ImageSourceFactory class: 0x%08lx"), hr); 
+        Log(L"CLRHost::LoadInteropLibrary() failed to get type definition "
+            L"of ImageSourceFactory class: 0x%08lx", hr);
         goto errorCleanup;
     }
 
     hr = libraryAssembly->GetType_2(settingsPaneTypeName, &settingsPaneType);
     if (FAILED(hr)) {
-        Log(TEXT("CLRHost::LoadInteropLibrary() failed to get type definition of SettingsPane class: 0x%08lx"), hr); 
+        Log(L"CLRHost::LoadInteropLibrary() failed to get type definition of "
+            L"SettingsPane class: 0x%08lx", hr);
         goto errorCleanup;
     }
 
     hr = libraryAssembly->GetType_2(xElementTypeName, &xElementType);
     if (FAILED(hr)) {
-        Log(TEXT("CLRHost::LoadInteropLibrary() failed to get type definition of XElement class: 0x%08lx"), hr); 
+        Log(L"CLRHost::LoadInteropLibrary() failed to get type definition of "
+            L"XElement class: 0x%08lx", hr);
         goto errorCleanup;
     }
 
     apiArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
     argIndex = 0;
 
-    hr = SafeArrayPutElement(apiArgs, &argIndex, &clrApiPtr); 
-    if (FAILED(hr)) 
-    { 
-        wprintf(L"SafeArrayPutElement failed: 0x%08lx", hr); 
-        goto errorCleanup; 
+    hr = SafeArrayPutElement(apiArgs, &argIndex, &clrApiPtr);
+    if (FAILED(hr))
+    {
+        wprintf(L"SafeArrayPutElement failed: 0x%08lx", hr);
+        goto errorCleanup;
     }
 
-    hr = libraryAssembly->CreateInstance_3(assemblyClassName, false, mscorlib::BindingFlags_Default, nullptr, apiArgs, nullptr, nullptr, &libraryPtr);
+    hr = libraryAssembly->CreateInstance_3(assemblyClassName, false,
+        mscorlib::BindingFlags_Default, nullptr, apiArgs, nullptr, nullptr,
+        &libraryPtr);
     if (FAILED(hr) || !libraryPtr.punkVal) {
-        Log(TEXT("CLRHost::LoadInteropLibrary() failed to instantiate our interop library class: 0x%08lx"), hr); 
+        Log(L"CLRHost::LoadInteropLibrary() failed to instantiate our interop "
+            L"library class: 0x%08lx", hr);
         goto errorCleanup;
     }
 
     libraryInstance = libraryPtr.punkVal;
     libraryInstance->AddRef();
-
 
     SafeArrayDestroy(apiArgs);
     apiArgs = nullptr;
@@ -441,13 +476,12 @@ success:
     return true;
 }
 
-CLRPlugin *
-CreatePluginInstance(
-    std::wstring &typeName, 
-    mscorlib::_Type *type, 
-    mscorlib::_Type *pluginType, 
+CLRPlugin * CreatePluginInstance(
+    std::wstring &typeName,
+    mscorlib::_Type *type,
+    mscorlib::_Type *pluginType,
     mscorlib::_Type *libraryType,
-    IUnknown *libraryInstance) 
+    IUnknown *libraryInstance)
 {
     HRESULT hr;
 
@@ -464,7 +498,7 @@ CreatePluginInstance(
         return nullptr;
     }
 
-    hr = pluginType->IsAssignableFrom(type, &isAssignable); 
+    hr = pluginType->IsAssignableFrom(type, &isAssignable);
     if (FAILED(hr) || !isAssignable) {
         return nullptr;
     }
@@ -472,10 +506,11 @@ CreatePluginInstance(
     constructorArgs = SafeArrayCreateVector(VT_UNKNOWN, 0, 0);
 
     hr = type->GetConstructor_3(constructorArgs, &constructor);
-    if (FAILED(hr) || constructor == nullptr) 
-    { 
-        Log(TEXT("Failed to create get valid constructor for type %s: 0x%08lx"), typeName.c_str(), hr); 
-        goto errorCleanup; 
+    if (FAILED(hr) || constructor == nullptr)
+    {
+        Log(L"Failed to create get valid constructor for type %s: 0x%08lx",
+            typeName.c_str(), hr);
+        goto errorCleanup;
     }
 
     SafeArrayDestroy(constructorArgs);
@@ -483,7 +518,8 @@ CreatePluginInstance(
 
     hr = constructor->Invoke_5(nullptr, &pluginInstance);
     if (FAILED(hr)) {
-        Log(TEXT("Failed to create new instance of plugin type %s: 0x%08lx"), typeName.c_str(), hr); 
+        Log(L"Failed to create new instance of plugin type %s: 0x%08lx",
+            typeName.c_str(), hr);
         goto errorCleanup;
     }
 
@@ -491,9 +527,12 @@ CreatePluginInstance(
     constructor = nullptr;
 
     CLRPlugin *plugin = new CLRPlugin();
-    if (plugin->Attach(CLRObjectRef(pluginInstance.punkVal, nullptr),  pluginType)) {
+    if (plugin->Attach(CLRObjectRef(pluginInstance.punkVal, nullptr),
+        pluginType))
+    {
         return plugin;
-    } else {
+    }
+    else {
         delete plugin;
         return nullptr;
     }
@@ -511,18 +550,18 @@ errorCleanup:
     return nullptr;
 }
 
-void 
-CLRHost::LoadPlugins()
+void CLRHost::LoadPlugins()
 {
     if (!isInitialized) {
-        Log(TEXT("CLRHost::LoadPlugins() Runtime not initialized, examine log for cause"));
+        Log(L"CLRHost::LoadPlugins() Runtime not initialized, examine log "
+            L"for cause");
     }
 
     std::vector<std::wstring> files;
-    GetFilesInDirectory(files, INTEROP_PATH TEXT("*.dll"), -1);
+    GetFilesInDirectory(files, INTEROP_PATH L"*.dll", -1);
     HRESULT hr;
 
-    for(auto i = files.begin(); i < files.end(); i++) {
+    for (auto i = files.begin(); i < files.end(); i++) {
         std::wstring &file = *i;
         file = file.substr(0, file.size() - 4);
         bstr_t bstrFile(file.c_str());
@@ -530,53 +569,58 @@ CLRHost::LoadPlugins()
         SAFEARRAY *typeArray;
         mscorlib::_Type **types;
 
-        Log(TEXT("CLRHost::LoadPlugins() attempting to load the plugin assembly %s"), file.c_str()); 
+        Log(L"CLRHost::LoadPlugins() attempting to load the plugin assembly "
+            L"%s", file.c_str());
         hr = appDomain->Load_2(bstrFile, &pluginAssembly);
-        if (FAILED(hr)) { 
-            Log(TEXT("CLRHost::LoadPlugins() failed to load the assembly %s: 0x%08lx"), file.c_str(), hr); 
+        if (FAILED(hr)) {
+            Log(L"CLRHost::LoadPlugins() failed to load the assembly %s: "
+                L"0x%08lx", file.c_str(), hr);
             goto errorCleanup;
         }
 
         hr = pluginAssembly->GetTypes(&typeArray);
         if (FAILED(hr)) {
-            Log(TEXT("CLRHost::LoadPlugins() failed to retrieve exported types in assembly %s: 0x%08lx"), file.c_str(), hr);
+            Log(L"CLRHost::LoadPlugins() failed to retrieve exported types in "
+                L"assembly %s: 0x%08lx", file.c_str(), hr);
             goto errorCleanup;
         }
 
         types = (mscorlib::_Type **)typeArray->pvData;
 
         bool hasPluginClass = false;
-        for(ULONG i = 0; i < typeArray->rgsabound->cElements; i++) {
+        for (ULONG i = 0; i < typeArray->rgsabound->cElements; i++) {
             mscorlib::_Type *type = types[i];
-            CLRPlugin *plugin = CreatePluginInstance(file, type, pluginType, libraryType, libraryInstance);
+            CLRPlugin *plugin = CreatePluginInstance(file, type, pluginType,
+                libraryType, libraryInstance);
             if (plugin && plugin->LoadPlugin()) {
                 clrPlugins.push_back(plugin);
-                
+
                 BSTR bstrTypeName;
                 type->get_ToString(&bstrTypeName);
                 std::wstring typeName = bstrTypeName;
                 ::SysFreeString(bstrTypeName);
-                Log(TEXT("CLRHost::LoadPlugins() successfully added CLR plugin [Type: %s, Name: %s]"), typeName.c_str(), plugin->GetPluginName().c_str());
+                Log(L"CLRHost::LoadPlugins() successfully added CLR plugin "
+                    L"[Type: %s, Name: %s]", typeName.c_str(),
+                    plugin->GetPluginName().c_str());
                 hasPluginClass = true;
             }
         }
         if (!hasPluginClass) {
-            Log(TEXT("CLRHost::LoadPlugins() no valid plugin types found in assembly %s"), file.c_str());
+            Log(L"CLRHost::LoadPlugins() no valid plugin types found in "
+                L"assembly %s", file.c_str());
         }
 
         SafeArrayDestroy(typeArray);
-errorCleanup:
+    errorCleanup:
         if (pluginAssembly) {
             pluginAssembly->Release();
         }
     }
-
 }
 
-void 
-CLRHost::UnloadPlugins()
+void CLRHost::UnloadPlugins()
 {
-    while(clrPlugins.size()) {
+    while (clrPlugins.size()) {
         CLRPlugin *plugin = clrPlugins[0];
         plugin->UnloadPlugin();
         delete plugin;
@@ -584,18 +628,16 @@ CLRHost::UnloadPlugins()
     }
 }
 
-void 
-CLRHost::OnStartStream()
+void CLRHost::OnStartStream()
 {
-    for(auto i = clrPlugins.begin(); i < clrPlugins.end(); i++) {
+    for (auto i = clrPlugins.begin(); i < clrPlugins.end(); i++) {
         (*i)->OnStartStream();
     }
 }
 
-void 
-CLRHost::OnStopStream()
+void CLRHost::OnStopStream()
 {
-    for(auto i = clrPlugins.begin(); i < clrPlugins.end(); i++) {
+    for (auto i = clrPlugins.begin(); i < clrPlugins.end(); i++) {
         (*i)->OnStopStream();
     }
 }

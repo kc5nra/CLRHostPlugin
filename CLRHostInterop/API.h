@@ -6,13 +6,11 @@
 #include "ImageSourceFactory.h"
 
 using namespace System::Threading;
-using namespace CLROBS;
 
 class CLRHostApi;
 
-namespace CLROBS 
+namespace CLROBS
 {
-    
     public ref class API
     {
     private:
@@ -21,19 +19,23 @@ namespace CLROBS
         static property API^ Instance
         {
         public:
-            API^ get() { return instance; }
+            API^ get()
+            {
+                return instance;
+            }
         }
     private:
         CLRHostApi *clrHostApi;
 
     public:
-        
+
         API(long long api)
         {
             instance = this;
-            
+
             if (Application::Current == nullptr) {
-                Application::Application().ShutdownMode = ShutdownMode::OnExplicitShutdown;
+                Application::Application().ShutdownMode =
+                    ShutdownMode::OnExplicitShutdown;
             }
 
             this->clrHostApi = reinterpret_cast<CLRHostApi *>(api);

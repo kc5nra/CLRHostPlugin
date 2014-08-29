@@ -4,18 +4,21 @@
 #include "API.h"
 #include "GraphicsSystem.h"
 
-namespace CLROBS {
-    public ref class AbstractImageSource abstract : public ImageSource 
+namespace CLROBS
+{
+    public ref class AbstractImageSource abstract : public ImageSource
     {
     private:
         Vector2^ size;
     public:
-        
+
         AbstractImageSource();
 
-        virtual void Render(float x, float y, float width, float height) abstract;
+        virtual void Render(float x, float y, float width, float height)
+            abstract;
+
         virtual void UpdateSettings() = 0;
-        
+
         property Vector2^ Size
         {
             virtual Vector2^ get() sealed;
@@ -32,13 +35,19 @@ namespace CLROBS {
         /// Convenience API property
         property API^ Api
         {
-            API^ get() { return API::Instance; }
+            API^ get()
+            {
+                return API::Instance;
+            }
         }
 
         /// Convenience GraphicsSystem property
         property GraphicsSystem^ GS
         {
-            GraphicsSystem^ get() { return GraphicsSystem::Instance; }
+            GraphicsSystem^ get()
+            {
+                return GraphicsSystem::Instance;
+            }
         }
     };
 };

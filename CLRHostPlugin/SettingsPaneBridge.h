@@ -2,8 +2,7 @@
 #include "CLRSettingsPane.h"
 
 class SettingsPaneBridge : public SettingsPane
-{    
-    
+{
 private:
     CLRSettingsPane *clrSettingsPane;
 
@@ -25,10 +24,10 @@ public:
 
     virtual HWND CreatePane(HWND parentHwnd)
     {
-        return reinterpret_cast<HWND>(clrSettingsPane->CreatePane((long long)parentHwnd));
+        return reinterpret_cast<HWND>(clrSettingsPane->CreatePane((long long) parentHwnd));
     }
 
-    virtual void DestroyPane() 
+    virtual void DestroyPane()
     {
         clrSettingsPane->DestroyPane();
     }
