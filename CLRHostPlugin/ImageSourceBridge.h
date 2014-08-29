@@ -1,5 +1,7 @@
 #include "OBSApi.h"
+
 #include "CLRImageSource.h"
+#include "CLRVector2.h"
 
 class ImageSourceBridge : public ImageSource
 {

@@ -2,7 +2,6 @@
 
 #include "CLRObject.h"
 #include "CLRObjectRef.h"
-#include "CLRImageSource.h"
 
 #include <string>
 

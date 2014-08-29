@@ -1,8 +1,10 @@
 /**
 * John Bradley (jrb@turrettech.com)
 */
-#include "CLRHostPlugin.h"
+#include "stdafx.h"
+
 #include "Localization.h"
+#include "CLRHostPlugin.h"
 #include "CLRHostApi.h"
 #include "CLRHost.h"
 

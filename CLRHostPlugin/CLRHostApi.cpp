@@ -1,9 +1,14 @@
-#include "OBSApi.h"
+#include "stdafx.h"
+
+#include "CLRHost.h"
 #include "CLRHostApi.h"
 #include "CLRHostPlugin.h"
+
 #include "CLRImageSource.h"
 #include "CLRImageSourceFactory.h"
 #include "CLRSettingsPane.h"
+#include "CLRXElement.h"
+
 #include "ImageSourceBridge.h"
 #include "SettingsPaneBridge.h"
 
@@ -18,7 +23,8 @@ CLRHostApi::~CLRHostApi()
     imageSourceFactories.clear();
 }
 
-void CLRHostApi::AddSettingsPane(CLRObjectRef &clrObjectRef)
+void 
+CLRHostApi::AddSettingsPane(CLRObjectRef &clrObjectRef)
 {
     CLRHost *clrHost = CLRHostPlugin::instance->GetCLRHost();
 
@@ -28,14 +34,17 @@ void CLRHostApi::AddSettingsPane(CLRObjectRef &clrObjectRef)
     }
 }
 
-ImageSource* STDCALL CreateImageSource(XElement *element)
+ImageSource* STDCALL 
+CreateImageSource(XElement *element)
 {
     if (element == nullptr) 
     {
         return nullptr;
     }
     
-    if (!element->GetParent() || !element->GetParent()->HasItem(TEXT("class"))) {
+    if (!element->GetParent() || 
+        !element->GetParent()->HasItem(TEXT("class"))) 
+    {
         Log(TEXT("Bad parent item, null or doesn't have class name"));
         return nullptr;
     }
@@ -66,7 +75,10 @@ ImageSource* STDCALL CreateImageSource(XElement *element)
     }
 }
 
-bool STDCALL ConfigureImageSource(XElement *element, bool isInitializing)
+bool STDCALL 
+ConfigureImageSource(
+    XElement *element, 
+    bool isInitializing)
 {
     if (element == nullptr) {
         Log(TEXT("Configuration element is null, skipping"));
@@ -104,7 +116,8 @@ bool STDCALL ConfigureImageSource(XElement *element, bool isInitializing)
     }
 }
 
-void CLRHostApi::AddImageSourceFactory(CLRObjectRef &clrObjectRef)
+void 
+CLRHostApi::AddImageSourceFactory(CLRObjectRef &clrObjectRef)
 {
     CLRHost *clrHost = CLRHostPlugin::instance->GetCLRHost();
 

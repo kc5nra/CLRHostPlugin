@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CLRObject.h"
-#include <string>
 
 namespace mscorlib {
     struct _MethodInfo;

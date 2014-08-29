@@ -1,22 +1,10 @@
+#include "stdafx.h"
+
 #include "CLRImageSourceFactory.h"
+#include "CLRImageSource.h"
+#include "CLRXElement.h"
 
-#include <metahost.h> 
-#include <string>
-
-#pragma comment(lib, "mscoree.lib") 
-#import "mscorlib.tlb" raw_interfaces_only high_property_prefixes("_get","_put","_putref") rename("ReportEvent", "InteropServices_ReportEvent") 
-using namespace mscorlib; 
-
-void __cdecl Log(const TCHAR *format, ...);
-void __cdecl CrashError(const TCHAR *format, ...);
-
-#ifndef assert
-#ifdef _DEBUG
-#define assert(check) if(!(check)) CrashError(TEXT("Assertion Failiure: (") TEXT(#check) TEXT(") failed\r\nFile: %s, line %d"), TEXT(__FILE__), __LINE__);
-#else
-#define assert(check)
-#endif
-#endif
+#include "mscorelib.h"
 
 bool CLRImageSourceFactory::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectType)
 {
@@ -99,9 +87,9 @@ CLRImageSource *CLRImageSourceFactory::Create(CLRXElement *element)
     SAFEARRAY *parameterTypes = nullptr;
     SAFEARRAY *constructors = nullptr;
     SAFEARRAY *constructorParameters = nullptr;
-    _ParameterInfo *elementTypeInfo = nullptr;
-    _Type *elementType = nullptr;
-    _Type *returnType = nullptr;
+    mscorlib::_ParameterInfo *elementTypeInfo = nullptr;
+    mscorlib::_Type *elementType = nullptr;
+    mscorlib::_Type *returnType = nullptr;
     CLRImageSource *imageSource = nullptr;
 
     // Local

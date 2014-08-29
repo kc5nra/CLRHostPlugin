@@ -1,31 +1,17 @@
+#include "stdafx.h"
+
 #include "CLRXElement.h"
 
-#include <metahost.h> 
-#include <string>
+#include "mscorelib.h"
 
-#pragma comment(lib, "mscoree.lib") 
-#import "mscorlib.tlb" raw_interfaces_only high_property_prefixes("_get","_put","_putref") rename("ReportEvent", "InteropServices_ReportEvent") 
-using namespace mscorlib; 
-
-void __cdecl Log(const TCHAR *format, ...);
-void __cdecl CrashError(const TCHAR *format, ...);
-
-#ifndef assert
-#ifdef _DEBUG
-#define assert(check) if(!(check)) CrashError(TEXT("Assertion Failiure: (") TEXT(#check) TEXT(") failed\r\nFile: %s, line %d"), TEXT(__FILE__), __LINE__);
-#else
-#define assert(check)
-#endif
-#endif
-
-CLRXElement * CLRXElement::Create(_Type *type, void *elementPointer)
+CLRXElement * CLRXElement::Create(mscorlib::_Type *type, void *elementPointer)
 {
     type->AddRef();
 
     // Release
     SAFEARRAY *constructors = nullptr;
-    _ConstructorInfo **constructorInfos = nullptr;
-    _ConstructorInfo *constructorInfo = nullptr;
+    mscorlib::_ConstructorInfo **constructorInfos = nullptr;
+    mscorlib::_ConstructorInfo *constructorInfo = nullptr;
     SAFEARRAY *constructorParameters = nullptr;
     CLRXElement *element = nullptr;
     
@@ -42,7 +28,7 @@ CLRXElement * CLRXElement::Create(_Type *type, void *elementPointer)
         goto errorCleanup;
     }
     
-    constructorInfos = (_ConstructorInfo **)constructors->pvData;
+    constructorInfos = (mscorlib::_ConstructorInfo **) constructors->pvData;
     constructorInfo = constructorInfos[1];
     constructorInfo->AddRef();
     SafeArrayDestroy(constructors);

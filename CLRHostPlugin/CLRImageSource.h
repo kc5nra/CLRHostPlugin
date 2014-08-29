@@ -1,8 +1,8 @@
 #pragma once
 
 #include "CLRObject.h"
-#include "CLRVector2.h"
-#include <string>
+
+class CLRVector2;
 
 namespace mscorlib {
     struct _MethodInfo;

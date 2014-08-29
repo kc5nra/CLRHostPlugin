@@ -1,22 +1,9 @@
+#include "stdafx.h"
+
 #include "CLRImageSource.h"
+#include "CLRVector2.h"
 
-#include <metahost.h> 
-#include <string>
-
-#pragma comment(lib, "mscoree.lib") 
-#import "mscorlib.tlb" raw_interfaces_only high_property_prefixes("_get","_put","_putref") rename("ReportEvent", "InteropServices_ReportEvent") 
-using namespace mscorlib; 
-
-void __cdecl Log(const TCHAR *format, ...);
-void __cdecl CrashError(const TCHAR *format, ...);
-
-#ifndef assert
-#ifdef _DEBUG
-#define assert(check) if(!(check)) CrashError(TEXT("Assertion Failiure: (") TEXT(#check) TEXT(") failed\r\nFile: %s, line %d"), TEXT(__FILE__), __LINE__);
-#else
-#define assert(check)
-#endif
-#endif
+#include "mscorelib.h"
 
 bool CLRImageSource::Attach(CLRObjectRef &clrObjectRef, mscorlib::_Type *objectType)
 {
@@ -208,7 +195,8 @@ CLRVector2 *CLRImageSource::GetSize()
         Log(TEXT("CLRImageSource::GetSize() failed to invoke on managed instance: 0x%08lx"), hr); 
         return nullptr;
     }
-    _Type *returnType = nullptr;
+    
+    mscorlib::_Type *returnType = nullptr;
     hr = getSizeMethod->get_returnType(&returnType);
 
     if (FAILED(hr) || !returnType) {

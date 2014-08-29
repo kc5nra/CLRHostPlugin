@@ -2,9 +2,9 @@
 
 #include "CLRObject.h"
 #include "CLRObjectRef.h"
-#include "CLRImageSource.h"
-#include "CLRXElement.h"
-#include <string>
+
+class CLRXElement;
+class CLRImageSource;
 
 namespace mscorlib {
     struct _MethodInfo;

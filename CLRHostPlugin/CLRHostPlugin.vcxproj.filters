@@ -46,6 +46,12 @@
     <ClInclude Include="SettingsPaneBridge.h">
       <Filter>Bridges</Filter>
     </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mscorelib.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

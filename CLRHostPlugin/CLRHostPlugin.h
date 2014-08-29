@@ -4,9 +4,11 @@
 #pragma once
 
 #include "OBSApi.h"
-#include "CLRHostApi.h"
-#include "CLRHost.h"
-#include "CLRPlugin.h"
+
+class CLRPlugin;
+class CLRHostPlugin;
+class CLRHostApi;
+class CLRHost;
 
 #include <vector>
 
