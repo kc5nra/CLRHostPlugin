@@ -162,8 +162,6 @@ namespace CLROBS
 
     public:
 
-        System::IntPtr CreateSharedTexture(unsigned int width,
-            unsigned int height, GSColorFormat colorFormat);
         Texture^ CreateTextureFromSharedHandle(unsigned int width,
             unsigned int height, System::IntPtr sharedHandle);
         Texture^ CreateTexture(unsigned int width, unsigned int height,

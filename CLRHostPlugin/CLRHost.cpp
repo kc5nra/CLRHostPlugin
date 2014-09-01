@@ -69,7 +69,7 @@ CLRHost::~CLRHost()
     }
 }
 
-HRESULT GetInstalledClrRuntimes(
+static HRESULT getInstalledClrRuntimes(
     ICLRMetaHost *clrMetaHost,
     std::vector<std::wstring>& clrRuntimeList)
 {
@@ -158,7 +158,7 @@ bool CLRHost::Initialize()
     }
 
     if (!clrRuntimeInfo) {
-        hr = GetInstalledClrRuntimes(clrMetaHost, clrRuntimeList);
+        hr = getInstalledClrRuntimes(clrMetaHost, clrRuntimeList);
         if (SUCCEEDED(hr)) {
             if (clrRuntimeList.size()) {
                 for (auto itor = clrRuntimeList.begin();

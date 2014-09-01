@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="CLRPluginManager.PluginManagerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:WinForms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="600">
+    <AdornerDecorator>
+
+        <Grid Drop="Grid_Drop" AllowDrop="True" DragEnter="Grid_Drag" DragOver="Grid_Drag" DragLeave="Grid_DragLeave">
+            <TabControl Grid.Row="0" Panel.ZIndex="0">
+                <TabItem Header="Installed">
+                    <StackPanel Width="580" Orientation="Horizontal" Margin="5,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <DockPanel Margin="0 0 5 0" x:Name="DragDropInstallPanel" IsHitTestVisible="False"
+                                    Panel.ZIndex="1" Grid.Row="0" LastChildFill="True" Background="#33596E20" Opacity="0">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+                                    <TextBlock Text="Install Plugin" Foreground="White" 
+                                            HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold">
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect ShadowDepth="3" BlurRadius="3" RenderingBias="Quality"/>
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+                                    <TextBlock x:Name="InvalidDropTextBlock" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               Text="Invalid Drop" Foreground="DarkRed"  FontSize="16" FontWeight="Bold" Opacity="0"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <ListBox DragOver="Grid_Drag" DragEnter="Grid_Drag" DragLeave="Grid_DragLeave" AllowDrop="True" Margin="0 0 5 0" Grid.Row="0" x:Name="PluginsListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="286"
+                                ItemsSource="{Binding}">                                
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <WrapPanel>
+                                            <CheckBox x:Name="PluginEnabledCheckbox" Unchecked="PluginEnabledCheckbox_Checked" Checked="PluginEnabledCheckbox_Checked" IsChecked="{Binding Enabled}" Margin="0 2 5 0"/>
+                                            <TextBlock Text="{Binding Name}"/>
+                                            <TextBlock Text=" ("/>
+                                            <TextBlock Text="{Binding SelectedVersion.Version}" FontWeight="Bold"/>
+                                            <TextBlock Text=")"/>
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                        <Grid x:Name="PluginDefinitionDetailsGrid" Width="288">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="100*" MinHeight="100"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" VerticalAlignment="Top">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="25*"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" FontWeight="Bold" Content="Plugin Description:"/>
+                                <TextBlock Margin="5 0 0 0" Grid.Row="1" TextWrapping="WrapWithOverflow" Text="{Binding ElementName=PluginsListView, Path=SelectedItem.Description}"/>
+                            </Grid>
+                            <GridSplitter Grid.Row="2" VerticalAlignment="Top" Height="5" ResizeDirection="Rows" ShowsPreview="False" HorizontalAlignment="Stretch"/>
+                            <DockPanel LastChildFill="true" Grid.Row="2" Grid.RowSpan="1" Margin="0 5 0 0">
+                                <WindowsFormsHost>
+                                    <WinForms:PropertyGrid ToolbarVisible="False" x:Name="PluginDefinitionPropertyGrid"/>
+                                </WindowsFormsHost>
+                            </DockPanel>
+                        </Grid>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Available"/>
+            </TabControl>
+        </Grid>
+    </AdornerDecorator>
+</UserControl>
