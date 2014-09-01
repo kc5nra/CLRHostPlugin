@@ -30,17 +30,20 @@ namespace CLRPluginManager
             return new StandardValuesCollection(values);
         }
 
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        public override bool CanConvertFrom(ITypeDescriptorContext context,
+            Type sourceType)
         {
             return true;
         }
 
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        public override bool CanConvertTo(ITypeDescriptorContext context,
+            Type destinationType)
         {
             return true;
         }
 
-        public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+        public override object ConvertFrom(ITypeDescriptorContext context,
+            System.Globalization.CultureInfo culture, object value)
         {
             PluginDefinition def = context.Instance as PluginDefinition;
             Plugin p = def.AvailableVersions.FirstOrDefault(
@@ -48,7 +51,9 @@ namespace CLRPluginManager
             return p;
         }
 
-        public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context,
+            System.Globalization.CultureInfo culture, object value,
+            Type destinationType)
         {
             if (value != null)
             {

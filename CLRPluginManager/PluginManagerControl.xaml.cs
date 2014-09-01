@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +11,10 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.IO;
-using System.Windows.Media.Animation;
-
 
 namespace CLRPluginManager
 {
@@ -27,32 +26,37 @@ namespace CLRPluginManager
         private PluginManager pluginManager;
 
         public PluginManagerControl(PluginManager pluginManager)
-        {            
+        {
             InitializeComponent();
             this.pluginManager = pluginManager;
             PluginDefinition p = new PluginDefinition();
             PluginsListView.ItemsSource = pluginManager.PluginDefinitions;
-            PluginsListView.SelectionChanged += PluginsListView_SelectionChanged;
+            PluginsListView.SelectionChanged +=
+                PluginsListView_SelectionChanged;
 
             if (PluginsListView.HasItems)
             {
                 PluginsListView.SelectedIndex = 0;
             }
 
-            PluginDefinitionPropertyGrid.PropertyValueChanged += PluginDefinitionPropertyGrid_PropertyValueChanged;
+            PluginDefinitionPropertyGrid.PropertyValueChanged +=
+                PluginDefinitionPropertyGrid_PropertyValueChanged;
         }
 
-        void PluginDefinitionPropertyGrid_PropertyValueChanged(object s, System.Windows.Forms.PropertyValueChangedEventArgs e)
+        private void PluginDefinitionPropertyGrid_PropertyValueChanged(object s,
+            System.Windows.Forms.PropertyValueChangedEventArgs e)
         {
             CLROBS.API.Instance.SetChangedSettings(true);
         }
 
-        void PluginsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void PluginsListView_SelectionChanged(object sender,
+            SelectionChangedEventArgs e)
         {
             if (PluginsListView.SelectedIndex != -1)
             {
                 PluginDefinitionDetailsGrid.Visibility = Visibility.Visible;
-                PluginDefinitionPropertyGrid.SelectedObject = PluginsListView.SelectedItem;
+                PluginDefinitionPropertyGrid.SelectedObject =
+                    PluginsListView.SelectedItem;
             }
             else
             {
@@ -60,7 +64,8 @@ namespace CLRPluginManager
             }
         }
 
-        private void PluginEnabledCheckbox_Checked(object sender, RoutedEventArgs e)
+        private void PluginEnabledCheckbox_Checked(object sender,
+            RoutedEventArgs e)
         {
             PluginDefinitionPropertyGrid.Refresh();
             CLROBS.API.Instance.SetChangedSettings(true);
@@ -69,14 +74,14 @@ namespace CLRPluginManager
         private void Grid_Drop(object sender, DragEventArgs e)
         {
             DoOpacityChange(DragDropInstallPanel, false);
-            StringCollection potentialPlugins = ((DataObject)e.Data).GetFileDropList();
+            StringCollection potentialPlugins =
+                ((DataObject)e.Data).GetFileDropList();
             foreach (string potentialPlugin in potentialPlugins)
             {
-                InstallPluginControl installPluginControl = new InstallPluginControl(pluginManager, potentialPlugin);
+                InstallPluginControl installPluginControl =
+                    new InstallPluginControl(pluginManager, potentialPlugin);
                 installPluginControl.ShowDialog();
             }
-           
-
         }
 
         private void Grid_Drag(object sender, DragEventArgs e)
@@ -90,7 +95,8 @@ namespace CLRPluginManager
                 return;
             }
 
-            StringCollection potentialPlugins = ((DataObject)e.Data).GetFileDropList();
+            StringCollection potentialPlugins =
+                ((DataObject)e.Data).GetFileDropList();
             foreach (string potentialPlugin in potentialPlugins)
             {
                 if ((Directory.Exists(potentialPlugin) ||
@@ -120,6 +126,5 @@ namespace CLRPluginManager
         {
             e.Opacity = (isVisible) ? 100 : 0;
         }
-
     }
 }

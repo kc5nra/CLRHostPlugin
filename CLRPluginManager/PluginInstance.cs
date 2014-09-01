@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Reflection;
-using System.IO;
 
 namespace CLRPluginManager
 {
     public class PluginInstance
     {
         public PluginDefinition PluginDefinition { get; private set; }
+
         public Plugin SelectedPlugin { get; private set; }
+
         public CLROBS.Plugin Instance { get; private set; }
 
         public bool HasInstance { get { return Instance != null; } }
 
-        public PluginInstance(PluginDefinition pluginDefinition, Plugin selectedPlugin)
+        public PluginInstance(PluginDefinition pluginDefinition,
+            Plugin selectedPlugin)
         {
             PluginDefinition = pluginDefinition;
             SelectedPlugin = selectedPlugin;
@@ -34,7 +37,8 @@ namespace CLRPluginManager
                 new ResolveEventHandler(AssemblyDependencyResolver);
 
             currentDomain.AssemblyResolve += assemblyDependencyResolver;
-            string assemblyPath = Path.Combine(SelectedPlugin.Path, PluginDefinition.AssemblyName + ".dll");
+            string assemblyPath = Path.Combine(SelectedPlugin.Path,
+                PluginDefinition.AssemblyName + ".dll");
             try
             {
                 if (File.Exists(assemblyPath))
@@ -65,10 +69,12 @@ namespace CLRPluginManager
                         try
                         {
                             // Plugins must have a no-arg constructor
-                            ConstructorInfo pluginConstructor = type.GetConstructor(new Type[0]);
+                            ConstructorInfo pluginConstructor =
+                                type.GetConstructor(new Type[0]);
                             if (pluginConstructor != null)
                             {
-                                return (CLROBS.Plugin)pluginConstructor.Invoke(new object[0]);
+                                return (CLROBS.Plugin)pluginConstructor.Invoke(
+                                    new object[0]);
                             }
                         }
                         catch (Exception e)
@@ -85,12 +91,12 @@ namespace CLRPluginManager
             return null;
         }
 
-
-
-        private Assembly AssemblyDependencyResolver(object sender, ResolveEventArgs args)
+        private Assembly AssemblyDependencyResolver(object sender,
+            ResolveEventArgs args)
         {
             Assembly loadingAssembly = Assembly.GetExecutingAssembly();
-            AssemblyName[] referencedAssemblies = loadingAssembly.GetReferencedAssemblies();
+            AssemblyName[] referencedAssemblies =
+                loadingAssembly.GetReferencedAssemblies();
 
             AssemblyName internalReference = Array.Find<AssemblyName>(
                 referencedAssemblies, a => a.Name == args.Name);
@@ -101,7 +107,7 @@ namespace CLRPluginManager
             else
             {
                 string resolvedAssemblyPath =
-                        Path.Combine(SelectedPlugin.Path, 
+                        Path.Combine(SelectedPlugin.Path,
                         ExtractAssemblyName(args.Name)) + ".dll";
                 if (File.Exists(resolvedAssemblyPath))
                 {
@@ -115,6 +121,5 @@ namespace CLRPluginManager
         {
             return assemblyName.Substring(0, assemblyName.IndexOf(","));
         }
-
     }
 }

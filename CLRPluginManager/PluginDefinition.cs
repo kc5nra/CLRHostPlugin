@@ -52,7 +52,8 @@ namespace CLRPluginManager
         [Description("Available versions of this plugin")]
         [Browsable(true)]
         [ReadOnly(true)]
-        public ReadOnlyCollection<Plugin> ReadOnlyAvailableVersions {
+        public ReadOnlyCollection<Plugin> ReadOnlyAvailableVersions
+        {
             get { return AvailableVersions.AsReadOnly(); }
         }
 
@@ -71,7 +72,7 @@ namespace CLRPluginManager
         public bool Enabled { get; set; }
 
         [OnDeserialized]
-        void OnDeserialized(StreamingContext c)
+        private void OnDeserialized(StreamingContext c)
         {
             AvailableVersions = new List<Plugin>();
         }
