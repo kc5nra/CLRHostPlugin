@@ -31,7 +31,7 @@ namespace CLRPluginManager
                 try
                 {
                     using (FileStream stream =
-                        File.OpenWrite(pluginDefinition.Path))
+                        File.Open(pluginDefinition.Path, FileMode.Create))
                     {
                         DataContractJsonSerializer ser =
                             new DataContractJsonSerializer(
