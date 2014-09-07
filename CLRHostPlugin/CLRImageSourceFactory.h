@@ -27,5 +27,4 @@ public:
     bool ShowConfiguration(CLRXElement *data);
     std::wstring GetDisplayName();
     std::wstring GetSourceClassName();
-    
 };

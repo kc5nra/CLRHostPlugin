@@ -14,15 +14,22 @@
 
 CLRHostApi::~CLRHostApi()
 {
-    for (auto i = imageSourceFactories.begin();
-        i != imageSourceFactories.end(); i++)
+    for (auto i = settingsPanes.begin(); 
+        i < settingsPanes.end(); i++) 
     {
+        OBSRemoveSettingsPane(*i);
+        delete *i;
+    }
+    settingsPanes.clear();
+    
+    for (auto i = imageSourceFactories.begin(); i != imageSourceFactories.end(); i++) {
         auto entry = *i;
         if (entry.second) {
             delete entry.second;
         }
     }
     imageSourceFactories.clear();
+    
 }
 
 void CLRHostApi::AddSettingsPane(CLRObjectRef &clrObjectRef)
@@ -32,7 +39,14 @@ void CLRHostApi::AddSettingsPane(CLRObjectRef &clrObjectRef)
     CLRSettingsPane *clrSettingsPane = new CLRSettingsPane();
     if (clrSettingsPane->Attach(clrObjectRef, clrHost->GetSettingsPaneType()))
     {
-        OBSAddSettingsPane(new SettingsPaneBridge(clrSettingsPane));
+        SettingsPaneBridge * settingsPaneBridge =
+            new SettingsPaneBridge(clrSettingsPane);
+
+        settingsPanes.push_back(settingsPaneBridge);
+        OBSAddSettingsPane(settingsPaneBridge);
+    }
+    else {
+        delete clrSettingsPane;
     }
 }
 
@@ -133,7 +147,8 @@ void CLRHostApi::AddImageSourceFactory(
 {
     CLRHost *clrHost = CLRHostPlugin::instance->GetCLRHost();
 
-    CLRImageSourceFactory *imageSourceFactory = new CLRImageSourceFactory();
+    CLRImageSourceFactory* imageSourceFactory = new CLRImageSourceFactory();
+
     if (imageSourceFactory->Attach(clrObjectRef,
         clrHost->GetImageSourceFactoryType()))
     {

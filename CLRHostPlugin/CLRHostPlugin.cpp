@@ -52,14 +52,14 @@ CLRHostPlugin::~CLRHostPlugin()
 
     isDynamicLocale = false;
 
-    if (clrHost) {
-        delete clrHost;
-        clrHost = nullptr;
-    }
-
     if (clrApi) {
         delete clrApi;
         clrApi = nullptr;
+    }
+
+    if (clrHost) {
+        delete clrHost;
+        clrHost = nullptr;
     }
 }
 

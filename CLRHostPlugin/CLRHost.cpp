@@ -18,24 +18,13 @@ CLRHost::CLRHost(TCHAR *clrRuntimeVersion, CLRHostApi *clrApi)
 
 CLRHost::~CLRHost()
 {
-    if (isInitialized) {
-        corRuntimeHost->Stop();
+    
+    if (isInitialized && isLibraryLoaded) {
 
-        if (clrMetaHost) {
-            clrMetaHost->Release();
-            clrMetaHost = nullptr;
-        }
-        if (clrRuntimeInfo) {
-            clrRuntimeInfo->Release();
-            clrRuntimeInfo = nullptr;
-        }
-        if (corRuntimeHost) {
-            corRuntimeHost->Release();
-            corRuntimeHost = nullptr;
-        }
-    }
-    if (isLibraryLoaded) {
         if (appDomain) {
+            if (corRuntimeHost) {
+                corRuntimeHost->UnloadDomain(appDomain);
+            }
             appDomain->Release();
             appDomain = nullptr;
         }
@@ -65,6 +54,21 @@ CLRHost::~CLRHost()
         }
         if (libraryInstance) {
             libraryInstance->Release();
+        }
+    }
+    if (isInitialized) {
+        if (clrMetaHost) {
+            clrMetaHost->Release();
+            clrMetaHost = nullptr;
+        }
+        if (clrRuntimeInfo) {
+            clrRuntimeInfo->Release();
+            clrRuntimeInfo = nullptr;
+        }
+        if (corRuntimeHost) {
+            corRuntimeHost->Stop();
+            corRuntimeHost->Release();
+            corRuntimeHost = nullptr;
         }
     }
 }
